@@ -10,6 +10,8 @@ import { HStack } from "../../components/ui/hstack";
 import { Center } from "../../components/ui/center";
 import { Text } from "../../components/ui/text";
 import { formatBaht } from "../../utils/format-baht";
+import { Button, ButtonIcon, ButtonText } from "../../components/ui/button";
+import { CalendarDaysIcon } from "../../components/ui/icon";
 
 const transactions = [
   {
@@ -90,17 +92,33 @@ export default function Home() {
 
           <SummaryCard label="รายจ่าย วันนี้" value={66} />
 
-          <Calendar
-            theme={{
-              calendarBackground: "transparent",
-              todayBackgroundColor: "#0da6f2",
-              todayTextColor: "#ffffff",
-              todayDotColor: "#ffffff",
-              arrowColor: "#8c8c8c",
-              dayTextColor: "#181718",
-              monthTextColor: "#181718",
-            }}
-          />
+          <VStack>
+            <Center>
+              <Button
+                variant="outline"
+                className="rounded-2xl border-teal-500 data-[hover=true]:border-teal-600 data-[active=true]:border-teal-700"
+              >
+                <ButtonIcon
+                  as={CalendarDaysIcon}
+                  className="text-teal-500 data-[hover=true]:text-teal-600 data-[active=true]:text-teal-700"
+                />
+                <ButtonText className="text-teal-500 data-[hover=true]:text-teal-600 data-[active=true]:text-teal-700">
+                  กลับมาวันนี้
+                </ButtonText>
+              </Button>
+            </Center>
+            <Calendar
+              theme={{
+                calendarBackground: "transparent",
+                todayBackgroundColor: "#0da6f2",
+                todayTextColor: "#ffffff",
+                todayDotColor: "#ffffff",
+                arrowColor: "#8c8c8c",
+                dayTextColor: "#181718",
+                monthTextColor: "#181718",
+              }}
+            />
+          </VStack>
 
           <VStack space="sm">
             <Heading size="lg" bold className="text-typography-500">
