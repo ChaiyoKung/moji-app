@@ -10,8 +10,7 @@ import { HStack } from "../../components/ui/hstack";
 import { Center } from "../../components/ui/center";
 import { Text } from "../../components/ui/text";
 import { formatBaht } from "../../utils/format-baht";
-import { Button, ButtonIcon, ButtonText } from "../../components/ui/button";
-import { CalendarDaysIcon } from "../../components/ui/icon";
+import { TodayButton } from "../../components/today-button";
 
 const transactions = [
   {
@@ -94,18 +93,7 @@ export default function Home() {
 
           <VStack>
             <Center>
-              <Button
-                variant="outline"
-                className="rounded-2xl border-teal-500 data-[hover=true]:border-teal-600 data-[active=true]:border-teal-700"
-              >
-                <ButtonIcon
-                  as={CalendarDaysIcon}
-                  className="text-teal-500 data-[hover=true]:text-teal-600 data-[active=true]:text-teal-700"
-                />
-                <ButtonText className="text-teal-500 data-[hover=true]:text-teal-600 data-[active=true]:text-teal-700">
-                  กลับมาวันนี้
-                </ButtonText>
-              </Button>
+              <TodayButton />
             </Center>
             <Calendar
               theme={{
