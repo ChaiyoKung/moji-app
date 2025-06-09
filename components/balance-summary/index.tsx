@@ -1,6 +1,7 @@
 import { VStack } from "../ui/vstack";
 import { Text } from "../ui/text";
 import { Heading } from "../ui/heading";
+import { formatBaht } from "../../utils/format-baht";
 
 export interface BalanceSummaryProps {
   label: string;
@@ -12,7 +13,7 @@ export function BalanceSummary({ label, value }: BalanceSummaryProps) {
     <VStack>
       <Text className="text-gray-500">{label}</Text>
       <Heading size="xl" className="text-green-500">
-        {value.toLocaleString("th-TH")}
+        {formatBaht(value)}
       </Heading>
     </VStack>
   );
