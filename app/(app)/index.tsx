@@ -1,3 +1,4 @@
+import "../../libs/calendar-locale-config.th";
 import { Text } from "../../components/ui/text";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Heading } from "../../components/ui/heading";
@@ -5,48 +6,6 @@ import { VStack } from "../../components/ui/vstack";
 import { Box } from "../../components/ui/box";
 import { Center } from "../../components/ui/center";
 import { Calendar, LocaleConfig } from "react-native-calendars";
-
-LocaleConfig.locales["th"] = {
-  monthNames: [
-    "มกราคม",
-    "กุมภาพันธ์",
-    "มีนาคม",
-    "เมษายน",
-    "พฤษภาคม",
-    "มิถุนายน",
-    "กรกฎาคม",
-    "สิงหาคม",
-    "กันยายน",
-    "ตุลาคม",
-    "พฤศจิกายน",
-    "ธันวาคม",
-  ],
-  monthNamesShort: [
-    "ม.ค.",
-    "ก.พ.",
-    "มี.ค.",
-    "เม.ย.",
-    "พ.ค.",
-    "มิ.ย.",
-    "ก.ค.",
-    "ส.ค.",
-    "ก.ย.",
-    "ต.ค.",
-    "พ.ย.",
-    "ธ.ค.",
-  ],
-  dayNames: [
-    "อาทิตย์",
-    "จันทร์",
-    "อังคาร",
-    "พุธ",
-    "พฤหัสบดี",
-    "ศุกร์",
-    "เสาร์",
-  ],
-  dayNamesShort: ["อา.", "จ.", "อ.", "พ.", "พฤ.", "ศ.", "ส."],
-  today: "วันนี้",
-};
 
 LocaleConfig.defaultLocale = "th";
 
