@@ -1,4 +1,3 @@
-import "../global.css";
 import { StatusBar } from "expo-status-bar";
 import { Button, ButtonText } from "../components/ui/button";
 import { Heading } from "../components/ui/heading";
