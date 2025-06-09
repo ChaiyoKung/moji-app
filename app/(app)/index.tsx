@@ -96,12 +96,14 @@ export default function Home() {
               todayBackgroundColor: "#0da6f2",
               todayTextColor: "#ffffff",
               todayDotColor: "#ffffff",
-              arrowColor: "#9e9e9e",
+              arrowColor: "#8c8c8c",
+              dayTextColor: "#181718",
+              monthTextColor: "#181718",
             }}
           />
 
           <VStack space="sm">
-            <Heading size="lg" bold className="text-gray-500">
+            <Heading size="lg" bold className="text-typography-500">
               รายการ
             </Heading>
             {transactions.map((item) => (
@@ -117,8 +119,10 @@ export default function Home() {
                   <Text size="2xl">{item.category.icon}</Text>
                 </Center>
                 <VStack className="flex-1">
-                  <Text size="lg">{item.category.name}</Text>
-                  <Text size="sm" className="text-gray-500">
+                  <Text size="lg" className="text-typography-black">
+                    {item.category.name}
+                  </Text>
+                  <Text size="sm" className="text-typography-500">
                     {item.note || "-"}
                   </Text>
                 </VStack>

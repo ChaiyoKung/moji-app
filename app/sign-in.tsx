@@ -18,7 +18,7 @@ export default function SignIn() {
         />
       </Center>
       <VStack space="lg" className="flex-1 bg-white p-6 rounded-t-3xl">
-        <Heading size="3xl" className="my-4">
+        <Heading size="3xl" className="my-4 text-typography-black">
           เข้าสู่ระบบ
         </Heading>
         <Button className="rounded-2xl">

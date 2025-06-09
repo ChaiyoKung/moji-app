@@ -17,7 +17,7 @@ export function SummaryCard({ label, value }: SummaryCardProps) {
         </Text>
       </Center>
       <Center className="p-4">
-        <Text size="4xl" bold>
+        <Text size="4xl" bold className="text-typography-black">
           {formatBaht(value)}
         </Text>
       </Center>

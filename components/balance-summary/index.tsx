@@ -11,7 +11,7 @@ export interface BalanceSummaryProps {
 export function BalanceSummary({ label, value }: BalanceSummaryProps) {
   return (
     <VStack>
-      <Text className="text-gray-500">{label}</Text>
+      <Text className="text-typography-500">{label}</Text>
       <Heading size="xl" className="text-green-500">
         {formatBaht(value)}
       </Heading>
