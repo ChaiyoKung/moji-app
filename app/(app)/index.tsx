@@ -88,7 +88,7 @@ export default function Home() {
   return (
     <SafeAreaView edges={["top"]} className="flex-1 bg-gray-100">
       <ScrollView>
-        <VStack space="md" className="p-4">
+        <VStack space="md" className="p-4 pb-[5.75rem]">
           <BalanceSummary label="เงินคงเหลือ" value={19934} />
 
           <SummaryCard label="รายจ่าย วันนี้" value={66} />
