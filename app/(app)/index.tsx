@@ -11,6 +11,8 @@ import { Center } from "../../components/ui/center";
 import { Text } from "../../components/ui/text";
 import { formatBaht } from "../../utils/format-baht";
 import { TodayButton } from "../../components/today-button";
+import { Fab, FabIcon, FabLabel } from "../../components/ui/fab";
+import { AddIcon } from "../../components/ui/icon";
 
 const transactions = [
   {
@@ -147,6 +149,24 @@ export default function Home() {
           </VStack>
         </VStack>
       </ScrollView>
+
+      <Fab
+        size="lg"
+        placement="bottom left"
+        className="rounded-2xl bg-green-500 hover:bg-green-600 active:bg-green-700"
+      >
+        <FabIcon as={AddIcon} />
+        <FabLabel bold>เพิ่มรายรับ</FabLabel>
+      </Fab>
+
+      <Fab
+        size="lg"
+        placement="bottom right"
+        className="rounded-2xl bg-red-500 hover:bg-red-600 active:bg-red-700"
+      >
+        <FabLabel bold>เพิ่มรายจ่าย</FabLabel>
+        <FabIcon as={AddIcon} />
+      </Fab>
     </SafeAreaView>
   );
 }
