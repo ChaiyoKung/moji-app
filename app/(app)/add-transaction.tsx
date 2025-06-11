@@ -1,17 +1,8 @@
-import { ErrorBoundaryProps, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { ScrollView } from "react-native";
 import { Heading } from "../../components/ui/heading";
 import { VStack } from "../../components/ui/vstack";
 import { Text } from "../../components/ui/text";
-import { Center } from "../../components/ui/center";
-
-export function ErrorBoundary({ error }: ErrorBoundaryProps) {
-  return (
-    <Center className="flex-1 bg-gray-100 p-4">
-      <Text className="text-center text-red-500">{error.message}</Text>
-    </Center>
-  );
-}
 
 export default function Transaction() {
   const { mode, date } = useLocalSearchParams();
