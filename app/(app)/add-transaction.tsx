@@ -1,33 +1,27 @@
-import { useLocalSearchParams } from "expo-router";
+import { ErrorBoundaryProps, useLocalSearchParams } from "expo-router";
 import { ScrollView } from "react-native";
 import { Heading } from "../../components/ui/heading";
 import { VStack } from "../../components/ui/vstack";
 import { Text } from "../../components/ui/text";
 import { Center } from "../../components/ui/center";
 
+export function ErrorBoundary({ error }: ErrorBoundaryProps) {
+  return (
+    <Center className="flex-1 bg-gray-100 p-4">
+      <Text className="text-center text-red-500">{error.message}</Text>
+    </Center>
+  );
+}
+
 export default function Transaction() {
   const { mode, date } = useLocalSearchParams();
 
   if (mode !== "income" && mode !== "expense") {
-    console.error("Invalid mode parameter:", mode);
-    return (
-      <Center className="flex-1">
-        <Text className="text-center text-red-500">
-          Error: Invalid mode parameter
-        </Text>
-      </Center>
-    );
+    throw new Error("Invalid mode parameter.");
   }
 
   if (typeof date !== "string") {
-    console.error("Invalid date parameter:", date);
-    return (
-      <Center className="flex-1">
-        <Text className="text-center text-red-500">
-          Error: Invalid date parameter
-        </Text>
-      </Center>
-    );
+    throw new Error("Invalid date parameter.");
   }
 
   return (
