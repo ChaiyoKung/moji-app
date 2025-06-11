@@ -1,18 +1,19 @@
-import "../../libs/calendar-locale-config.th";
+import "../../../libs/calendar-locale-config.th";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { VStack } from "../../components/ui/vstack";
-import { BalanceSummary } from "../../components/balance-summary";
-import { SummaryCard } from "../../components/summary-card";
+import { VStack } from "../../../components/ui/vstack";
+import { BalanceSummary } from "../../../components/balance-summary";
+import { SummaryCard } from "../../../components/summary-card";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { ScrollView } from "react-native";
-import { Heading } from "../../components/ui/heading";
-import { HStack } from "../../components/ui/hstack";
-import { Center } from "../../components/ui/center";
-import { Text } from "../../components/ui/text";
-import { formatBaht } from "../../utils/format-baht";
-import { TodayButton } from "../../components/today-button";
-import { AddIncomeFab } from "../../components/add-income-fab";
-import { AddExpenseFab } from "../../components/add-expense-fab";
+import { Heading } from "../../../components/ui/heading";
+import { HStack } from "../../../components/ui/hstack";
+import { Center } from "../../../components/ui/center";
+import { Text } from "../../../components/ui/text";
+import { formatBaht } from "../../../utils/format-baht";
+import { TodayButton } from "../../../components/today-button";
+import { AddIncomeFab } from "../../../components/add-income-fab";
+import { AddExpenseFab } from "../../../components/add-expense-fab";
+import { useRouter } from "expo-router";
 
 const transactions = [
   {
@@ -85,6 +86,8 @@ const transactions = [
 LocaleConfig.defaultLocale = "th";
 
 export default function Home() {
+  const router = useRouter();
+
   return (
     <SafeAreaView edges={["top"]} className="flex-1 bg-gray-100">
       <ScrollView>
@@ -150,8 +153,22 @@ export default function Home() {
         </VStack>
       </ScrollView>
 
-      <AddIncomeFab />
-      <AddExpenseFab />
+      <AddIncomeFab
+        onPress={() =>
+          router.push({
+            pathname: "/add-transaction",
+            params: { mode: "income", date: new Date().toISOString() },
+          })
+        }
+      />
+      <AddExpenseFab
+        onPress={() =>
+          router.push({
+            pathname: "/add-transaction",
+            params: { mode: "expense", date: new Date().toISOString() },
+          })
+        }
+      />
     </SafeAreaView>
   );
 }

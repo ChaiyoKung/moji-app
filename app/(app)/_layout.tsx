@@ -1,11 +1,10 @@
-import { Tabs } from "expo-router";
+import { Stack } from "expo-router";
 
-export default function AppLayout() {
+export default function Applayout() {
   return (
-    <Tabs screenOptions={{ headerShown: false }}>
-      <Tabs.Screen name="index" options={{ title: "บันทึก" }} />
-      <Tabs.Screen name="dashboard" options={{ title: "สรุป" }} />
-      <Tabs.Screen name="profile" options={{ title: "โปรไฟล์" }} />
-    </Tabs>
+    <Stack>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="add-transaction" options={{ headerTitle: "" }} />
+    </Stack>
   );
 }
