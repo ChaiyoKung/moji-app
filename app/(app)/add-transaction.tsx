@@ -18,7 +18,7 @@ export default function Transaction() {
   return (
     <ScrollView className="flex-1 bg-gray-100">
       <VStack space="md" className="p-4">
-        <VStack>
+        <VStack space="xs">
           <Heading size="3xl" className="text-typography-black">
             {mode === "income" ? "เพิ่มรายรับ" : "เพิ่มรายจ่าย"}
           </Heading>
