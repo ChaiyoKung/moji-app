@@ -6,6 +6,32 @@ import { Icon } from "../../components/ui/icon";
 import { ChevronLeftIcon } from "lucide-react-native";
 import { HStack } from "../../components/ui/hstack";
 import { Box } from "../../components/ui/box";
+import { PressableProps } from "react-native";
+
+interface BackButtonProps {
+  onPress?: PressableProps["onPress"];
+}
+
+function BackButton({ onPress }: BackButtonProps) {
+  return (
+    <Pressable className="p-2" onPress={onPress}>
+      {({ pressed }) => (
+        <Icon
+          as={ChevronLeftIcon}
+          className={pressed ? "text-gray-700" : "text-gray-500"}
+        />
+      )}
+    </Pressable>
+  );
+}
+
+function BackButtonSpacer() {
+  return (
+    <Box className="invisible p-2">
+      <Icon as={ChevronLeftIcon} />
+    </Box>
+  );
+}
 
 export default function Applayout() {
   return (
@@ -27,26 +53,14 @@ export default function Applayout() {
             >
               <HStack className="items-center px-2 py-3">
                 {back ? (
-                  <Pressable className="p-2" onPress={navigation.goBack}>
-                    {({ pressed }) => (
-                      <Icon
-                        as={ChevronLeftIcon}
-                        className={pressed ? "text-gray-700" : "text-gray-500"}
-                      />
-                    )}
-                  </Pressable>
+                  <BackButton onPress={navigation.goBack} />
                 ) : (
-                  <Box className="invisible p-2">
-                    <Icon as={ChevronLeftIcon} />
-                  </Box>
+                  <BackButtonSpacer />
                 )}
-
                 <Heading className="flex-1 text-center text-gray-500" size="md">
                   {label}
                 </Heading>
-                <Box className="invisible p-2">
-                  <Icon as={ChevronLeftIcon} />
-                </Box>
+                <BackButtonSpacer />
               </HStack>
             </SafeAreaView>
           );
