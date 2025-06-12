@@ -1,6 +1,6 @@
 import { PressableProps } from "react-native";
 import { Fab, FabIcon, FabLabel } from "../ui/fab";
-import { AddIcon } from "../ui/icon";
+import { BanknoteArrowDownIcon } from "lucide-react-native";
 
 export type AddExpenseFabProps = Pick<PressableProps, "onPress">;
 
@@ -13,7 +13,7 @@ export function AddExpenseFab({ onPress }: AddExpenseFabProps) {
       onPress={onPress}
     >
       <FabLabel bold>เพิ่มรายจ่าย</FabLabel>
-      <FabIcon as={AddIcon} />
+      <FabIcon as={BanknoteArrowDownIcon} />
     </Fab>
   );
 }
