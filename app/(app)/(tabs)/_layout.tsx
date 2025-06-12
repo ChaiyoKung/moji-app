@@ -27,7 +27,12 @@ export default function TabLayout() {
                 const { options } = descriptors[route.key];
 
                 const label =
-                  options.title !== undefined ? options.title : route.name;
+                  options.tabBarLabel !== undefined &&
+                  typeof options.tabBarLabel === "string"
+                    ? options.tabBarLabel
+                    : options.title !== undefined
+                      ? options.title
+                      : route.name;
 
                 const isFocused = state.index === index;
 
