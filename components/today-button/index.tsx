@@ -1,5 +1,5 @@
+import { CalendarDaysIcon } from "lucide-react-native";
 import { Button, ButtonIcon, ButtonText } from "../ui/button";
-import { CalendarDaysIcon } from "../ui/icon";
 
 export function TodayButton() {
   return (
