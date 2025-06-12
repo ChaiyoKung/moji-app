@@ -10,7 +10,7 @@ import {
   ShieldAlertIcon,
 } from "lucide-react-native";
 import { VStack } from "../../../components/ui/vstack";
-import { Pressable } from "react-native";
+import { Pressable } from "../../../components/ui/pressable";
 
 export default function TabLayout() {
   return (
