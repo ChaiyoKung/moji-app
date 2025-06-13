@@ -10,6 +10,8 @@ import { PressableProps } from "react-native";
 import { Pressable } from "../components/ui/pressable";
 import { Icon } from "../components/ui/icon";
 import { Box } from "../components/ui/box";
+import { SplashScreenController } from "../components/splash-screen-controller";
+import { SessionProvider, useSession } from "../components/session-provider";
 
 interface BackButtonProps {
   onPress?: PressableProps["onPress"];
@@ -45,54 +47,61 @@ export function ErrorBoundary({ error }: ErrorBoundaryProps) {
 }
 
 export default function RootLayout() {
-  const session = false; // TODO: Replace with actual session check logic
-
   return (
     <GluestackUIProvider>
-      <Stack
-        screenOptions={{
-          header: ({ navigation, route, options, back }) => {
-            const label =
-              options.headerTitle !== undefined &&
-              typeof options.headerTitle === "string"
-                ? options.headerTitle
-                : options.title !== undefined
-                  ? options.title
-                  : route.name;
-
-            return (
-              <SafeAreaView
-                edges={["top"]}
-                className="bg-white border-b border-gray-200 rounded-2xl overflow-hidden"
-              >
-                <HStack className="items-center px-2 py-3">
-                  {back ? (
-                    <BackButton onPress={navigation.goBack} />
-                  ) : (
-                    <BackButtonSpacer />
-                  )}
-                  <Heading
-                    className="flex-1 text-center text-gray-500"
-                    size="md"
-                  >
-                    {label}
-                  </Heading>
-                  <BackButtonSpacer />
-                </HStack>
-              </SafeAreaView>
-            );
-          },
-        }}
-      >
-        <Stack.Protected guard={session}>
-          <Stack.Screen name="(app)" options={{ headerShown: false }} />
-        </Stack.Protected>
-
-        <Stack.Protected guard={!session}>
-          <Stack.Screen name="sign-in" options={{ headerShown: false }} />
-          <Stack.Screen name="sign-up" options={{ headerTitle: "" }} />
-        </Stack.Protected>
-      </Stack>
+      <SessionProvider>
+        <SplashScreenController />
+        <RootNavigation />
+      </SessionProvider>
     </GluestackUIProvider>
+  );
+}
+
+function RootNavigation() {
+  const { session } = useSession();
+  const hasSession = Boolean(session);
+
+  return (
+    <Stack
+      screenOptions={{
+        header: ({ navigation, route, options, back }) => {
+          const label =
+            options.headerTitle !== undefined &&
+            typeof options.headerTitle === "string"
+              ? options.headerTitle
+              : options.title !== undefined
+                ? options.title
+                : route.name;
+
+          return (
+            <SafeAreaView
+              edges={["top"]}
+              className="bg-white border-b border-gray-200 rounded-2xl overflow-hidden"
+            >
+              <HStack className="items-center px-2 py-3">
+                {back ? (
+                  <BackButton onPress={navigation.goBack} />
+                ) : (
+                  <BackButtonSpacer />
+                )}
+                <Heading className="flex-1 text-center text-gray-500" size="md">
+                  {label}
+                </Heading>
+                <BackButtonSpacer />
+              </HStack>
+            </SafeAreaView>
+          );
+        },
+      }}
+    >
+      <Stack.Protected guard={hasSession}>
+        <Stack.Screen name="(app)" options={{ headerShown: false }} />
+      </Stack.Protected>
+
+      <Stack.Protected guard={!hasSession}>
+        <Stack.Screen name="sign-in" options={{ headerShown: false }} />
+        <Stack.Screen name="sign-up" options={{ headerTitle: "" }} />
+      </Stack.Protected>
+    </Stack>
   );
 }
