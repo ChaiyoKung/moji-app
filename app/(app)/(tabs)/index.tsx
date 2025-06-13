@@ -114,13 +114,15 @@ export default function Home() {
                 setSelectedDate(day.dateString);
               }}
               theme={{
-                calendarBackground: "transparent",
-                todayBackgroundColor: "#0da6f2",
-                todayTextColor: "#ffffff",
-                todayDotColor: "#ffffff",
-                arrowColor: "#8c8c8c",
-                dayTextColor: "#181718",
-                monthTextColor: "#181718",
+                calendarBackground: colors.transparent,
+                arrowColor: colors.gray[500],
+                monthTextColor: colors.gray[800],
+                dayTextColor: colors.gray[800],
+                selectedDayBackgroundColor: colors.blue[500],
+                selectedDayTextColor: colors.white,
+                todayTextColor: colors.blue[500],
+                textDisabledColor: colors.gray[300],
+                textSectionTitleColor: colors.gray[500],
               }}
             />
           </VStack>
