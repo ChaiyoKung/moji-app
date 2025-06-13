@@ -14,6 +14,10 @@ import { TodayButton } from "../../../components/today-button";
 import { AddIncomeFab } from "../../../components/add-income-fab";
 import { AddExpenseFab } from "../../../components/add-expense-fab";
 import { useRouter } from "expo-router";
+import { useState } from "react";
+import dayjs from "dayjs";
+import colors from "tailwindcss/colors";
+import { nowDate } from "../../../libs/dayjs";
 
 const transactions = [
   {
@@ -86,6 +90,9 @@ const transactions = [
 LocaleConfig.defaultLocale = "th";
 
 export default function Home() {
+  const todayDate = nowDate();
+  const [selectedDate, setSelectedDate] = useState<string>(todayDate);
+
   const router = useRouter();
 
   return (
@@ -97,10 +104,15 @@ export default function Home() {
           <SummaryCard label="รายจ่าย วันนี้" value={66} />
 
           <VStack>
-            <Center>
-              <TodayButton />
-            </Center>
+            {selectedDate !== todayDate && (
+              <Center>
+                <TodayButton onPress={() => setSelectedDate(todayDate)} />
+              </Center>
+            )}
             <Calendar
+              onDayPress={(day) => {
+                setSelectedDate(day.dateString);
+              }}
               theme={{
                 calendarBackground: "transparent",
                 todayBackgroundColor: "#0da6f2",
@@ -157,7 +169,7 @@ export default function Home() {
         onPress={() =>
           router.push({
             pathname: "/add-transaction",
-            params: { mode: "income", date: new Date().toISOString() },
+            params: { mode: "income", date: selectedDate },
           })
         }
       />
@@ -165,7 +177,7 @@ export default function Home() {
         onPress={() =>
           router.push({
             pathname: "/add-transaction",
-            params: { mode: "expense", date: new Date().toISOString() },
+            params: { mode: "expense", date: selectedDate },
           })
         }
       />

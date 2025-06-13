@@ -20,6 +20,7 @@
     "@gluestack-ui/overlay": "^0.1.22",
     "@gluestack-ui/pressable": "^0.1.23",
     "@gluestack-ui/toast": "^1.0.9",
+    "dayjs": "^1.11.13",
     "expo": "~53.0.10",
     "expo-constants": "^17.1.6",
     "expo-linking": "^7.1.5",
