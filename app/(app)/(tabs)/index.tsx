@@ -114,6 +114,7 @@ export default function Home() {
                 setSelectedDate(day.dateString);
               }}
               maxDate={todayDate}
+              enableSwipeMonths={true}
               theme={{
                 calendarBackground: colors.transparent,
                 arrowColor: colors.gray[500],
