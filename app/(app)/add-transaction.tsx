@@ -22,7 +22,7 @@ export default function Transaction() {
           <Heading size="3xl" className="text-typography-black">
             {mode === "income" ? "เพิ่มรายรับ" : "เพิ่มรายจ่าย"}
           </Heading>
-          <Text>{`ของวันนี้ (${new Date(date).toISOString()})`}</Text>
+          <Text>{`ของวันนี้ (${date})`}</Text>
         </VStack>
       </VStack>
     </ScrollView>
