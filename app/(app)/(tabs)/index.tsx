@@ -113,6 +113,7 @@ export default function Home() {
               onDayPress={(day) => {
                 setSelectedDate(day.dateString);
               }}
+              maxDate={todayDate}
               theme={{
                 calendarBackground: colors.transparent,
                 arrowColor: colors.gray[500],
