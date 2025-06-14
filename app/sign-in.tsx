@@ -7,13 +7,25 @@ import { Center } from "../components/ui/center";
 import { Image } from "../components/ui/image";
 import { useSession } from "../components/session-provider";
 import { router } from "expo-router";
+import { useState } from "react";
+import { Input, InputField } from "../components/ui/input";
+import { Divider } from "../components/ui/divider";
 
 export default function SignIn() {
   const { signIn } = useSession();
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  const handleSubmit = async () => {
+    await signIn(email, password);
+    // Navigate after signing in. You may want to tweak this to ensure sign-in is
+    // successful before navigating.
+    router.replace("/");
+  };
 
   return (
     <SafeAreaView edges={["top"]} className="flex flex-1 bg-gray-100">
-      <Center className="px-6 py-32">
+      <Center className="px-6 py-20">
         <Image
           source={require("../assets/moji-logo.png")}
           alt="Moji Logo"
@@ -28,20 +40,47 @@ export default function SignIn() {
         <Heading size="3xl" className="my-4 text-typography-black">
           เข้าสู่ระบบ
         </Heading>
-        <Button
-          className="rounded-2xl"
-          onPress={() => {
-            signIn();
-            // Navigate after signing in. You may want to tweak this to ensure sign-in is
-            // successful before navigating.
-            router.replace("/");
-          }}
-        >
+
+        <VStack space="md">
+          <Input className="rounded-2xl">
+            <InputField
+              type="text"
+              placeholder="อีเมล"
+              value={email}
+              onChangeText={(text) => setEmail(text)}
+              autoCapitalize="none"
+              keyboardType="email-address"
+            />
+          </Input>
+
+          <Input className="rounded-2xl">
+            <InputField
+              type="password"
+              placeholder=" รหัสผ่าน"
+              value={password}
+              onChangeText={(text) => setPassword(text)}
+            />
+          </Input>
+
+          <Button className="rounded-2xl" onPress={handleSubmit}>
+            <ButtonText>เข้าสู่ระบบ</ButtonText>
+          </Button>
+
+          <Button
+            variant="outline"
+            className="rounded-2xl"
+            onPress={() => router.push("/sign-up")}
+          >
+            <ButtonText>สมัครสมาชิก</ButtonText>
+          </Button>
+        </VStack>
+
+        <Divider className="my-4" />
+
+        <Button className="rounded-2xl">
           <ButtonText>เข้าสู่ระบบด้วย Google</ButtonText>
         </Button>
-        <Button className="rounded-2xl" onPress={() => router.push("/sign-up")}>
-          <ButtonText>สมัครสมาชิก</ButtonText>
-        </Button>
+
         <StatusBar style="auto" />
       </VStack>
     </SafeAreaView>

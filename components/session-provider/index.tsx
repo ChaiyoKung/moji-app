@@ -2,12 +2,12 @@ import { use, createContext, type PropsWithChildren } from "react";
 import { useStorageState } from "../../hooks/use-storage-state";
 
 const AuthContext = createContext<{
-  signIn: () => void;
+  signIn: (username: string, password: string) => Promise<void>;
   signOut: () => void;
   session?: string | null;
   isLoading: boolean;
 }>({
-  signIn: () => null,
+  signIn: async () => {},
   signOut: () => null,
   session: null,
   isLoading: false,
@@ -26,9 +26,21 @@ export function useSession() {
 export function SessionProvider({ children }: PropsWithChildren) {
   const [[isLoading, session], setSession] = useStorageState("session");
 
-  const signIn = () => {
-    // Perform sign-in logic here
-    setSession("xxx");
+  const signIn = async (username: string, password: string) => {
+    const response = await fetch("http://localhost:3000/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Login failed:", errorData);
+      return;
+    }
+    const data = await response.json();
+    setSession(data.access_token);
   };
 
   const signOut = () => {

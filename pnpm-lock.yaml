@@ -14,6 +14,9 @@ importers:
       '@gluestack-ui/button':
         specifier: ^1.0.14
         version: 1.0.14(react-dom@19.1.0(react@19.0.0))(react-native@0.79.3(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+      '@gluestack-ui/divider':
+        specifier: ^0.1.10
+        version: 0.1.10(react-dom@19.1.0(react@19.0.0))(react@19.0.0)
       '@gluestack-ui/fab':
         specifier: ^0.1.28
         version: 0.1.28(react-dom@19.1.0(react@19.0.0))(react-native@0.79.3(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -777,6 +780,12 @@ packages:
 
   '@gluestack-ui/button@1.0.14':
     resolution: {integrity: sha512-Rqv5PY18jzeVACBwsVxXlyDbHjBiSXGVqY29VO6KHZGMMokCPW6MXYXT8ZpriLxMc1DRkgTtpTVYZCJBFaYTbg==}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+
+  '@gluestack-ui/divider@0.1.10':
+    resolution: {integrity: sha512-/hZx1Rmy4Pgln9AwAprAEQcxYPEHjHSNF4xCUWlK/q0peyiMT5Nagt54VnxykVn5A0b2zg5QKP0pOqOF9xeE6w==}
     peerDependencies:
       react: '>=16'
       react-dom: '>=16'
@@ -5423,6 +5432,11 @@ snapshots:
       react-dom: 19.1.0(react@19.0.0)
     transitivePeerDependencies:
       - react-native
+
+  '@gluestack-ui/divider@0.1.10(react-dom@19.1.0(react@19.0.0))(react@19.0.0)':
+    dependencies:
+      react: 19.0.0
+      react-dom: 19.1.0(react@19.0.0)
 
   '@gluestack-ui/fab@0.1.28(react-dom@19.1.0(react@19.0.0))(react-native@0.79.3(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
     dependencies:
