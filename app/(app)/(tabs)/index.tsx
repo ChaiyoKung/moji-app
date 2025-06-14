@@ -6,9 +6,7 @@ import { SummaryCard } from "../../../components/summary-card";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { ScrollView } from "react-native";
 import { Heading } from "../../../components/ui/heading";
-import { HStack } from "../../../components/ui/hstack";
 import { Center } from "../../../components/ui/center";
-import { Text } from "../../../components/ui/text";
 import { TodayButton } from "../../../components/today-button";
 import { AddIncomeFab } from "../../../components/add-income-fab";
 import { AddExpenseFab } from "../../../components/add-expense-fab";
@@ -16,9 +14,10 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import colors from "tailwindcss/colors";
 import { nowDate } from "../../../libs/dayjs";
-import { AmountText } from "../../../components/amount-text";
+import { TransactionItem } from "../../../components/transaction-item";
+import type { Transaction } from "../../../components/transaction-item";
 
-const transactions = [
+const transactions: Transaction[] = [
   {
     _id: "txn001",
     type: "expense",
@@ -133,33 +132,7 @@ export default function Home() {
               รายการ
             </Heading>
             {transactions.map((item) => (
-              <HStack
-                key={item._id}
-                space="md"
-                className="bg-white p-4 rounded-2xl border border-gray-200 items-center"
-              >
-                <Center
-                  className="rounded-full w-12 h-12"
-                  style={{ backgroundColor: item.category.color }}
-                >
-                  <Text size="2xl">{item.category.icon}</Text>
-                </Center>
-                <VStack className="flex-1">
-                  <Text size="lg" className="text-typography-black">
-                    {item.category.name}
-                  </Text>
-                  <Text size="sm" className="text-typography-500">
-                    {item.note || "-"}
-                  </Text>
-                </VStack>
-                <AmountText
-                  size="4xl"
-                  bold
-                  type={item.type as "expense" | "income"}
-                  value={item.amount}
-                  showSign
-                />
-              </HStack>
+              <TransactionItem key={item._id} data={item} />
             ))}
           </VStack>
         </VStack>
