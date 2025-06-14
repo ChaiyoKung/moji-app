@@ -26,16 +26,20 @@ export function useSession() {
 export function SessionProvider({ children }: PropsWithChildren) {
   const [[isLoading, session], setSession] = useStorageState("session");
 
+  const signIn = () => {
+    // Perform sign-in logic here
+    setSession("xxx");
+  };
+
+  const signOut = () => {
+    setSession(null);
+  };
+
   return (
     <AuthContext
       value={{
-        signIn: () => {
-          // Perform sign-in logic here
-          setSession("xxx");
-        },
-        signOut: () => {
-          setSession(null);
-        },
+        signIn,
+        signOut,
         session,
         isLoading,
       }}
