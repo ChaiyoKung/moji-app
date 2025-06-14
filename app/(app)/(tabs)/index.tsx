@@ -15,7 +15,6 @@ import { AddIncomeFab } from "../../../components/add-income-fab";
 import { AddExpenseFab } from "../../../components/add-expense-fab";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import dayjs from "dayjs";
 import colors from "tailwindcss/colors";
 import { nowDate } from "../../../libs/dayjs";
 
