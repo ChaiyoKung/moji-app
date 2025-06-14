@@ -9,7 +9,6 @@ import { Heading } from "../../../components/ui/heading";
 import { HStack } from "../../../components/ui/hstack";
 import { Center } from "../../../components/ui/center";
 import { Text } from "../../../components/ui/text";
-import { formatBaht } from "../../../utils/format-baht";
 import { TodayButton } from "../../../components/today-button";
 import { AddIncomeFab } from "../../../components/add-income-fab";
 import { AddExpenseFab } from "../../../components/add-expense-fab";
@@ -17,6 +16,7 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import colors from "tailwindcss/colors";
 import { nowDate } from "../../../libs/dayjs";
+import { AmountText } from "../../../components/amount-text";
 
 const transactions = [
   {
@@ -152,16 +152,13 @@ export default function Home() {
                     {item.note || "-"}
                   </Text>
                 </VStack>
-                <Text
+                <AmountText
                   size="4xl"
                   bold
-                  className={
-                    item.type === "income" ? "text-green-500" : "text-red-500"
-                  }
-                >
-                  {item.type === "income" ? "+" : "-"}
-                  {formatBaht(item.amount)}
-                </Text>
+                  type={item.type as "expense" | "income"}
+                  value={item.amount}
+                  showSign
+                />
               </HStack>
             ))}
           </VStack>
