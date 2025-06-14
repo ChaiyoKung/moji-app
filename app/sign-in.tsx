@@ -5,6 +5,7 @@ import { VStack } from "../components/ui/vstack";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Center } from "../components/ui/center";
 import { Image } from "../components/ui/image";
+import { router } from "expo-router";
 
 export default function SignIn() {
   return (
@@ -23,6 +24,9 @@ export default function SignIn() {
         </Heading>
         <Button className="rounded-2xl">
           <ButtonText>เข้าสู่ระบบด้วย Google</ButtonText>
+        </Button>
+        <Button className="rounded-2xl" onPress={() => router.push("/sign-up")}>
+          <ButtonText>สมัครสมาชิก</ButtonText>
         </Button>
         <StatusBar style="auto" />
       </VStack>
