@@ -10,7 +10,7 @@ import { Center } from "../../../components/ui/center";
 import { TodayButton } from "../../../components/today-button";
 import { AddIncomeFab } from "../../../components/add-income-fab";
 import { AddExpenseFab } from "../../../components/add-expense-fab";
-import { useRouter } from "expo-router";
+import { router } from "expo-router";
 import { useState } from "react";
 import colors from "tailwindcss/colors";
 import { nowDate } from "../../../libs/dayjs";
@@ -90,8 +90,6 @@ LocaleConfig.defaultLocale = "th";
 export default function Home() {
   const todayDate = nowDate();
   const [selectedDate, setSelectedDate] = useState<string>(todayDate);
-
-  const router = useRouter();
 
   return (
     <SafeAreaView edges={["top"]} className="flex-1 bg-gray-100">
