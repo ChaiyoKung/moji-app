@@ -33,13 +33,13 @@ export default function SignUp() {
           <FormControl>
             <FormControlLabel>
               <FormControlLabelText className="text-typography-black">
-                Email
+                อีเมล
               </FormControlLabelText>
             </FormControlLabel>
             <Input className="rounded-2xl">
               <InputField
                 type="text"
-                placeholder="email"
+                placeholder="อีเมล"
                 value={email}
                 onChangeText={(text) => setEmail(text)}
                 autoCapitalize="none"
@@ -53,13 +53,13 @@ export default function SignUp() {
           <FormControl>
             <FormControlLabel>
               <FormControlLabelText className="text-typography-black">
-                Password
+                รหัสผ่าน
               </FormControlLabelText>
             </FormControlLabel>
             <Input className="rounded-2xl">
               <InputField
                 type="password"
-                placeholder="password"
+                placeholder="รหัสผ่าน"
                 value={password}
                 onChangeText={(text) => setPassword(text)}
               />
