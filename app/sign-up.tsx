@@ -36,7 +36,7 @@ export default function SignUp() {
                 Email
               </FormControlLabelText>
             </FormControlLabel>
-            <Input>
+            <Input className="rounded-2xl">
               <InputField
                 type="text"
                 placeholder="email"
@@ -56,7 +56,7 @@ export default function SignUp() {
                 Password
               </FormControlLabelText>
             </FormControlLabel>
-            <Input>
+            <Input className="rounded-2xl">
               <InputField
                 type="password"
                 placeholder="password"
@@ -67,7 +67,7 @@ export default function SignUp() {
           </FormControl>
         </VStack>
 
-        <Button onPress={handleSubmit}>
+        <Button className="rounded-2xl" onPress={handleSubmit}>
           <ButtonText>สมัครสมาชิก</ButtonText>
         </Button>
       </VStack>
