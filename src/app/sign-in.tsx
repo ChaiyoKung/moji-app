@@ -29,7 +29,7 @@ export default function SignIn() {
       <SafeAreaView edges={["top"]}>
         <Center className="px-6 py-20">
           <Image
-            source={require("../assets/moji-logo.png")}
+            source={require("../../assets/moji-logo.png")}
             alt="Moji Logo"
             resizeMode="contain"
             className="w-48 h-48"
