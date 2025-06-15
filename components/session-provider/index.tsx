@@ -1,5 +1,6 @@
 import { use, createContext, type PropsWithChildren } from "react";
 import { useStorageState } from "../../hooks/use-storage-state";
+import { env } from "../../env";
 
 const AuthContext = createContext<{
   signIn: (username: string, password: string) => Promise<void>;
@@ -28,7 +29,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
 
   const signIn = async (username: string, password: string) => {
     try {
-      const response = await fetch("http://localhost:3000/api/auth/login", {
+      const response = await fetch(`${env.EXPO_PUBLIC_API_URL}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
