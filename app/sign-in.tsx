@@ -24,7 +24,7 @@ export default function SignIn() {
   };
 
   return (
-    <SafeAreaView edges={["top"]} className="flex flex-1 bg-gray-100">
+    <SafeAreaView edges={["top"]} className="flex-1 bg-gray-100">
       <Center className="px-6 py-20">
         <Image
           source={require("../assets/moji-logo.png")}
