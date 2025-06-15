@@ -147,6 +147,7 @@ export default function Transaction() {
 
   const [selectedCatagoryId, setSelectedCatagoryId] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
+  const [note, setNote] = useState<string>("");
 
   return (
     <ScrollView className="flex-1 bg-gray-100">
@@ -209,6 +210,20 @@ export default function Transaction() {
           <Text className="text-teal-500">
             {`เงินคงเหลือ ${formatBaht(19934)}`}
           </Text>
+        </VStack>
+
+        <VStack space="sm">
+          <Heading bold className="text-typography-black">
+            บันทึกช่วยจำ
+          </Heading>
+          <Input className="rounded-2xl">
+            <InputField
+              type="text"
+              placeholder="เพิ่มข้อความ..."
+              value={note}
+              onChangeText={(text) => setNote(text)}
+            />
+          </Input>
         </VStack>
       </VStack>
     </ScrollView>
