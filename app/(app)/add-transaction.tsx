@@ -5,7 +5,9 @@ import { VStack } from "../../components/ui/vstack";
 import { Text } from "../../components/ui/text";
 import { HStack } from "../../components/ui/hstack";
 import { Pressable } from "../../components/ui/pressable";
+import { Input, InputField } from "../../components/ui/input";
 import { useState } from "react";
+import { formatBaht } from "../../utils/format-baht";
 import colors from "tailwindcss/colors";
 
 const categories = [
@@ -144,6 +146,7 @@ export default function Transaction() {
   }
 
   const [selectedCatagoryId, setSelectedCatagoryId] = useState<string>("");
+  const [amount, setAmount] = useState<string>("");
 
   return (
     <ScrollView className="flex-1 bg-gray-100">
@@ -188,6 +191,24 @@ export default function Transaction() {
               </Pressable>
             ))}
           </HStack>
+        </VStack>
+
+        <VStack space="sm">
+          <Heading bold className="text-typography-black">
+            จำนวนเงิน
+          </Heading>
+          <Input className="rounded-2xl bg-gray-200">
+            <InputField
+              type="text"
+              placeholder="0"
+              value={amount}
+              onChangeText={(text) => setAmount(text)}
+              keyboardType="numeric"
+            />
+          </Input>
+          <Text className="text-teal-500">
+            {`เงินคงเหลือ ${formatBaht(19934)}`}
+          </Text>
         </VStack>
       </VStack>
     </ScrollView>
