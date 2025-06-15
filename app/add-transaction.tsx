@@ -1,15 +1,15 @@
 import { useLocalSearchParams } from "expo-router";
 import { ScrollView } from "react-native";
-import { Heading } from "../../components/ui/heading";
-import { VStack } from "../../components/ui/vstack";
-import { Text } from "../../components/ui/text";
-import { HStack } from "../../components/ui/hstack";
-import { Pressable } from "../../components/ui/pressable";
-import { Input, InputField } from "../../components/ui/input";
+import { Heading } from "../components/ui/heading";
+import { VStack } from "../components/ui/vstack";
+import { Text } from "../components/ui/text";
+import { HStack } from "../components/ui/hstack";
+import { Pressable } from "../components/ui/pressable";
+import { Input, InputField } from "../components/ui/input";
 import { useState } from "react";
-import { formatBaht } from "../../utils/format-baht";
+import { formatBaht } from "../utils/format-baht";
 import colors from "tailwindcss/colors";
-import { Button, ButtonIcon, ButtonText } from "../../components/ui/button";
+import { Button, ButtonIcon, ButtonText } from "../components/ui/button";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SaveIcon } from "lucide-react-native";
 

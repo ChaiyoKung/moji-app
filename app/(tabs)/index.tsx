@@ -1,21 +1,21 @@
-import "../../../libs/calendar-locale-config.th";
+import "../../libs/calendar-locale-config.th";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { VStack } from "../../../components/ui/vstack";
-import { BalanceSummary } from "../../../components/balance-summary";
-import { SummaryCard } from "../../../components/summary-card";
+import { VStack } from "../../components/ui/vstack";
+import { BalanceSummary } from "../../components/balance-summary";
+import { SummaryCard } from "../../components/summary-card";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { ScrollView } from "react-native";
-import { Heading } from "../../../components/ui/heading";
-import { Center } from "../../../components/ui/center";
-import { TodayButton } from "../../../components/today-button";
-import { AddIncomeFab } from "../../../components/add-income-fab";
-import { AddExpenseFab } from "../../../components/add-expense-fab";
+import { Heading } from "../../components/ui/heading";
+import { Center } from "../../components/ui/center";
+import { TodayButton } from "../../components/today-button";
+import { AddIncomeFab } from "../../components/add-income-fab";
+import { AddExpenseFab } from "../../components/add-expense-fab";
 import { router } from "expo-router";
 import { useState } from "react";
 import colors from "tailwindcss/colors";
-import { nowDate } from "../../../libs/dayjs";
-import { TransactionItem } from "../../../components/transaction-item";
-import type { Transaction } from "../../../components/transaction-item";
+import { nowDate } from "../../libs/dayjs";
+import { TransactionItem } from "../../components/transaction-item";
+import type { Transaction } from "../../components/transaction-item";
 
 const transactions: Transaction[] = [
   {

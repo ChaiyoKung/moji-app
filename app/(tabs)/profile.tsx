@@ -1,7 +1,7 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Text } from "../../../components/ui/text";
-import { Button, ButtonText } from "../../../components/ui/button";
-import { useSession } from "../../../components/session-provider";
+import { Text } from "../../components/ui/text";
+import { Button, ButtonText } from "../../components/ui/button";
+import { useSession } from "../../components/session-provider";
 
 export default function Profile() {
   const { signOut } = useSession();

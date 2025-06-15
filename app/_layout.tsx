@@ -95,7 +95,8 @@ function RootNavigation() {
       }}
     >
       <Stack.Protected guard={hasSession}>
-        <Stack.Screen name="(app)" options={{ headerShown: false }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="add-transaction" options={{ headerTitle: "" }} />
       </Stack.Protected>
 
       <Stack.Protected guard={!hasSession}>

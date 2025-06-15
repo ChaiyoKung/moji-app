@@ -1,16 +1,16 @@
 import { Tabs } from "expo-router";
-import { HStack } from "../../../components/ui/hstack";
-import { Text } from "../../../components/ui/text";
+import { HStack } from "../../components/ui/hstack";
+import { Text } from "../../components/ui/text";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Icon } from "../../../components/ui/icon";
+import { Icon } from "../../components/ui/icon";
 import {
   ChartNoAxesColumnIcon,
   CircleUserRoundIcon,
   NotebookPenIcon,
   ShieldAlertIcon,
 } from "lucide-react-native";
-import { VStack } from "../../../components/ui/vstack";
-import { Pressable } from "../../../components/ui/pressable";
+import { VStack } from "../../components/ui/vstack";
+import { Pressable } from "../../components/ui/pressable";
 
 export default function TabLayout() {
   return (
