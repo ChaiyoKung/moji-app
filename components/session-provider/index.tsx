@@ -40,7 +40,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
       return;
     }
     const data = await response.json();
-    setSession(data.access_token);
+    setSession(data.accessToken);
   };
 
   const signOut = () => {
