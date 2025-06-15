@@ -27,20 +27,23 @@ export function SessionProvider({ children }: PropsWithChildren) {
   const [[isLoading, session], setSession] = useStorageState("session");
 
   const signIn = async (username: string, password: string) => {
-    const response = await fetch("http://localhost:3000/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    });
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error("Login failed:", errorData);
-      return;
+    try {
+      const response = await fetch("http://localhost:3000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+      if (!response.ok) {
+        throw await response.json();
+      }
+      const data = await response.json();
+      setSession(data.accessToken);
+    } catch (error) {
+      console.error("An error occurred during sign-in:", error);
+      // Handle the error appropriately, e.g., show a notification to the user
     }
-    const data = await response.json();
-    setSession(data.accessToken);
   };
 
   const signOut = () => {
