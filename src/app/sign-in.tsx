@@ -12,8 +12,8 @@ import { Input, InputField } from "../components/ui/input";
 import { Divider } from "../components/ui/divider";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useMutation } from "@tanstack/react-query";
-import { env } from "../env";
 import colors from "tailwindcss/colors";
+import { api } from "../libs/axios";
 
 export default function SignIn() {
   const { signIn } = useSession();
@@ -22,14 +22,8 @@ export default function SignIn() {
 
   const mutation = useMutation({
     mutationFn: async (data: { username: string; password: string }) => {
-      const response = await fetch(`${env.EXPO_PUBLIC_API_URL}/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      return await response.json();
+      const response = await api.post("/auth/login", data);
+      return response.data;
     },
     onSuccess: (data) => {
       signIn(data.accessToken);
