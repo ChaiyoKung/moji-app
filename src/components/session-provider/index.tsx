@@ -26,7 +26,7 @@ export function useSession() {
 export function SessionProvider({ children }: PropsWithChildren) {
   const [[isLoading, session], setSession] = useStorageState("session");
 
-  const signIn = async (sessionValue: string) => {
+  const signIn = (sessionValue: string) => {
     setSession(sessionValue);
   };
 
