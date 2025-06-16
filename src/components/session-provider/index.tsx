@@ -1,14 +1,13 @@
 import { use, createContext, type PropsWithChildren } from "react";
 import { useStorageState } from "../../hooks/use-storage-state";
-import { env } from "../../env";
 
 const AuthContext = createContext<{
-  signIn: (username: string, password: string) => Promise<void>;
+  signIn: (sessionValue: string) => void;
   signOut: () => void;
   session?: string | null;
   isLoading: boolean;
 }>({
-  signIn: async () => {},
+  signIn: () => {},
   signOut: () => null,
   session: null,
   isLoading: false,
@@ -27,24 +26,8 @@ export function useSession() {
 export function SessionProvider({ children }: PropsWithChildren) {
   const [[isLoading, session], setSession] = useStorageState("session");
 
-  const signIn = async (username: string, password: string) => {
-    try {
-      const response = await fetch(`${env.EXPO_PUBLIC_API_URL}/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
-      if (!response.ok) {
-        throw await response.json();
-      }
-      const data = await response.json();
-      setSession(data.accessToken);
-    } catch (error) {
-      console.error("An error occurred during sign-in:", error);
-      // Handle the error appropriately, e.g., show a notification to the user
-    }
+  const signIn = (sessionValue: string) => {
+    setSession(sessionValue);
   };
 
   const signOut = () => {

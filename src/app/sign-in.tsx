@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { Button, ButtonText } from "../components/ui/button";
+import { Button, ButtonSpinner, ButtonText } from "../components/ui/button";
 import { Heading } from "../components/ui/heading";
 import { VStack } from "../components/ui/vstack";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -11,18 +11,37 @@ import { useState } from "react";
 import { Input, InputField } from "../components/ui/input";
 import { Divider } from "../components/ui/divider";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { useMutation } from "@tanstack/react-query";
+import { env } from "../env";
+import colors from "tailwindcss/colors";
 
 export default function SignIn() {
   const { signIn } = useSession();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const handleSubmit = async () => {
-    await signIn(email, password);
-    // Navigate after signing in. You may want to tweak this to ensure sign-in is
-    // successful before navigating.
-    router.replace("/");
-  };
+  const mutation = useMutation({
+    mutationFn: async (data: { username: string; password: string }) => {
+      const response = await fetch(`${env.EXPO_PUBLIC_API_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      return await response.json();
+    },
+    onSuccess: (data) => {
+      signIn(data.accessToken);
+      // Navigate after signing in. You may want to tweak this to ensure sign-in is
+      // successful before navigating.
+      router.replace("/");
+    },
+    onError: (error) => {
+      // Handle error, e.g., show a toast or alert
+      console.error("Login failed:", error);
+    },
+  });
 
   return (
     <KeyboardAwareScrollView className="flex-1 bg-gray-100" enableOnAndroid>
@@ -64,7 +83,11 @@ export default function SignIn() {
               />
             </Input>
 
-            <Button className="rounded-2xl" onPress={handleSubmit}>
+            <Button
+              className="rounded-2xl"
+              onPress={() => mutation.mutate({ username: email, password })}
+            >
+              {mutation.isPending && <ButtonSpinner color={colors.gray[500]} />}
               <ButtonText>เข้าสู่ระบบ</ButtonText>
             </Button>
 

@@ -12,6 +12,7 @@ import { Icon } from "../components/ui/icon";
 import { Box } from "../components/ui/box";
 import { SplashScreenController } from "../components/splash-screen-controller";
 import { SessionProvider, useSession } from "../components/session-provider";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 interface BackButtonProps {
   onPress?: PressableProps["onPress"];
@@ -46,13 +47,17 @@ export function ErrorBoundary({ error }: ErrorBoundaryProps) {
   );
 }
 
+const queryClient = new QueryClient();
+
 export default function RootLayout() {
   return (
     <GluestackUIProvider>
-      <SessionProvider>
-        <SplashScreenController />
-        <RootNavigation />
-      </SessionProvider>
+      <QueryClientProvider client={queryClient}>
+        <SessionProvider>
+          <SplashScreenController />
+          <RootNavigation />
+        </SessionProvider>
+      </QueryClientProvider>
     </GluestackUIProvider>
   );
 }
