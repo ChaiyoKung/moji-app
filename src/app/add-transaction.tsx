@@ -12,130 +12,21 @@ import colors from "tailwindcss/colors";
 import { Button, ButtonIcon, ButtonText } from "../components/ui/button";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SaveIcon } from "lucide-react-native";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "../libs/axios";
+import { Spinner } from "../components/ui/spinner";
 
-const categories = [
-  {
-    _id: "cat_income_01",
-    userId: null,
-    name: "ได้เงิน",
-    type: "income",
-    icon: "💰",
-    color: "#4CAF50",
-    parentId: null,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    _id: "cat_breakfast_01",
-    userId: null,
-    name: "ข้าวเช้า",
-    type: "expense",
-    icon: "🍳",
-    color: "#FFA726",
-    parentId: null,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    _id: "cat_lunch_01",
-    userId: null,
-    name: "ข้าวเที่ยง",
-    type: "expense",
-    icon: "🍛",
-    color: "#FFB74D",
-    parentId: null,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    _id: "cat_dinner_01",
-    userId: null,
-    name: "ข้าวเย็น",
-    type: "expense",
-    icon: "🍲",
-    color: "#FF7043",
-    parentId: null,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    _id: "cat_drinks_01",
-    userId: null,
-    name: "เครื่องดื่ม",
-    type: "expense",
-    icon: "🥤",
-    color: "#00BCD4",
-    parentId: null,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    _id: "cat_snacks_01",
-    userId: null,
-    name: "ขนม",
-    type: "expense",
-    icon: "🍩",
-    color: "#F06292",
-    parentId: null,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    _id: "cat_utilities_01",
-    userId: null,
-    name: "ของใช้",
-    type: "expense",
-    icon: "🧻",
-    color: "#9E9E9E",
-    parentId: null,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    _id: "cat_toys_01",
-    userId: null,
-    name: "ของเล่น",
-    type: "expense",
-    icon: "🧸",
-    color: "#BA68C8",
-    parentId: null,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    _id: "cat_laundry_01",
-    userId: null,
-    name: "ซักผ้า",
-    type: "expense",
-    icon: "🧺",
-    color: "#4FC3F7",
-    parentId: null,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    _id: "cat_fuel_01",
-    userId: null,
-    name: "เติมน้ำมัน",
-    type: "expense",
-    icon: "⛽",
-    color: "#F44336",
-    parentId: null,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    _id: "cat_other_01",
-    userId: null,
-    name: "อื่นๆ",
-    type: "expense",
-    icon: "🗂️",
-    color: "#90A4AE",
-    parentId: null,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-];
+interface Category {
+  _id: string;
+  userId: string | null;
+  name: string;
+  type: "income" | "expense";
+  icon?: string;
+  color?: string;
+  parentId?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
 
 export default function Transaction() {
   const { mode, date } = useLocalSearchParams();
@@ -147,6 +38,14 @@ export default function Transaction() {
   if (typeof date !== "string") {
     throw new Error("Invalid date parameter.");
   }
+
+  const categoriesQuery = useQuery({
+    queryKey: ["categories", mode],
+    queryFn: async () => {
+      const response = await api.get<Category[]>(`/categories/${mode}`);
+      return response.data;
+    },
+  });
 
   const [selectedCatagoryId, setSelectedCatagoryId] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
@@ -176,35 +75,46 @@ export default function Transaction() {
             <Heading bold className="text-typography-black">
               ประเภท
             </Heading>
-            <HStack space="sm" className="flex-wrap">
-              {categories.map((category) => (
-                <Pressable
-                  key={category._id}
-                  className="flex-row items-center border rounded-full px-4 py-1"
-                  style={{
-                    borderColor: category.color,
-                    backgroundColor:
-                      selectedCatagoryId === category._id
-                        ? category.color
-                        : "transparent",
-                  }}
-                  onPress={() => setSelectedCatagoryId(category._id)}
-                >
-                  <Text className="text-lg">{category.icon}</Text>
-                  <Text
-                    className="ml-2 text-lg"
+            {categoriesQuery.isLoading ? (
+              <Spinner />
+            ) : categoriesQuery.error ? (
+              <Text className="text-red-500">
+                เกิดข้อผิดพลาดในการโหลดประเภท
+              </Text>
+            ) : categoriesQuery.data === undefined ||
+              categoriesQuery.data.length === 0 ? (
+              <Text className="text-gray-500">ไม่มีประเภท</Text>
+            ) : (
+              <HStack space="sm" className="flex-wrap">
+                {categoriesQuery.data.map((category) => (
+                  <Pressable
+                    key={category._id}
+                    className="flex-row items-center border rounded-full px-4 py-1"
                     style={{
-                      color:
+                      borderColor: category.color,
+                      backgroundColor:
                         selectedCatagoryId === category._id
-                          ? colors.white
-                          : category.color,
+                          ? category.color
+                          : "transparent",
                     }}
+                    onPress={() => setSelectedCatagoryId(category._id)}
                   >
-                    {category.name}
-                  </Text>
-                </Pressable>
-              ))}
-            </HStack>
+                    <Text className="text-lg">{category.icon}</Text>
+                    <Text
+                      className="ml-2 text-lg"
+                      style={{
+                        color:
+                          selectedCatagoryId === category._id
+                            ? colors.white
+                            : category.color,
+                      }}
+                    >
+                      {category.name}
+                    </Text>
+                  </Pressable>
+                ))}
+              </HStack>
+            )}
           </VStack>
 
           <VStack space="sm">
