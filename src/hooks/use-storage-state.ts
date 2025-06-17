@@ -36,23 +36,33 @@ export async function setStorageItemAsync(key: string, value: string | null) {
   }
 }
 
+export async function getStorageItemAsync(key: string): Promise<string | null> {
+  if (Platform.OS === "web") {
+    try {
+      if (typeof localStorage !== "undefined") {
+        return localStorage.getItem(key);
+      }
+    } catch (e) {
+      console.error("Local storage is unavailable:", e);
+    }
+    return null;
+  } else {
+    try {
+      return await SecureStore.getItemAsync(key);
+    } catch (e) {
+      console.error("SecureStore is unavailable:", e);
+      return null;
+    }
+  }
+}
+
 export function useStorageState(key: string): UseStateHook<string> {
   const [state, setState] = useAsyncState<string>();
 
   useEffect(() => {
     const loadAsync = async () => {
-      if (Platform.OS === "web") {
-        try {
-          if (typeof localStorage !== "undefined") {
-            setState(localStorage.getItem(key));
-          }
-        } catch (e) {
-          console.error("Local storage is unavailable:", e);
-        }
-      } else {
-        const value = await SecureStore.getItemAsync(key);
-        setState(value);
-      }
+      const value = await getStorageItemAsync(key);
+      setState(value);
     };
 
     loadAsync();
