@@ -16,6 +16,8 @@ import colors from "tailwindcss/colors";
 import { nowDate } from "../../libs/dayjs";
 import { TransactionItem } from "../../components/transaction-item";
 import type { Transaction } from "../../components/transaction-item";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "../../libs/axios";
 
 const transactions: Transaction[] = [
   {
@@ -91,11 +93,24 @@ export default function Home() {
   const todayDate = nowDate();
   const [selectedDate, setSelectedDate] = useState<string>(todayDate);
 
+  const accountQuery = useQuery({
+    queryKey: ["accounts"],
+    queryFn: async () => {
+      const response = await api.get("/accounts");
+      return response.data;
+    },
+  });
+
   return (
     <SafeAreaView edges={["top"]} className="flex-1 bg-gray-100">
       <ScrollView>
         <VStack space="md" className="p-4 pb-[5.75rem]">
-          <BalanceSummary label="เงินคงเหลือ" value={19934} />
+          <BalanceSummary
+            label="เงินคงเหลือ"
+            value={accountQuery.data?.[0]?.balance}
+            isLoading={accountQuery.isLoading}
+            error={accountQuery.error}
+          />
 
           <SummaryCard label="รายจ่าย วันนี้" value={66} />
 
