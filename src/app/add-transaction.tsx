@@ -60,6 +60,7 @@ export default function Transaction() {
       note,
     });
   };
+
   return (
     <>
       <ScrollView className="flex-1 bg-gray-100">
