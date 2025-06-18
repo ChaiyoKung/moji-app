@@ -1,6 +1,7 @@
 import axios from "axios";
 import { env } from "../env";
 import { getStorageItemAsync } from "../hooks/use-storage-state";
+import * as AxiosLogger from "axios-logger";
 
 export const api = axios.create({ baseURL: env.EXPO_PUBLIC_API_URL });
 
@@ -14,7 +15,7 @@ api.interceptors.request.use(
     } catch (error) {
       console.error("Error getting token:", error);
     }
-    return request;
+    return AxiosLogger.requestLogger(request);
   },
   (error) => {
     return Promise.reject(error);
