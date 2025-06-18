@@ -72,7 +72,7 @@ export default function Transaction() {
           </VStack>
 
           <VStack space="sm">
-            <Heading bold className="text-typography-black">
+            <Heading size="md" bold className="text-typography-black">
               ประเภท
             </Heading>
             {categoriesQuery.isLoading ? (
@@ -118,10 +118,10 @@ export default function Transaction() {
           </VStack>
 
           <VStack space="sm">
-            <Heading bold className="text-typography-black">
+            <Heading size="md" bold className="text-typography-black">
               จำนวนเงิน
             </Heading>
-            <Input className="rounded-2xl bg-gray-200">
+            <Input className="rounded-2xl">
               <InputField
                 type="text"
                 placeholder="0"
@@ -136,7 +136,7 @@ export default function Transaction() {
           </VStack>
 
           <VStack space="sm">
-            <Heading bold className="text-typography-black">
+            <Heading size="md" bold className="text-typography-black">
               บันทึกช่วยจำ
             </Heading>
             <Input className="rounded-2xl">
