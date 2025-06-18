@@ -28,6 +28,18 @@ interface Category {
   updatedAt: string;
 }
 
+interface Account {
+  _id: string;
+  userId: string;
+  name: string;
+  type: string;
+  balance?: number;
+  currency: string;
+  icon?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export default function Transaction() {
   const { mode, date } = useLocalSearchParams();
 
@@ -43,6 +55,14 @@ export default function Transaction() {
     queryKey: ["categories", mode],
     queryFn: async () => {
       const response = await api.get<Category[]>(`/categories/${mode}`);
+      return response.data;
+    },
+  });
+
+  const accountQuery = useQuery({
+    queryKey: ["accounts"],
+    queryFn: async () => {
+      const response = await api.get<Account[]>("/accounts");
       return response.data;
     },
   });
@@ -132,9 +152,22 @@ export default function Transaction() {
                 keyboardType="numeric"
               />
             </Input>
-            <Text className="text-teal-500">
-              {`เงินคงเหลือ ${formatBaht(19934)}`}
-            </Text>
+            <HStack space="xs" className="items-baseline">
+              <Text className="text-teal-500">เงินคงเหลือ</Text>
+              {accountQuery.isLoading ? (
+                <Spinner />
+              ) : accountQuery.error ? (
+                <Text className="text-red-500">
+                  เกิดข้อผิดพลาดในการโหลดยอดเงิน
+                </Text>
+              ) : accountQuery.data?.[0]?.balance === undefined ? (
+                <Text className="text-gray-500">ไม่มีบัญชี</Text>
+              ) : (
+                <Text className="text-teal-500">
+                  {formatBaht(accountQuery.data[0].balance)}
+                </Text>
+              )}
+            </HStack>
           </VStack>
 
           <VStack space="sm">
