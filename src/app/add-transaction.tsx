@@ -13,32 +13,8 @@ import { Button, ButtonIcon, ButtonText } from "../components/ui/button";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SaveIcon } from "lucide-react-native";
 import { useQuery } from "@tanstack/react-query";
-import { api } from "../libs/axios";
 import { Spinner } from "../components/ui/spinner";
-
-interface Category {
-  _id: string;
-  userId: string | null;
-  name: string;
-  type: "income" | "expense";
-  icon?: string;
-  color?: string;
-  parentId?: string | null;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface Account {
-  _id: string;
-  userId: string;
-  name: string;
-  type: string;
-  balance?: number;
-  currency: string;
-  icon?: string;
-  createdAt: string;
-  updatedAt: string;
-}
+import { getAllGategoriesByType, getAllAccounts } from "../libs/api";
 
 export default function Transaction() {
   const { mode, date } = useLocalSearchParams();
@@ -53,18 +29,12 @@ export default function Transaction() {
 
   const categoriesQuery = useQuery({
     queryKey: ["categories", mode],
-    queryFn: async () => {
-      const response = await api.get<Category[]>(`/categories/${mode}`);
-      return response.data;
-    },
+    queryFn: () => getAllGategoriesByType(mode),
   });
 
   const accountQuery = useQuery({
     queryKey: ["accounts"],
-    queryFn: async () => {
-      const response = await api.get<Account[]>("/accounts");
-      return response.data;
-    },
+    queryFn: getAllAccounts,
   });
 
   const [selectedCatagoryId, setSelectedCatagoryId] = useState<string>("");

@@ -17,7 +17,7 @@ import { nowDate } from "../../libs/dayjs";
 import { TransactionItem } from "../../components/transaction-item";
 import type { Transaction } from "../../components/transaction-item";
 import { useQuery } from "@tanstack/react-query";
-import { api } from "../../libs/axios";
+import { getAllAccounts } from "../../libs/api";
 
 const transactions: Transaction[] = [
   {
@@ -95,10 +95,7 @@ export default function Home() {
 
   const accountQuery = useQuery({
     queryKey: ["accounts"],
-    queryFn: async () => {
-      const response = await api.get("/accounts");
-      return response.data;
-    },
+    queryFn: getAllAccounts,
   });
 
   return (
