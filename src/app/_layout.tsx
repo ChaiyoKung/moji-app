@@ -4,7 +4,6 @@ import { Center } from "../components/ui/center";
 import { Text } from "../components/ui/text";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ChevronLeftIcon } from "lucide-react-native";
-import React from "react";
 import { HStack } from "../components/ui/hstack";
 import { PressableProps } from "react-native";
 import { Pressable } from "../components/ui/pressable";
