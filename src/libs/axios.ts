@@ -15,9 +15,16 @@ api.interceptors.request.use(
     } catch (error) {
       console.error("Error getting token:", error);
     }
-    return AxiosLogger.requestLogger(request);
+    return request;
   },
   (error) => {
     return Promise.reject(error);
   }
 );
+
+api.interceptors.response.use((response) => {
+  return AxiosLogger.responseLogger(response, {
+    dateFormat: "isoDateTime",
+    data: false,
+  });
+});
