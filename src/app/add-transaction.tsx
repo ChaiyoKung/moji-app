@@ -100,9 +100,10 @@ export default function Transaction() {
                     }}
                     onPress={() => setSelectedCatagoryId(category._id)}
                   >
-                    <Text className="text-lg">{category.icon}</Text>
+                    <Text size="lg">{category.icon}</Text>
                     <Text
-                      className="ml-2 text-lg"
+                      size="lg"
+                      className="ml-2"
                       style={{
                         color:
                           selectedCatagoryId === category._id
