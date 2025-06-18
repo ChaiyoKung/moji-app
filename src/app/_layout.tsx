@@ -3,7 +3,7 @@ import { GluestackUIProvider } from "../components/ui/gluestack-ui-provider";
 import { Center } from "../components/ui/center";
 import { Text } from "../components/ui/text";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ChevronLeftIcon, Heading } from "lucide-react-native";
+import { ChevronLeftIcon } from "lucide-react-native";
 import React from "react";
 import { HStack } from "../components/ui/hstack";
 import { PressableProps } from "react-native";
@@ -13,6 +13,7 @@ import { Box } from "../components/ui/box";
 import { SplashScreenController } from "../components/splash-screen-controller";
 import { SessionProvider, useSession } from "../components/session-provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Heading } from "../components/ui/heading";
 
 interface BackButtonProps {
   onPress?: PressableProps["onPress"];
