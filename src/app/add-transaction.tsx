@@ -159,6 +159,12 @@ export default function Transaction() {
         <Button
           className="rounded-2xl bg-blue-500 data-[hover=true]:bg-blue-600 data-[active=true]:bg-blue-700"
           onPress={handleSave}
+          isDisabled={
+            !selectedCatagoryId ||
+            !amount.trim() ||
+            isNaN(parseFloat(amount)) ||
+            parseFloat(amount) <= 0
+          }
         >
           <ButtonIcon as={SaveIcon} />
           <ButtonText>บันทึก</ButtonText>
