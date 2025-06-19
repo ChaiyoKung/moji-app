@@ -12,10 +12,10 @@ interface Category {
   updatedAt: string;
 }
 
-export const getAllGategoriesByType = async (type: "income" | "expense") => {
+export async function getAllGategoriesByType(type: "income" | "expense") {
   const response = await api.get<Category[]>(`/categories/${type}`);
   return response.data;
-};
+}
 
 interface Account {
   _id: string;
@@ -29,7 +29,7 @@ interface Account {
   updatedAt: string;
 }
 
-export const getAllAccounts = async () => {
+export async function getAllAccounts() {
   const response = await api.get<Account[]>("/accounts");
   return response.data;
-};
+}
