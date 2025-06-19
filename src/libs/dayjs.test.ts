@@ -52,7 +52,7 @@ describe("fromNowDate", () => {
   it("returns formatted date if not today or yesterday", () => {
     const mockIsToday = jest.fn().mockReturnValue(false);
     const mockIsYesterday = jest.fn().mockReturnValue(false);
-    const mockFormat = jest.fn().mockReturnValue("17 มิถุนายน 2025");
+    const mockFormat = jest.fn().mockReturnValue(" 17 มิถุนายน 2025");
 
     (dayjs as unknown as jest.Mock).mockReturnValue({
       isToday: mockIsToday,
@@ -60,9 +60,9 @@ describe("fromNowDate", () => {
       format: mockFormat,
     });
 
-    expect(fromNowDate("2025-06-17")).toBe("17 มิถุนายน 2025");
+    expect(fromNowDate("2025-06-17")).toBe(" 17 มิถุนายน 2025");
     expect(mockIsToday).toHaveBeenCalled();
     expect(mockIsYesterday).toHaveBeenCalled();
-    expect(mockFormat).toHaveBeenCalledWith("D MMMM YYYY");
+    expect(mockFormat).toHaveBeenCalledWith(" D MMMM YYYY");
   });
 });
