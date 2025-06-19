@@ -33,3 +33,33 @@ export async function getAllAccounts() {
   const response = await api.get<Account[]>("/accounts");
   return response.data;
 }
+
+interface CreateTransactionDto {
+  userId: string;
+  accountId: string;
+  categoryId: string;
+  type: "income" | "expense";
+  amount: number;
+  currency: string;
+  note?: string;
+  date: Date;
+}
+
+interface Transaction {
+  _id: string;
+  userId: string;
+  accountId: string;
+  categoryId: string;
+  type: "income" | "expense";
+  amount: number;
+  currency: string;
+  note?: string;
+  date: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export async function createTransaction(data: CreateTransactionDto) {
+  const response = await api.post<Transaction>("/transactions", data);
+  return response.data;
+}

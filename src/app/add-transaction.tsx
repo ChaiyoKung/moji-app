@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { ScrollView } from "react-native";
 import { Heading } from "../components/ui/heading";
 import { VStack } from "../components/ui/vstack";
@@ -9,12 +9,21 @@ import { Input, InputField } from "../components/ui/input";
 import { useState } from "react";
 import { formatBaht } from "../utils/format-baht";
 import colors from "tailwindcss/colors";
-import { Button, ButtonIcon, ButtonText } from "../components/ui/button";
+import {
+  Button,
+  ButtonIcon,
+  ButtonSpinner,
+  ButtonText,
+} from "../components/ui/button";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SaveIcon } from "lucide-react-native";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Spinner } from "../components/ui/spinner";
-import { getAllGategoriesByType, getAllAccounts } from "../libs/api";
+import {
+  getAllGategoriesByType,
+  getAllAccounts,
+  createTransaction,
+} from "../libs/api";
 import dayjs from "dayjs";
 
 export default function Transaction() {
@@ -42,13 +51,30 @@ export default function Transaction() {
   const [amount, setAmount] = useState<string>("");
   const [note, setNote] = useState<string>("");
 
+  const createTransactionMutation = useMutation({
+    mutationFn: createTransaction,
+    onSuccess(data) {
+      console.log("Transaction created successfully:", data);
+      // Optionally, you can navigate back or show a success message
+      // queryClient.invalidateQueries({ queryKey: ["accounts"] });
+      router.back();
+    },
+    onError(error) {
+      console.error("Error creating transaction:", error);
+      // Optionally, you can show an error message to the user
+    },
+  });
+
   const handleSave = () => {
-    console.log("Transaction saved:", {
-      mode,
-      date,
-      category: selectedCatagoryId,
+    createTransactionMutation.mutate({
+      userId: accountQuery.data?.[0]?.userId || "",
+      accountId: accountQuery.data?.[0]?._id || "",
+      categoryId: selectedCatagoryId,
+      type: mode,
       amount: parseFloat(amount),
-      note,
+      currency: "THB", // Assuming THB for Thai Baht
+      note: note.trim() || undefined,
+      date: new Date(date),
     });
   };
 
@@ -179,7 +205,11 @@ export default function Transaction() {
             parseFloat(amount) <= 0
           }
         >
-          <ButtonIcon as={SaveIcon} />
+          {createTransactionMutation.isPending ? (
+            <ButtonSpinner color={colors.white} />
+          ) : (
+            <ButtonIcon as={SaveIcon} />
+          )}
           <ButtonText>บันทึก</ButtonText>
         </Button>
       </SafeAreaView>
