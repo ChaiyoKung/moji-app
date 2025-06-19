@@ -17,7 +17,7 @@ import {
 } from "../components/ui/button";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SaveIcon } from "lucide-react-native";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Spinner } from "../components/ui/spinner";
 import {
   getAllGategoriesByType,
@@ -36,6 +36,8 @@ export default function Transaction() {
   if (typeof date !== "string") {
     throw new Error("Invalid date parameter.");
   }
+
+  const queryClient = useQueryClient();
 
   const categoriesQuery = useQuery({
     queryKey: ["categories", mode],
@@ -56,7 +58,7 @@ export default function Transaction() {
     onSuccess(data) {
       console.log("Transaction created successfully:", data);
       // Optionally, you can navigate back or show a success message
-      // queryClient.invalidateQueries({ queryKey: ["accounts"] });
+      queryClient.invalidateQueries({ queryKey: ["accounts"] });
       router.back();
     },
     onError(error) {
