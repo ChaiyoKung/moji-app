@@ -8,6 +8,7 @@ export const api = axios.create({ baseURL: env.EXPO_PUBLIC_API_URL });
 api.interceptors.request.use(
   async (request) => {
     try {
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate a delay for demonstration
       const token = await getStorageItemAsync("session");
       if (token) {
         request.headers.Authorization = `Bearer ${token}`;

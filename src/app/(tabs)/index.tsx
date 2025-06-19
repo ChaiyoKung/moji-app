@@ -13,7 +13,7 @@ import { AddExpenseFab } from "../../components/add-expense-fab";
 import { router } from "expo-router";
 import { useState } from "react";
 import colors from "tailwindcss/colors";
-import { nowDate } from "../../libs/dayjs";
+import { fromNowDate, nowDate } from "../../libs/dayjs";
 import { TransactionItem } from "../../components/transaction-item";
 import type { Transaction } from "../../components/transaction-item";
 import { useQuery } from "@tanstack/react-query";
@@ -109,7 +109,10 @@ export default function Home() {
             error={accountQuery.error}
           />
 
-          <SummaryCard label="รายจ่าย วันนี้" value={66} />
+          <SummaryCard
+            label={`รายจ่าย${fromNowDate(selectedDate)}`}
+            value={66}
+          />
 
           <VStack>
             {selectedDate !== todayDate && (
