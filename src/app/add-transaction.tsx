@@ -15,6 +15,7 @@ import { SaveIcon } from "lucide-react-native";
 import { useQuery } from "@tanstack/react-query";
 import { Spinner } from "../components/ui/spinner";
 import { getAllGategoriesByType, getAllAccounts } from "../libs/api";
+import dayjs from "dayjs";
 
 export default function Transaction() {
   const { mode, date } = useLocalSearchParams();
@@ -59,7 +60,15 @@ export default function Transaction() {
             <Heading size="3xl" className="text-typography-black">
               {mode === "income" ? "เพิ่มรายรับ" : "เพิ่มรายจ่าย"}
             </Heading>
-            <Text>{`ของวันนี้ (${date})`}</Text>
+            {dayjs(date).isToday() ? (
+              <Text className="text-gray-500">{`ของวันนี้ (${dayjs(date).format("D MMMM YYYY")})`}</Text>
+            ) : dayjs(date).isYesterday() ? (
+              <Text className="text-orange-500">{`⚠️ ของเมื่อวาน (${dayjs(date).format("D MMMM YYYY")})`}</Text>
+            ) : (
+              <Text className="text-orange-500">
+                {`⚠️ ของ ${dayjs(date).format("D MMMM YYYY")}`}
+              </Text>
+            )}
           </VStack>
 
           <VStack space="sm">
