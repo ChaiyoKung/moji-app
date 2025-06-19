@@ -52,6 +52,8 @@ export default function Transaction() {
     });
   };
 
+  const relativeDate = dayjs(date).format("D MMMM YYYY");
+
   return (
     <>
       <ScrollView className="flex-1 bg-gray-100">
@@ -61,13 +63,11 @@ export default function Transaction() {
               {mode === "income" ? "เพิ่มรายรับ" : "เพิ่มรายจ่าย"}
             </Heading>
             {dayjs(date).isToday() ? (
-              <Text className="text-gray-500">{`ของวันนี้ (${dayjs(date).format("D MMMM YYYY")})`}</Text>
+              <Text className="text-gray-500">{`ของวันนี้ (${relativeDate})`}</Text>
             ) : dayjs(date).isYesterday() ? (
-              <Text className="text-orange-500">{`⚠️ ของเมื่อวาน (${dayjs(date).format("D MMMM YYYY")})`}</Text>
+              <Text className="text-orange-500">{`⚠️ ของเมื่อวาน (${relativeDate})`}</Text>
             ) : (
-              <Text className="text-orange-500">
-                {`⚠️ ของ ${dayjs(date).format("D MMMM YYYY")}`}
-              </Text>
+              <Text className="text-orange-500">{`⚠️ ของ ${relativeDate}`}</Text>
             )}
           </VStack>
 
