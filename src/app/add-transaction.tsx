@@ -202,7 +202,8 @@ export default function Transaction() {
             !selectedCatagoryId ||
             !amount.trim() ||
             isNaN(parseFloat(amount)) ||
-            parseFloat(amount) <= 0
+            parseFloat(amount) <= 0 ||
+            createTransactionMutation.isPending
           }
         >
           {createTransactionMutation.isPending ? (
