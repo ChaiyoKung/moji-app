@@ -25,6 +25,7 @@ import {
   createTransaction,
 } from "../libs/api";
 import dayjs from "dayjs";
+import { DateLabel } from "../components/date-label";
 
 export default function Transaction() {
   const { mode, date } = useLocalSearchParams();
@@ -89,8 +90,6 @@ export default function Transaction() {
     });
   };
 
-  const relativeDate = dayjs(date).format("D MMMM YYYY");
-
   return (
     <>
       <ScrollView className="flex-1 bg-gray-100">
@@ -99,13 +98,7 @@ export default function Transaction() {
             <Heading size="3xl" className="text-typography-black">
               {mode === "income" ? "เพิ่มรายรับ" : "เพิ่มรายจ่าย"}
             </Heading>
-            {dayjs(date).isToday() ? (
-              <Text className="text-gray-500">{`ของวันนี้ (${relativeDate})`}</Text>
-            ) : dayjs(date).isYesterday() ? (
-              <Text className="text-orange-500">{`⚠️ ของเมื่อวาน (${relativeDate})`}</Text>
-            ) : (
-              <Text className="text-orange-500">{`⚠️ ของวันที่ ${relativeDate}`}</Text>
-            )}
+            <DateLabel date={date} />
           </VStack>
 
           <VStack space="sm">
