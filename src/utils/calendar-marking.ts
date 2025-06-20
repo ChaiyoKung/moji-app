@@ -2,16 +2,16 @@ import colors from "tailwindcss/colors";
 
 /**
  * Build markedDates object for react-native-calendars Calendar.
- * @param transactionDates - Record of date string to array of transaction IDs
+ * @param transactionIdsByDate - Array of {_id: date string, ids: string[]}
  * @param selectedDate - Currently selected date string
  */
 export function getMarkedDates(
-  transactionDates: Record<string, string[]>,
+  transactionIdsByDate: { _id: string; ids: string[] }[],
   selectedDate: string
 ) {
   const marked: Record<string, any> = {};
 
-  Object.entries(transactionDates).forEach(([date, ids]) => {
+  transactionIdsByDate.forEach(({ _id: date, ids }) => {
     marked[date] = {
       dots: ids.map((id) => ({
         key: id,

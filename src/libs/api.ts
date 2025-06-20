@@ -92,3 +92,19 @@ export async function getSummary(params: {
   const response = await api.get<Summary>("/analytics/summary", { params });
   return response.data;
 }
+
+export interface TransactionIdsByDate {
+  _id: string; // date string
+  ids: string[];
+}
+
+export async function getTransactionIdsByDate(params: {
+  startDate: string;
+  endDate: string;
+}) {
+  const response = await api.get<TransactionIdsByDate[]>(
+    "/transactions/ids-by-date",
+    { params }
+  );
+  return response.data;
+}

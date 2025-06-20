@@ -2,10 +2,10 @@ import { getMarkedDates } from "./calendar-marking";
 
 describe("getMarkedDates", () => {
   it("should return correct markedDates for given transactionDates and selectedDate", () => {
-    const mockTransactionDates = {
-      "2025-06-19": ["id1", "id2"],
-      "2025-06-20": ["id3"],
-    };
+    const mockTransactionDates = [
+      { _id: "2025-06-19", ids: ["id1", "id2"] },
+      { _id: "2025-06-20", ids: ["id3"] },
+    ];
     const selectedDate = "2025-06-19";
     const result = getMarkedDates(mockTransactionDates, selectedDate);
 
