@@ -32,6 +32,9 @@ LocaleConfig.defaultLocale = "th";
 export default function Home() {
   const todayDate = nowDate();
   const [selectedDate, setSelectedDate] = useState<string>(todayDate);
+  const [currentMonth, setCurrentMonth] = useState<string>(
+    dayjs(todayDate).format("YYYY-MM")
+  );
 
   const accountQuery = useQuery({
     queryKey: ["accounts"],
@@ -49,10 +52,12 @@ export default function Home() {
     queryFn: () => getSummary({ type: "expense", date: selectedDate }),
   });
 
-  const startOfMonth = dayjs(selectedDate)
+  const startOfMonth = dayjs(currentMonth + "-01")
     .startOf("month")
     .format("YYYY-MM-DD");
-  const endOfMonth = dayjs(selectedDate).endOf("month").format("YYYY-MM-DD");
+  const endOfMonth = dayjs(currentMonth + "-01")
+    .endOf("month")
+    .format("YYYY-MM-DD");
   const transactionIdsByDateQuery = useQuery({
     queryKey: ["transactionIdsByDate", startOfMonth, endOfMonth],
     queryFn: () =>
@@ -97,6 +102,10 @@ export default function Home() {
               onDayPress={(day) => {
                 setSelectedDate(day.dateString);
               }}
+              onMonthChange={(month) => {
+                setCurrentMonth(dayjs(month.dateString).format("YYYY-MM"));
+              }}
+              current={selectedDate}
               maxDate={todayDate}
               enableSwipeMonths={true}
               markedDates={markedDates}
