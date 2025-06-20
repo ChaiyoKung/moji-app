@@ -108,6 +108,7 @@ export default function Home() {
               current={selectedDate}
               maxDate={todayDate}
               enableSwipeMonths={true}
+              displayLoadingIndicator={transactionIdsByDateQuery.isLoading}
               markedDates={markedDates}
               markingType="multi-dot"
               theme={{
