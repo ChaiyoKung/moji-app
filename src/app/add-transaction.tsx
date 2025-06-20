@@ -96,7 +96,7 @@ export default function Transaction() {
             ) : dayjs(date).isYesterday() ? (
               <Text className="text-orange-500">{`⚠️ ของเมื่อวาน (${relativeDate})`}</Text>
             ) : (
-              <Text className="text-orange-500">{`⚠️ ของ ${relativeDate}`}</Text>
+              <Text className="text-orange-500">{`⚠️ ของวันที่ ${relativeDate}`}</Text>
             )}
           </VStack>
 
