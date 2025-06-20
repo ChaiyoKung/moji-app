@@ -59,6 +59,7 @@ export default function Transaction() {
       console.log("Transaction created successfully:", data);
       // Optionally, you can navigate back or show a success message
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
+      queryClient.invalidateQueries({ queryKey: ["transactions", date] });
       router.back();
     },
     onError(error) {

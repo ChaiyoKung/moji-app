@@ -63,3 +63,17 @@ export async function createTransaction(data: CreateTransactionDto) {
   const response = await api.post<Transaction>("/transactions", data);
   return response.data;
 }
+
+export type TransactionWithCategory = Transaction & {
+  categoryId: Category;
+};
+
+export async function getAllTransactions(params: {
+  startDate?: string;
+  endDate?: string;
+}) {
+  const response = await api.get<TransactionWithCategory[]>("/transactions", {
+    params,
+  });
+  return response.data;
+}

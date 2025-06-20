@@ -15,77 +15,10 @@ import { useState } from "react";
 import colors from "tailwindcss/colors";
 import { fromNowDate, nowDate } from "../../libs/dayjs";
 import { TransactionItem } from "../../components/transaction-item";
-import type { Transaction } from "../../components/transaction-item";
 import { useQuery } from "@tanstack/react-query";
-import { getAllAccounts } from "../../libs/api";
-
-const transactions: Transaction[] = [
-  {
-    _id: "txn001",
-    type: "expense",
-    amount: 16,
-    currency: "THB",
-    note: "",
-    date: new Date("2025-06-08T08:30:00.000Z"),
-    category: {
-      name: "เครื่องดื่ม",
-      icon: "🥤",
-      color: "#3498db",
-    },
-  },
-  {
-    _id: "txn002",
-    type: "expense",
-    amount: 50,
-    currency: "THB",
-    note: "ข้าวกะเพราหมูกรอบ",
-    date: new Date("2025-06-08T12:30:00.000Z"),
-    category: {
-      name: "อาหาร",
-      icon: "🍛",
-      color: "#f39c12",
-    },
-  },
-  {
-    _id: "txn003",
-    type: "income",
-    amount: 20000,
-    currency: "THB",
-    note: "เงินเดือน",
-    date: new Date("2025-06-01T00:00:00.000Z"),
-    category: {
-      name: "ได้เงิน",
-      icon: "💰",
-      color: "#27ae60",
-    },
-  },
-  {
-    _id: "txn004",
-    type: "expense",
-    amount: 120,
-    currency: "THB",
-    note: "เติมน้ำมัน",
-    date: new Date("2025-06-07T17:00:00.000Z"),
-    category: {
-      name: "เดินทาง",
-      icon: "⛽",
-      color: "#e74c3c",
-    },
-  },
-  {
-    _id: "txn005",
-    type: "income",
-    amount: 500,
-    currency: "THB",
-    note: "ขายของเก่า",
-    date: new Date("2025-06-05T10:15:00.000Z"),
-    category: {
-      name: "รายได้เสริม",
-      icon: "📦",
-      color: "#2ecc71",
-    },
-  },
-];
+import { getAllAccounts, getAllTransactions } from "../../libs/api";
+import { Text } from "../../components/ui/text";
+import { Spinner } from "../../components/ui/spinner";
 
 LocaleConfig.defaultLocale = "th";
 
@@ -96,6 +29,12 @@ export default function Home() {
   const accountQuery = useQuery({
     queryKey: ["accounts"],
     queryFn: getAllAccounts,
+  });
+
+  const transactionsQuery = useQuery({
+    queryKey: ["transactions", selectedDate],
+    queryFn: () =>
+      getAllTransactions({ startDate: selectedDate, endDate: selectedDate }),
   });
 
   return (
@@ -144,9 +83,24 @@ export default function Home() {
             <Heading size="lg" bold className="text-typography-500">
               รายการ
             </Heading>
-            {transactions.map((item) => (
-              <TransactionItem key={item._id} data={item} />
-            ))}
+            {transactionsQuery.isLoading ? (
+              <Center className="h-40">
+                <Spinner />
+              </Center>
+            ) : transactionsQuery.error ? (
+              <Center className="h-40">
+                <Text className="text-red-500">ไม่สามารถโหลดรายการได้</Text>
+              </Center>
+            ) : transactionsQuery.data === undefined ||
+              transactionsQuery.data.length === 0 ? (
+              <Center className="h-40">
+                <Text className="text-gray-500">{`ไม่พบรายการใน${fromNowDate(selectedDate)}`}</Text>
+              </Center>
+            ) : (
+              transactionsQuery.data.map((item) => (
+                <TransactionItem key={item._id} data={item} />
+              ))
+            )}
           </VStack>
         </VStack>
       </ScrollView>

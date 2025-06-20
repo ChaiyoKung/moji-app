@@ -3,25 +3,10 @@ import { Center } from "../ui/center";
 import { VStack } from "../ui/vstack";
 import { Text } from "../ui/text";
 import { AmountText } from "../amount-text";
-
-export interface Category {
-  name: string;
-  icon: string;
-  color: string;
-}
-
-export interface Transaction {
-  _id: string;
-  type: "expense" | "income";
-  amount: number;
-  currency: string;
-  note?: string;
-  date: Date;
-  category: Category;
-}
+import { TransactionWithCategory } from "../../libs/api";
 
 export interface TransactionItemProps {
-  data: Transaction;
+  data: TransactionWithCategory;
 }
 
 export function TransactionItem({ data }: TransactionItemProps) {
@@ -33,13 +18,13 @@ export function TransactionItem({ data }: TransactionItemProps) {
     >
       <Center
         className="rounded-full w-12 h-12"
-        style={{ backgroundColor: data.category.color }}
+        style={{ backgroundColor: data.categoryId.color }}
       >
-        <Text size="2xl">{data.category.icon}</Text>
+        <Text size="2xl">{data.categoryId.icon}</Text>
       </Center>
       <VStack className="flex-1">
         <Text size="lg" className="text-typography-black">
-          {data.category.name}
+          {data.categoryId.name}
         </Text>
         <Text size="sm" className="text-typography-500">
           {data.note || "-"}
