@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { formatBaht } from "../../utils/format-baht";
 import { Box } from "../ui/box";
 import { Center } from "../ui/center";
@@ -5,10 +6,10 @@ import { Text } from "../ui/text";
 
 export interface SummaryCardProps {
   label: string;
-  value: number;
+  children?: ReactNode;
 }
 
-export function SummaryCard({ label, value }: SummaryCardProps) {
+export function SummaryCard({ label, children }: SummaryCardProps) {
   return (
     <Box className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
       <Center className="px-4 py-2 border-b border-gray-200 bg-red-100">
@@ -16,11 +17,19 @@ export function SummaryCard({ label, value }: SummaryCardProps) {
           {label}
         </Text>
       </Center>
-      <Center className="p-4">
-        <Text size="4xl" bold className="text-typography-black">
-          {formatBaht(value)}
-        </Text>
-      </Center>
+      <Center className="p-4">{children}</Center>
     </Box>
+  );
+}
+
+export interface SummaryCardTextProps {
+  value: number;
+}
+
+export function SummaryCardValue({ value }: SummaryCardTextProps) {
+  return (
+    <Text size="4xl" bold className="text-typography-black">
+      {formatBaht(value)}
+    </Text>
   );
 }

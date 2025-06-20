@@ -2,7 +2,7 @@ import "../../libs/calendar-locale-config.th";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { VStack } from "../../components/ui/vstack";
 import { BalanceSummary } from "../../components/balance-summary";
-import { SummaryCard } from "../../components/summary-card";
+import { SummaryCard, SummaryCardValue } from "../../components/summary-card";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { ScrollView } from "react-native";
 import { Heading } from "../../components/ui/heading";
@@ -16,7 +16,7 @@ import colors from "tailwindcss/colors";
 import { fromNowDate, nowDate } from "../../libs/dayjs";
 import { TransactionItem } from "../../components/transaction-item";
 import { useQuery } from "@tanstack/react-query";
-import { getAllAccounts, getAllTransactions } from "../../libs/api";
+import { getAllAccounts, getAllTransactions, getSummary } from "../../libs/api";
 import { Text } from "../../components/ui/text";
 import { Spinner } from "../../components/ui/spinner";
 
@@ -37,6 +37,11 @@ export default function Home() {
       getAllTransactions({ startDate: selectedDate, endDate: selectedDate }),
   });
 
+  const summaryQuery = useQuery({
+    queryKey: ["summary", selectedDate],
+    queryFn: () => getSummary({ type: "expense", date: selectedDate }),
+  });
+
   return (
     <SafeAreaView edges={["top"]} className="flex-1 bg-gray-100">
       <ScrollView>
@@ -48,10 +53,17 @@ export default function Home() {
             error={accountQuery.error}
           />
 
-          <SummaryCard
-            label={`รายจ่าย${fromNowDate(selectedDate)}`}
-            value={66}
-          />
+          <SummaryCard label={`รายจ่าย${fromNowDate(selectedDate)}`}>
+            {summaryQuery.isLoading ? (
+              <Spinner />
+            ) : summaryQuery.isError ? (
+              <Text className="text-red-500">ไม่สามารถโหลดข้อมูลได้</Text>
+            ) : summaryQuery.data === undefined ? (
+              <Text className="text-gray-500">ไม่พบข้อมูล</Text>
+            ) : (
+              <SummaryCardValue value={summaryQuery.data.total} />
+            )}
+          </SummaryCard>
 
           <VStack>
             {selectedDate !== todayDate && (

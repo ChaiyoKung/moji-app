@@ -77,3 +77,18 @@ export async function getAllTransactions(params: {
   });
   return response.data;
 }
+
+export interface Summary {
+  type: "income" | "expense";
+  date: string;
+  total: number;
+  count: number;
+}
+
+export async function getSummary(params: {
+  type: "income" | "expense";
+  date: string;
+}) {
+  const response = await api.get<Summary>("/analytics/summary", { params });
+  return response.data;
+}
