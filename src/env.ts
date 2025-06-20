@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod/v4";
 
 const envSchema = z.object({
   EXPO_PUBLIC_API_URL: z.string().url(),
