@@ -27,5 +27,6 @@ api.interceptors.response.use((response) => {
   return AxiosLogger.responseLogger(response, {
     dateFormat: "isoDateTime",
     data: false,
+    params: true,
   });
 });
