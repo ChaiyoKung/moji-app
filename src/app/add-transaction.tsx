@@ -4,7 +4,6 @@ import { Heading } from "../components/ui/heading";
 import { VStack } from "../components/ui/vstack";
 import { Text } from "../components/ui/text";
 import { HStack } from "../components/ui/hstack";
-import { Pressable } from "../components/ui/pressable";
 import { Input, InputField } from "../components/ui/input";
 import { useState } from "react";
 import { formatBaht } from "../utils/format-baht";
@@ -19,6 +18,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { SaveIcon } from "lucide-react-native";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Spinner } from "../components/ui/spinner";
+import { CategoryChip } from "../components/category-chip";
 import {
   getAllGategoriesByType,
   getAllAccounts,
@@ -117,32 +117,12 @@ export default function Transaction() {
             ) : (
               <HStack space="sm" className="flex-wrap">
                 {categoriesQuery.data.map((category) => (
-                  <Pressable
+                  <CategoryChip
                     key={category._id}
-                    className="flex-row items-center border rounded-full px-4 py-1"
-                    style={{
-                      borderColor: category.color,
-                      backgroundColor:
-                        selectedCatagoryId === category._id
-                          ? category.color
-                          : "transparent",
-                    }}
+                    data={category}
+                    selected={selectedCatagoryId === category._id}
                     onPress={() => setSelectedCatagoryId(category._id)}
-                  >
-                    <Text size="lg">{category.icon}</Text>
-                    <Text
-                      size="lg"
-                      className="ml-2"
-                      style={{
-                        color:
-                          selectedCatagoryId === category._id
-                            ? colors.white
-                            : category.color,
-                      }}
-                    >
-                      {category.name}
-                    </Text>
-                  </Pressable>
+                  />
                 ))}
               </HStack>
             )}
