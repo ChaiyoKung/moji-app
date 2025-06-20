@@ -61,6 +61,13 @@ export default function Transaction() {
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
       queryClient.invalidateQueries({ queryKey: ["transactions", date] });
       queryClient.invalidateQueries({ queryKey: ["summary", date] });
+
+      const startOfMonth = dayjs(date).startOf("month").format("YYYY-MM-DD");
+      const endOfMonth = dayjs(date).endOf("month").format("YYYY-MM-DD");
+      queryClient.invalidateQueries({
+        queryKey: ["transactionIdsByDate", startOfMonth, endOfMonth],
+      });
+
       router.back();
     },
     onError: (error) => {
