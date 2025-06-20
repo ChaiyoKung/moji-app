@@ -60,6 +60,7 @@ export default function Transaction() {
       // Optionally, you can navigate back or show a success message
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
       queryClient.invalidateQueries({ queryKey: ["transactions", date] });
+      queryClient.invalidateQueries({ queryKey: ["summary", date] });
       router.back();
     },
     onError: (error) => {
