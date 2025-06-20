@@ -1,6 +1,6 @@
 import { api } from "./axios";
 
-interface Category {
+export interface Category {
   _id: string;
   userId: string | null;
   name: string;
@@ -17,7 +17,7 @@ export async function getAllGategoriesByType(type: "income" | "expense") {
   return response.data;
 }
 
-interface Account {
+export interface Account {
   _id: string;
   userId: string;
   name: string;
@@ -34,7 +34,7 @@ export async function getAllAccounts() {
   return response.data;
 }
 
-interface CreateTransactionDto {
+export interface CreateTransactionDto {
   userId: string;
   accountId: string;
   categoryId: string;
@@ -45,7 +45,7 @@ interface CreateTransactionDto {
   date: Date;
 }
 
-interface Transaction {
+export interface Transaction {
   _id: string;
   userId: string;
   accountId: string;
