@@ -77,6 +77,13 @@ export default function Home() {
               }}
               maxDate={todayDate}
               enableSwipeMonths={true}
+              markedDates={{
+                [selectedDate]: {
+                  selected: true,
+                  selectedColor: colors.blue[500],
+                  selectedTextColor: colors.white,
+                },
+              }}
               theme={{
                 calendarBackground: colors.transparent,
                 arrowColor: colors.gray[500],
