@@ -55,14 +55,14 @@ export default function Transaction() {
 
   const createTransactionMutation = useMutation({
     mutationFn: createTransaction,
-    onSuccess(data) {
+    onSuccess: (data) => {
       console.log("Transaction created successfully:", data);
       // Optionally, you can navigate back or show a success message
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
       queryClient.invalidateQueries({ queryKey: ["transactions", date] });
       router.back();
     },
-    onError(error) {
+    onError: (error) => {
       console.error("Error creating transaction:", error);
       // Optionally, you can show an error message to the user
     },
