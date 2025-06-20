@@ -19,8 +19,18 @@ import { useQuery } from "@tanstack/react-query";
 import { getAllAccounts, getAllTransactions, getSummary } from "../../libs/api";
 import { Text } from "../../components/ui/text";
 import { Spinner } from "../../components/ui/spinner";
+import { getMarkedDates } from "../../utils/calendar-marking";
 
 LocaleConfig.defaultLocale = "th";
+
+// Mock transaction data: date string -> array of transaction IDs
+const mockTransactionDates: Record<string, string[]> = {
+  "2025-06-18": ["id0"],
+  "2025-06-19": ["id1", "id2"],
+  "2025-06-20": ["id3"],
+  "2025-06-21": ["id4", "id5", "id6"],
+  // add more mock dates as needed
+};
 
 export default function Home() {
   const todayDate = nowDate();
@@ -41,6 +51,8 @@ export default function Home() {
     queryKey: ["summary", selectedDate],
     queryFn: () => getSummary({ type: "expense", date: selectedDate }),
   });
+
+  const markedDates = getMarkedDates(mockTransactionDates, selectedDate);
 
   return (
     <SafeAreaView edges={["top"]} className="flex-1 bg-gray-100">
@@ -77,13 +89,8 @@ export default function Home() {
               }}
               maxDate={todayDate}
               enableSwipeMonths={true}
-              markedDates={{
-                [selectedDate]: {
-                  selected: true,
-                  selectedColor: colors.blue[500],
-                  selectedTextColor: colors.white,
-                },
-              }}
+              markedDates={markedDates}
+              markingType="multi-dot"
               theme={{
                 calendarBackground: colors.transparent,
                 arrowColor: colors.gray[500],
