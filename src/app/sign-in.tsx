@@ -14,6 +14,19 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { useMutation } from "@tanstack/react-query";
 import colors from "tailwindcss/colors";
 import { api } from "../libs/axios";
+import { env } from "../env";
+import {
+  GoogleSignin,
+  isSuccessResponse,
+  isErrorWithCode,
+  statusCodes,
+} from "@react-native-google-signin/google-signin";
+
+GoogleSignin.configure({
+  webClientId: env.EXPO_PUBLIC_GOOGLE_SIGNIN_WEB_CLIENT_ID,
+  iosClientId: env.EXPO_PUBLIC_GOOGLE_SIGNIN_IOS_CLIENT_ID,
+  offlineAccess: true,
+});
 
 export default function SignIn() {
   const { signIn } = useSession();
@@ -36,6 +49,36 @@ export default function SignIn() {
       console.error("Login failed:", error);
     },
   });
+
+  const signInWithGoogle = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const response = await GoogleSignin.signIn();
+      if (isSuccessResponse(response)) {
+        console.log("User Info:", response.data);
+        // setState({ userInfo: response.data });
+      } else {
+        // sign in was cancelled by user
+        console.log("Sign in cancelled");
+      }
+    } catch (error) {
+      console.error("Google Sign-In Error:", error);
+      if (isErrorWithCode(error)) {
+        switch (error.code) {
+          case statusCodes.IN_PROGRESS:
+            // operation (eg. sign in) already in progress
+            break;
+          case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
+            // Android only, play services not available or outdated
+            break;
+          default:
+          // some other error happened
+        }
+      } else {
+        // an error that's not related to google sign in occurred
+      }
+    }
+  };
 
   return (
     <KeyboardAwareScrollView className="flex-1 bg-gray-100" enableOnAndroid>
@@ -96,7 +139,7 @@ export default function SignIn() {
 
           <Divider className="my-4" />
 
-          <Button className="rounded-2xl">
+          <Button className="rounded-2xl" onPress={signInWithGoogle}>
             <ButtonText>เข้าสู่ระบบด้วย Google</ButtonText>
           </Button>
 
