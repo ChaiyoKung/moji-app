@@ -50,19 +50,38 @@ export default function SignIn() {
     },
   });
 
-  const signInWithGoogle = async () => {
-    try {
+  const signInGoogleMutation = useMutation({
+    mutationFn: async () => {
       await GoogleSignin.hasPlayServices();
-      const response = await GoogleSignin.signIn();
-      if (isSuccessResponse(response)) {
-        console.log("User Info:", response.data);
-        // setState({ userInfo: response.data });
+      const googleSignInResponse = await GoogleSignin.signIn();
+      if (isSuccessResponse(googleSignInResponse)) {
+        const response = await api.post<{ accessToken: string }>(
+          "/auth/google",
+          {
+            idToken: googleSignInResponse.data.idToken,
+          }
+        );
+        return response.data;
       } else {
         // sign in was cancelled by user
         console.log("Sign in cancelled");
+        return null;
       }
-    } catch (error) {
-      console.error("Google Sign-In Error:", error);
+    },
+    onSuccess: (data) => {
+      if (!data) {
+        console.warn("Google Sign-In was cancelled or failed.");
+        return;
+      }
+
+      console.log("Google Sign-In Success");
+      signIn(data.accessToken);
+      // Navigate after signing in. You may want to tweak this to ensure sign-in is
+      // successful before navigating.
+      router.replace("/");
+    },
+    onError: (error) => {
+      console.error("Google Sign-In failed:", error);
       if (isErrorWithCode(error)) {
         switch (error.code) {
           case statusCodes.IN_PROGRESS:
@@ -77,8 +96,8 @@ export default function SignIn() {
       } else {
         // an error that's not related to google sign in occurred
       }
-    }
-  };
+    },
+  });
 
   return (
     <KeyboardAwareScrollView className="flex-1 bg-gray-100" enableOnAndroid>
@@ -139,7 +158,12 @@ export default function SignIn() {
 
           <Divider className="my-4" />
 
-          <Button className="rounded-2xl" onPress={signInWithGoogle}>
+          <Button
+            className="rounded-2xl"
+            isDisabled={signInGoogleMutation.isPending}
+            onPress={() => signInGoogleMutation.mutate()}
+          >
+            {signInGoogleMutation.isPending && <ButtonSpinner />}
             <ButtonText>เข้าสู่ระบบด้วย Google</ButtonText>
           </Button>
 
