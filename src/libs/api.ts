@@ -42,7 +42,8 @@ export interface CreateTransactionDto {
   amount: number;
   currency: string;
   note?: string;
-  date: Date;
+  date: string;
+  timezone: string;
 }
 
 export interface Transaction {
@@ -71,6 +72,7 @@ export type TransactionWithCategory = Transaction & {
 export async function getAllTransactions(params: {
   startDate?: string;
   endDate?: string;
+  timezone?: string;
 }) {
   const response = await api.get<TransactionWithCategory[]>("/transactions", {
     params,
@@ -88,6 +90,7 @@ export interface Summary {
 export async function getSummary(params: {
   type: "income" | "expense";
   date: string;
+  timezone?: string;
 }) {
   const response = await api.get<Summary>("/analytics/summary", { params });
   return response.data;
@@ -101,6 +104,7 @@ export interface TransactionIdsByDate {
 export async function getTransactionIdsByDate(params: {
   startDate: string;
   endDate: string;
+  timezone: string;
 }) {
   const response = await api.get<TransactionIdsByDate[]>(
     "/transactions/ids-by-date",

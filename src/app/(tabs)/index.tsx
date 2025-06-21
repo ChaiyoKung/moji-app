@@ -44,7 +44,11 @@ export default function Home() {
   const transactionsQuery = useQuery({
     queryKey: ["transactions", selectedDate],
     queryFn: () =>
-      getAllTransactions({ startDate: selectedDate, endDate: selectedDate }),
+      getAllTransactions({
+        startDate: selectedDate,
+        endDate: selectedDate,
+        timezone: dayjs.tz.guess(),
+      }),
   });
 
   const summaryQuery = useQuery({
@@ -61,7 +65,11 @@ export default function Home() {
   const transactionIdsByDateQuery = useQuery({
     queryKey: ["transactionIdsByDate", startOfMonth, endOfMonth],
     queryFn: () =>
-      getTransactionIdsByDate({ startDate: startOfMonth, endDate: endOfMonth }),
+      getTransactionIdsByDate({
+        startDate: startOfMonth,
+        endDate: endOfMonth,
+        timezone: dayjs.tz.guess(),
+      }),
   });
 
   const markedDates = getMarkedDates(

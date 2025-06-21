@@ -86,7 +86,8 @@ export default function Transaction() {
       amount: parseFloat(amount),
       currency: "THB", // Assuming THB for Thai Baht
       note: note.trim() || undefined,
-      date: new Date(date),
+      date: date,
+      timezone: dayjs.tz.guess(),
     });
   };
 
