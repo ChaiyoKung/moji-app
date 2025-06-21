@@ -14,6 +14,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { useMutation } from "@tanstack/react-query";
 import colors from "tailwindcss/colors";
 import { api } from "../libs/axios";
+import { signInWithGoogle } from "../libs/api";
 import { env } from "../env";
 import {
   GoogleSignin,
@@ -55,13 +56,12 @@ export default function SignIn() {
       await GoogleSignin.hasPlayServices();
       const googleSignInResponse = await GoogleSignin.signIn();
       if (isSuccessResponse(googleSignInResponse)) {
-        const response = await api.post<{ accessToken: string }>(
-          "/auth/google",
-          {
-            idToken: googleSignInResponse.data.idToken,
-          }
-        );
-        return response.data;
+        const idToken = googleSignInResponse.data.idToken;
+        if (!idToken) {
+          throw new Error("Google Sign-In failed: No ID token received.");
+        }
+
+        return signInWithGoogle(idToken);
       } else {
         // sign in was cancelled by user
         console.log("Sign in cancelled");
