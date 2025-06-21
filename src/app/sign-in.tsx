@@ -24,8 +24,8 @@ import {
 } from "@react-native-google-signin/google-signin";
 
 GoogleSignin.configure({
-  webClientId: env.EXPO_PUBLIC_GOOGLE_SIGNIN_WEB_CLIENT_ID,
-  iosClientId: env.EXPO_PUBLIC_GOOGLE_SIGNIN_IOS_CLIENT_ID,
+  webClientId: env.EXPO_PUBLIC_GOOGLE_OAUTH_WEB_CLIENT_ID,
+  iosClientId: env.EXPO_PUBLIC_GOOGLE_OAUTH_IOS_CLIENT_ID,
   offlineAccess: true,
 });
 
