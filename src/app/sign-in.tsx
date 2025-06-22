@@ -13,8 +13,7 @@ import { Divider } from "../components/ui/divider";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useMutation } from "@tanstack/react-query";
 import colors from "tailwindcss/colors";
-import { api } from "../libs/axios";
-import { signInWithGoogle } from "../libs/api";
+import { signInWithGoogle, signInWithUsername } from "../libs/api";
 import { env } from "../env";
 import {
   GoogleSignin,
@@ -35,12 +34,9 @@ export default function SignIn() {
   const [password, setPassword] = useState<string>("");
 
   const mutation = useMutation({
-    mutationFn: async (data: { username: string; password: string }) => {
-      const response = await api.post("/auth/login", data);
-      return response.data;
-    },
+    mutationFn: signInWithUsername,
     onSuccess: (data) => {
-      signIn(data.accessToken);
+      signIn(data.user._id, data.accessToken);
       // Navigate after signing in. You may want to tweak this to ensure sign-in is
       // successful before navigating.
       router.replace("/");
@@ -75,7 +71,7 @@ export default function SignIn() {
       }
 
       console.log("Google Sign-In Success");
-      signIn(data.accessToken);
+      signIn(data.user._id, data.accessToken);
       // Navigate after signing in. You may want to tweak this to ensure sign-in is
       // successful before navigating.
       router.replace("/");

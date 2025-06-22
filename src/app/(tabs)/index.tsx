@@ -11,13 +11,14 @@ import { TodayButton } from "../../components/today-button";
 import { AddIncomeFab } from "../../components/add-income-fab";
 import { AddExpenseFab } from "../../components/add-expense-fab";
 import { router } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import colors from "tailwindcss/colors";
 import { fromNowDate, nowDate } from "../../libs/dayjs";
 import dayjs from "dayjs";
 import { TransactionItem } from "../../components/transaction-item";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
+  createAccount,
   getAllAccounts,
   getAllTransactions,
   getSummary,
@@ -26,6 +27,25 @@ import {
 import { Text } from "../../components/ui/text";
 import { Spinner } from "../../components/ui/spinner";
 import { getMarkedDates } from "../../utils/calendar-marking";
+import {
+  Modal,
+  ModalBackdrop,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+} from "../../components/ui/modal";
+import { Icon } from "../../components/ui/icon";
+import { SaveIcon, X } from "lucide-react-native";
+import { Input, InputField } from "../../components/ui/input";
+import {
+  Button,
+  ButtonIcon,
+  ButtonSpinner,
+  ButtonText,
+} from "../../components/ui/button";
+import { useSession } from "../../components/session-provider";
 
 LocaleConfig.defaultLocale = "th";
 
@@ -35,6 +55,8 @@ export default function Home() {
   const [currentMonth, setCurrentMonth] = useState<string>(
     dayjs(todayDate).format("YYYY-MM")
   );
+  const [showBalanceModal, setShowBalanceModal] = useState<boolean>(false);
+  const [inputBalance, setInputBalance] = useState<string>("");
 
   const accountQuery = useQuery({
     queryKey: ["accounts"],
@@ -76,6 +98,46 @@ export default function Home() {
     transactionIdsByDateQuery.data ?? [],
     selectedDate
   );
+
+  const isBalanceDataMissing =
+    accountQuery.isSuccess && accountQuery.data[0]?.balance === undefined;
+
+  // Show modal if accountQuery loaded and no balance data
+  useEffect(() => {
+    if (isBalanceDataMissing) {
+      setShowBalanceModal(true);
+    }
+  }, [isBalanceDataMissing]);
+
+  const createAccountMutation = useMutation({
+    mutationFn: createAccount,
+    onSuccess: () => {
+      accountQuery.refetch();
+      setShowBalanceModal(false);
+    },
+    onError: (error) => {
+      console.error("Failed to create account:", error);
+      // Handle error, e.g., show a toast or alert
+    },
+  });
+
+  const { userId } = useSession();
+
+  const handleSaveBalance = () => {
+    if (!userId) {
+      console.error("User ID is not available. Cannot create account.");
+      return;
+    }
+
+    createAccountMutation.mutate({
+      userId: userId,
+      name: "กระเป๋าสตางค์",
+      type: "cash",
+      balance: parseFloat(inputBalance),
+      currency: "THB",
+      icon: "💵",
+    });
+  };
 
   return (
     <SafeAreaView edges={["top"]} className="flex-1 bg-gray-100">
@@ -161,20 +223,74 @@ export default function Home() {
 
       <AddIncomeFab
         onPress={() =>
-          router.push({
-            pathname: "/add-transaction",
-            params: { mode: "income", date: selectedDate },
-          })
+          isBalanceDataMissing
+            ? setShowBalanceModal(true)
+            : router.push({
+                pathname: "/add-transaction",
+                params: { mode: "income", date: selectedDate },
+              })
         }
       />
       <AddExpenseFab
         onPress={() =>
-          router.push({
-            pathname: "/add-transaction",
-            params: { mode: "expense", date: selectedDate },
-          })
+          isBalanceDataMissing
+            ? setShowBalanceModal(true)
+            : router.push({
+                pathname: "/add-transaction",
+                params: { mode: "expense", date: selectedDate },
+              })
         }
       />
+
+      <Modal
+        isOpen={showBalanceModal}
+        onClose={() => setShowBalanceModal(false)}
+      >
+        <ModalBackdrop />
+        <ModalContent className="rounded-2xl">
+          <ModalHeader>
+            <Heading size="md" className="text-typography-black">
+              กรอกยอดเงินคงเหลือ
+            </Heading>
+            <ModalCloseButton>
+              <Icon
+                as={X}
+                size="md"
+                className="text-gray-500 group-[:hover]/modal-close-button:text-gray-600 group-[:active]/modal-close-button:text-gray-700 group-[:focus-visible]/modal-close-button:text-gray-700"
+              />
+            </ModalCloseButton>
+          </ModalHeader>
+          <ModalBody>
+            <Text size="sm" className="text-gray-500 mb-2">
+              กรุณากรอกยอดเงินคงเหลือปัจจุบันของคุณ เพื่อเริ่มต้นใช้งานแอป
+            </Text>
+            <Input className="rounded-2xl">
+              <InputField
+                type="text"
+                value={inputBalance}
+                onChangeText={setInputBalance}
+                placeholder="0"
+                keyboardType="numeric"
+                autoFocus
+              />
+            </Input>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              isDisabled={!inputBalance || createAccountMutation.isPending}
+              onPress={handleSaveBalance}
+              className="rounded-2xl"
+            >
+              {createAccountMutation.isPending ? (
+                <ButtonSpinner />
+              ) : (
+                <ButtonIcon as={SaveIcon} />
+              )}
+              <ButtonText>บันทึก</ButtonText>
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </SafeAreaView>
   );
 }
