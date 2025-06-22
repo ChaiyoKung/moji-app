@@ -51,7 +51,7 @@ export async function signInWithUsername(data: {
 }
 
 export async function signInWithGoogle(idToken: string) {
-  const response = await api.post<{ accessToken: string }>("/auth/google", {
+  const response = await api.post<SignInResponse>("/auth/google", {
     idToken,
   });
   return response.data;
