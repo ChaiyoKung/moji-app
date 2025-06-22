@@ -11,7 +11,7 @@ import { TodayButton } from "../../components/today-button";
 import { AddIncomeFab } from "../../components/add-income-fab";
 import { AddExpenseFab } from "../../components/add-expense-fab";
 import { router } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import colors from "tailwindcss/colors";
 import { fromNowDate, nowDate } from "../../libs/dayjs";
 import dayjs from "dayjs";
@@ -26,6 +26,19 @@ import {
 import { Text } from "../../components/ui/text";
 import { Spinner } from "../../components/ui/spinner";
 import { getMarkedDates } from "../../utils/calendar-marking";
+import {
+  Modal,
+  ModalBackdrop,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+} from "../../components/ui/modal";
+import { Icon } from "../../components/ui/icon";
+import { SaveIcon, X } from "lucide-react-native";
+import { Input, InputField } from "../../components/ui/input";
+import { Button, ButtonIcon, ButtonText } from "../../components/ui/button";
 
 LocaleConfig.defaultLocale = "th";
 
@@ -35,6 +48,8 @@ export default function Home() {
   const [currentMonth, setCurrentMonth] = useState<string>(
     dayjs(todayDate).format("YYYY-MM")
   );
+  const [showBalanceModal, setShowBalanceModal] = useState<boolean>(false);
+  const [inputBalance, setInputBalance] = useState<string>("");
 
   const accountQuery = useQuery({
     queryKey: ["accounts"],
@@ -76,6 +91,20 @@ export default function Home() {
     transactionIdsByDateQuery.data ?? [],
     selectedDate
   );
+
+  // Show modal if accountQuery loaded and no balance data
+  useEffect(() => {
+    if (accountQuery.isSuccess && accountQuery.data[0]?.balance === undefined) {
+      setShowBalanceModal(true);
+    }
+  }, [accountQuery.isSuccess, accountQuery.data]);
+
+  // TODO: Implement saveBalance logic to persist the balance
+  const handleSaveBalance = () => {
+    // Placeholder: close modal
+    setShowBalanceModal(false);
+    // You may want to call an API to save the balance here
+  };
 
   return (
     <SafeAreaView edges={["top"]} className="flex-1 bg-gray-100">
@@ -175,6 +204,52 @@ export default function Home() {
           })
         }
       />
+
+      <Modal
+        isOpen={showBalanceModal}
+        onClose={() => setShowBalanceModal(false)}
+      >
+        <ModalBackdrop />
+        <ModalContent className="rounded-2xl">
+          <ModalHeader>
+            <Heading size="md" className="text-typography-black">
+              กรอกยอดเงินคงเหลือ
+            </Heading>
+            <ModalCloseButton>
+              <Icon
+                as={X}
+                size="md"
+                className="text-gray-500 group-[:hover]/modal-close-button:text-gray-600 group-[:active]/modal-close-button:text-gray-700 group-[:focus-visible]/modal-close-button:text-gray-700"
+              />
+            </ModalCloseButton>
+          </ModalHeader>
+          <ModalBody>
+            <Text size="sm" className="text-gray-500 mb-2">
+              กรุณากรอกยอดเงินคงเหลือปัจจุบันของคุณ เพื่อเริ่มต้นใช้งานแอป
+            </Text>
+            <Input className="rounded-2xl">
+              <InputField
+                type="text"
+                value={inputBalance}
+                onChangeText={setInputBalance}
+                placeholder="0"
+                keyboardType="numeric"
+                autoFocus
+              />
+            </Input>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              isDisabled={!inputBalance}
+              onPress={handleSaveBalance}
+              className="rounded-2xl"
+            >
+              <ButtonIcon as={SaveIcon} />
+              <ButtonText>บันทึก</ButtonText>
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </SafeAreaView>
   );
 }
