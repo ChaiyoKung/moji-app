@@ -16,8 +16,9 @@ import colors from "tailwindcss/colors";
 import { fromNowDate, nowDate } from "../../libs/dayjs";
 import dayjs from "dayjs";
 import { TransactionItem } from "../../components/transaction-item";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
+  createAccount,
   getAllAccounts,
   getAllTransactions,
   getSummary,
@@ -38,7 +39,13 @@ import {
 import { Icon } from "../../components/ui/icon";
 import { SaveIcon, X } from "lucide-react-native";
 import { Input, InputField } from "../../components/ui/input";
-import { Button, ButtonIcon, ButtonText } from "../../components/ui/button";
+import {
+  Button,
+  ButtonIcon,
+  ButtonSpinner,
+  ButtonText,
+} from "../../components/ui/button";
+import { useSession } from "../../components/session-provider";
 
 LocaleConfig.defaultLocale = "th";
 
@@ -92,18 +99,44 @@ export default function Home() {
     selectedDate
   );
 
+  const isBalanceDataMissing =
+    accountQuery.isSuccess && accountQuery.data[0]?.balance === undefined;
+
   // Show modal if accountQuery loaded and no balance data
   useEffect(() => {
-    if (accountQuery.isSuccess && accountQuery.data[0]?.balance === undefined) {
+    if (isBalanceDataMissing) {
       setShowBalanceModal(true);
     }
-  }, [accountQuery.isSuccess, accountQuery.data]);
+  }, [isBalanceDataMissing]);
 
-  // TODO: Implement saveBalance logic to persist the balance
+  const createAccountMutation = useMutation({
+    mutationFn: createAccount,
+    onSuccess: () => {
+      accountQuery.refetch();
+      setShowBalanceModal(false);
+    },
+    onError: (error) => {
+      console.error("Failed to create account:", error);
+      // Handle error, e.g., show a toast or alert
+    },
+  });
+
+  const { userId } = useSession();
+
   const handleSaveBalance = () => {
-    // Placeholder: close modal
-    setShowBalanceModal(false);
-    // You may want to call an API to save the balance here
+    if (!userId) {
+      console.error("User ID is not available. Cannot create account.");
+      return;
+    }
+
+    createAccountMutation.mutate({
+      userId: userId,
+      name: "กระเป๋าสตางค์",
+      type: "cash",
+      balance: parseFloat(inputBalance),
+      currency: "THB",
+      icon: "💵",
+    });
   };
 
   return (
@@ -190,18 +223,22 @@ export default function Home() {
 
       <AddIncomeFab
         onPress={() =>
-          router.push({
-            pathname: "/add-transaction",
-            params: { mode: "income", date: selectedDate },
-          })
+          isBalanceDataMissing
+            ? setShowBalanceModal(true)
+            : router.push({
+                pathname: "/add-transaction",
+                params: { mode: "income", date: selectedDate },
+              })
         }
       />
       <AddExpenseFab
         onPress={() =>
-          router.push({
-            pathname: "/add-transaction",
-            params: { mode: "expense", date: selectedDate },
-          })
+          isBalanceDataMissing
+            ? setShowBalanceModal(true)
+            : router.push({
+                pathname: "/add-transaction",
+                params: { mode: "expense", date: selectedDate },
+              })
         }
       />
 
@@ -240,11 +277,15 @@ export default function Home() {
           </ModalBody>
           <ModalFooter>
             <Button
-              isDisabled={!inputBalance}
+              isDisabled={!inputBalance || createAccountMutation.isPending}
               onPress={handleSaveBalance}
               className="rounded-2xl"
             >
-              <ButtonIcon as={SaveIcon} />
+              {createAccountMutation.isPending ? (
+                <ButtonSpinner />
+              ) : (
+                <ButtonIcon as={SaveIcon} />
+              )}
               <ButtonText>บันทึก</ButtonText>
             </Button>
           </ModalFooter>

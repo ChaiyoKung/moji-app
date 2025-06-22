@@ -152,3 +152,17 @@ export async function getTransactionIdsByDate(params: {
   );
   return response.data;
 }
+
+export interface CreateAccountDto {
+  userId: string;
+  name: string;
+  type: string;
+  balance?: number;
+  currency: string;
+  icon?: string;
+}
+
+export async function createAccount(data: CreateAccountDto) {
+  const response = await api.post<Account>("/accounts", data);
+  return response.data;
+}
