@@ -17,6 +17,39 @@ export async function getAllGategoriesByType(type: "income" | "expense") {
   return response.data;
 }
 
+export interface User {
+  _id: string;
+  email: string;
+  password?: string;
+  displayName: string;
+  avatarUrl?: string;
+  providers: {
+    _id: string;
+    provider: string;
+    providerId: string;
+    linkedAt: string;
+  }[];
+  settings?: {
+    currency?: string;
+    language?: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface SignInResponse {
+  user: User;
+  accessToken: string;
+}
+
+export async function signInWithUsername(data: {
+  username: string;
+  password: string;
+}) {
+  const response = await api.post<SignInResponse>("/auth/login", data);
+  return response.data;
+}
+
 export async function signInWithGoogle(idToken: string) {
   const response = await api.post<{ accessToken: string }>("/auth/google", {
     idToken,
