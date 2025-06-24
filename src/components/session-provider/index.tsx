@@ -2,16 +2,18 @@ import { use, createContext, type PropsWithChildren } from "react";
 import { useStorageState } from "../../hooks/use-storage-state";
 
 const AuthContext = createContext<{
-  signIn: (userId: string, accessToken: string) => void;
+  signIn: (userId: string, accessToken: string, refreshToken: string) => void;
   signOut: () => void;
   userId?: string | null;
-  session?: string | null;
+  accessToken?: string | null;
+  refreshToken?: string | null;
   isLoading: boolean;
 }>({
   signIn: () => {},
   signOut: () => null,
   userId: null,
-  session: null,
+  accessToken: null,
+  refreshToken: null,
   isLoading: false,
 });
 
@@ -26,18 +28,26 @@ export function useSession() {
 }
 
 export function SessionProvider({ children }: PropsWithChildren) {
-  const [[isSeesionLoading, session], setSession] =
+  const [[isAccessTokenLoading, accessToken], setAccessToken] =
     useStorageState("accessToken");
+  const [[isRefreshTokenLoading, refreshToken], setRefreshToken] =
+    useStorageState("refreshToken");
   const [[isUserIdLoading, userId], setUserId] = useStorageState("userId");
 
-  const signIn = (userId: string, accessToken: string) => {
+  const signIn = (
+    userId: string,
+    accessToken: string,
+    refreshToken: string
+  ) => {
     setUserId(userId);
-    setSession(accessToken);
+    setAccessToken(accessToken);
+    setRefreshToken(refreshToken);
   };
 
   const signOut = () => {
     setUserId(null);
-    setSession(null);
+    setAccessToken(null);
+    setRefreshToken(null);
   };
 
   return (
@@ -46,8 +56,10 @@ export function SessionProvider({ children }: PropsWithChildren) {
         signIn,
         signOut,
         userId,
-        session,
-        isLoading: isSeesionLoading || isUserIdLoading,
+        accessToken,
+        refreshToken,
+        isLoading:
+          isAccessTokenLoading || isRefreshTokenLoading || isUserIdLoading,
       }}
     >
       {children}

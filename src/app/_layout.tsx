@@ -63,8 +63,8 @@ export default function RootLayout() {
 }
 
 function RootNavigation() {
-  const { session } = useSession();
-  const hasSession = Boolean(session);
+  const { refreshToken } = useSession();
+  const hasRefreshToken = Boolean(refreshToken);
 
   return (
     <Stack
@@ -99,12 +99,12 @@ function RootNavigation() {
         },
       }}
     >
-      <Stack.Protected guard={hasSession}>
+      <Stack.Protected guard={hasRefreshToken}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="add-transaction" options={{ headerTitle: "" }} />
       </Stack.Protected>
 
-      <Stack.Protected guard={!hasSession}>
+      <Stack.Protected guard={!hasRefreshToken}>
         <Stack.Screen name="sign-in" options={{ headerShown: false }} />
         <Stack.Screen name="sign-up" options={{ headerTitle: "" }} />
       </Stack.Protected>
