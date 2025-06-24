@@ -9,9 +9,9 @@ api.interceptors.request.use(
   async (request) => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate a delay for demonstration
-      const token = await getStorageItemAsync("session");
-      if (token) {
-        request.headers.Authorization = `Bearer ${token}`;
+      const accessToken = await getStorageItemAsync("accessToken");
+      if (accessToken) {
+        request.headers.Authorization = `Bearer ${accessToken}`;
       }
     } catch (error) {
       console.error("Error getting token:", error);
