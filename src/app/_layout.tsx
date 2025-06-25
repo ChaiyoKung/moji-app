@@ -13,6 +13,7 @@ import { SplashScreenController } from "../components/splash-screen-controller";
 import { SessionProvider, useSession } from "../components/session-provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Heading } from "../components/ui/heading";
+import { ReactNode, useState } from "react";
 
 interface BackButtonProps {
   onPress?: PressableProps["onPress"];
@@ -47,18 +48,24 @@ export function ErrorBoundary({ error }: ErrorBoundaryProps) {
   );
 }
 
-const queryClient = new QueryClient();
-
 export default function RootLayout() {
   return (
     <GluestackUIProvider>
-      <QueryClientProvider client={queryClient}>
-        <SessionProvider>
-          <SplashScreenController />
+      <SessionProvider>
+        <SplashScreenController />
+        <QueryProvider>
           <RootNavigation />
-        </SessionProvider>
-      </QueryClientProvider>
+        </QueryProvider>
+      </SessionProvider>
     </GluestackUIProvider>
+  );
+}
+
+function QueryProvider({ children }: { children?: ReactNode }) {
+  const [queryClient] = useState<QueryClient>(() => new QueryClient());
+
+  return (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 }
 
