@@ -64,6 +64,7 @@ api.interceptors.response.use(
     ) {
       originalRequest._retry = true;
 
+      // Use a shared promise to ensure only one refresh request is sent at a time.
       if (!refreshTokenPromise) {
         refreshTokenPromise = refreshAccessToken();
         refreshTokenPromise.finally(() => {
