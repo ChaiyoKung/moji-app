@@ -25,6 +25,11 @@ api.interceptors.request.use(
   }
 );
 
+let refreshTokenPromise: Promise<{
+  accessToken: string;
+  refreshToken: string;
+}> | null = null;
+
 api.interceptors.response.use(
   (response) => {
     return AxiosLogger.responseLogger(response, {
@@ -42,21 +47,30 @@ api.interceptors.response.use(
     ) {
       originalRequest._retry = true;
       try {
-        const refreshToken = await getStorageItemAsync("refreshToken");
-        if (refreshToken) {
-          console.warn("Refreshing token...");
-          const refreshTokenResponse = await axios.post<{
-            accessToken: string;
-            refreshToken: string;
-          }>(`${env.EXPO_PUBLIC_API_URL}/auth/refresh`, { refreshToken });
-          const data = refreshTokenResponse.data;
-          const newAccessToken = data.accessToken;
-          const newRefreshToken = data.refreshToken;
-          await setStorageItemAsync("accessToken", newAccessToken);
-          await setStorageItemAsync("refreshToken", newRefreshToken);
-          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-          return api(originalRequest);
+        if (!refreshTokenPromise) {
+          refreshTokenPromise = (async () => {
+            const refreshToken = await getStorageItemAsync("refreshToken");
+            if (refreshToken) {
+              console.warn("Refreshing token...");
+              const refreshTokenResponse = await axios.post<{
+                accessToken: string;
+                refreshToken: string;
+              }>(`${env.EXPO_PUBLIC_API_URL}/auth/refresh`, { refreshToken });
+              const data = refreshTokenResponse.data;
+              await setStorageItemAsync("accessToken", data.accessToken);
+              await setStorageItemAsync("refreshToken", data.refreshToken);
+              return data;
+            } else {
+              throw new Error("No refresh token found");
+            }
+          })();
+          refreshTokenPromise.finally(() => {
+            refreshTokenPromise = null;
+          });
         }
+        const data = await refreshTokenPromise;
+        originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
+        return api(originalRequest);
       } catch (refreshError) {
         console.error("Error refreshing token:", refreshError);
         throw refreshError;

@@ -11,9 +11,14 @@ import { Icon } from "../components/ui/icon";
 import { Box } from "../components/ui/box";
 import { SplashScreenController } from "../components/splash-screen-controller";
 import { SessionProvider, useSession } from "../components/session-provider";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 import { Heading } from "../components/ui/heading";
 import { ReactNode, useState } from "react";
+import { isAxiosError } from "axios";
 
 interface BackButtonProps {
   onPress?: PressableProps["onPress"];
@@ -62,7 +67,34 @@ export default function RootLayout() {
 }
 
 function QueryProvider({ children }: { children?: ReactNode }) {
-  const [queryClient] = useState<QueryClient>(() => new QueryClient());
+  const { signOut } = useSession();
+  const [queryClient] = useState<QueryClient>(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            retry: (failureCount, error) => {
+              // If the error is a 401 Unauthorized, do not retry
+              if (isAxiosError(error) && error.response?.status === 401) {
+                return false;
+              }
+
+              // Retry failed requests up to 3 times
+              return failureCount < 3;
+            },
+          },
+        },
+        queryCache: new QueryCache({
+          onError(error) {
+            // If the error is a 401 Unauthorized, sign out the user
+            if (isAxiosError(error) && error.response?.status === 401) {
+              console.warn("Unauthorized access, signing out...");
+              signOut();
+            }
+          },
+        }),
+      })
+  );
 
   return (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
