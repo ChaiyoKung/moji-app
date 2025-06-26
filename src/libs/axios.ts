@@ -30,8 +30,6 @@ interface RefreshTokenResponse {
   refreshToken: string;
 }
 
-let refreshTokenPromise: Promise<RefreshTokenResponse> | null = null;
-
 async function refreshAccessToken(): Promise<RefreshTokenResponse> {
   const refreshToken = await getStorageItemAsync("refreshToken");
   if (!refreshToken) {
@@ -48,6 +46,7 @@ async function refreshAccessToken(): Promise<RefreshTokenResponse> {
   return data;
 }
 
+let refreshTokenPromise: Promise<RefreshTokenResponse> | null = null;
 api.interceptors.response.use(
   (response) => {
     return AxiosLogger.responseLogger(response, {
