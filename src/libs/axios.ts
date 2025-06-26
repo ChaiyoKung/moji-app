@@ -63,13 +63,15 @@ api.interceptors.response.use(
       !originalRequest._retry
     ) {
       originalRequest._retry = true;
+
+      if (!refreshTokenPromise) {
+        refreshTokenPromise = refreshAccessToken();
+        refreshTokenPromise.finally(() => {
+          refreshTokenPromise = null;
+        });
+      }
+
       try {
-        if (!refreshTokenPromise) {
-          refreshTokenPromise = refreshAccessToken();
-          refreshTokenPromise.finally(() => {
-            refreshTokenPromise = null;
-          });
-        }
         const data = await refreshTokenPromise;
         originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
         return api(originalRequest);
