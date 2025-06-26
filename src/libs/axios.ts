@@ -30,6 +30,25 @@ let refreshTokenPromise: Promise<{
   refreshToken: string;
 }> | null = null;
 
+async function refreshAccessToken(): Promise<{
+  accessToken: string;
+  refreshToken: string;
+}> {
+  const refreshToken = await getStorageItemAsync("refreshToken");
+  if (!refreshToken) {
+    throw new Error("No refresh token found");
+  }
+  console.warn("Refreshing token...");
+  const refreshTokenResponse = await axios.post<{
+    accessToken: string;
+    refreshToken: string;
+  }>(`${env.EXPO_PUBLIC_API_URL}/auth/refresh`, { refreshToken });
+  const data = refreshTokenResponse.data;
+  await setStorageItemAsync("accessToken", data.accessToken);
+  await setStorageItemAsync("refreshToken", data.refreshToken);
+  return data;
+}
+
 api.interceptors.response.use(
   (response) => {
     return AxiosLogger.responseLogger(response, {
@@ -48,22 +67,7 @@ api.interceptors.response.use(
       originalRequest._retry = true;
       try {
         if (!refreshTokenPromise) {
-          refreshTokenPromise = (async () => {
-            const refreshToken = await getStorageItemAsync("refreshToken");
-            if (refreshToken) {
-              console.warn("Refreshing token...");
-              const refreshTokenResponse = await axios.post<{
-                accessToken: string;
-                refreshToken: string;
-              }>(`${env.EXPO_PUBLIC_API_URL}/auth/refresh`, { refreshToken });
-              const data = refreshTokenResponse.data;
-              await setStorageItemAsync("accessToken", data.accessToken);
-              await setStorageItemAsync("refreshToken", data.refreshToken);
-              return data;
-            } else {
-              throw new Error("No refresh token found");
-            }
-          })();
+          refreshTokenPromise = refreshAccessToken();
           refreshTokenPromise.finally(() => {
             refreshTokenPromise = null;
           });
