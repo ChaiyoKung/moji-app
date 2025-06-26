@@ -85,7 +85,7 @@ function QueryProvider({ children }: { children?: ReactNode }) {
           },
         },
         queryCache: new QueryCache({
-          onError(error) {
+          onError: (error) => {
             // If the error is a 401 Unauthorized, sign out the user
             if (isAxiosError(error) && error.response?.status === 401) {
               console.warn("Unauthorized access, signing out...");
