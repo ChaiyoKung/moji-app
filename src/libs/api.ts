@@ -58,6 +58,11 @@ export async function signInWithGoogle(idToken: string) {
   return response.data;
 }
 
+export async function logout(refreshToken: string) {
+  const response = await api.post("/auth/logout", { refreshToken });
+  return response.data;
+}
+
 export interface Account {
   _id: string;
   userId: string;
