@@ -90,6 +90,7 @@ function QueryProvider({ children }: { children?: ReactNode }) {
             if (isAxiosError(error) && error.response?.status === 401) {
               console.warn("Unauthorized access, signing out...");
               signOut();
+              console.log("Signed out successfully due to 401 error");
             }
           },
         }),
