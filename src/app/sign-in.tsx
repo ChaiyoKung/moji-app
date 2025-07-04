@@ -36,7 +36,7 @@ export default function SignIn() {
   const mutation = useMutation({
     mutationFn: signInWithUsername,
     onSuccess: (data) => {
-      signIn(data.user._id, data.accessToken);
+      signIn(data.user._id, data.accessToken, data.refreshToken);
       // Navigate after signing in. You may want to tweak this to ensure sign-in is
       // successful before navigating.
       router.replace("/");
@@ -71,7 +71,7 @@ export default function SignIn() {
       }
 
       console.log("Google Sign-In Success");
-      signIn(data.user._id, data.accessToken);
+      signIn(data.user._id, data.accessToken, data.refreshToken);
       // Navigate after signing in. You may want to tweak this to ensure sign-in is
       // successful before navigating.
       router.replace("/");

@@ -11,8 +11,14 @@ import { Icon } from "../components/ui/icon";
 import { Box } from "../components/ui/box";
 import { SplashScreenController } from "../components/splash-screen-controller";
 import { SessionProvider, useSession } from "../components/session-provider";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 import { Heading } from "../components/ui/heading";
+import { ReactNode, useState } from "react";
+import { isAxiosError } from "axios";
 
 interface BackButtonProps {
   onPress?: PressableProps["onPress"];
@@ -47,24 +53,58 @@ export function ErrorBoundary({ error }: ErrorBoundaryProps) {
   );
 }
 
-const queryClient = new QueryClient();
-
 export default function RootLayout() {
   return (
     <GluestackUIProvider>
-      <QueryClientProvider client={queryClient}>
-        <SessionProvider>
-          <SplashScreenController />
+      <SessionProvider>
+        <SplashScreenController />
+        <QueryProvider>
           <RootNavigation />
-        </SessionProvider>
-      </QueryClientProvider>
+        </QueryProvider>
+      </SessionProvider>
     </GluestackUIProvider>
   );
 }
 
+function QueryProvider({ children }: { children?: ReactNode }) {
+  const { signOut } = useSession();
+  const [queryClient] = useState<QueryClient>(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            retry: (failureCount, error) => {
+              // If the error is a 401 Unauthorized, do not retry
+              if (isAxiosError(error) && error.response?.status === 401) {
+                return false;
+              }
+
+              // Retry failed requests up to 3 times
+              return failureCount < 3;
+            },
+          },
+        },
+        queryCache: new QueryCache({
+          onError: (error) => {
+            // If the error is a 401 Unauthorized, sign out the user
+            if (isAxiosError(error) && error.response?.status === 401) {
+              console.warn("Unauthorized access, signing out...");
+              signOut();
+              console.log("Signed out successfully due to 401 error");
+            }
+          },
+        }),
+      })
+  );
+
+  return (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  );
+}
+
 function RootNavigation() {
-  const { session } = useSession();
-  const hasSession = Boolean(session);
+  const { refreshToken } = useSession();
+  const hasRefreshToken = Boolean(refreshToken);
 
   return (
     <Stack
@@ -99,12 +139,12 @@ function RootNavigation() {
         },
       }}
     >
-      <Stack.Protected guard={hasSession}>
+      <Stack.Protected guard={hasRefreshToken}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="add-transaction" options={{ headerTitle: "" }} />
       </Stack.Protected>
 
-      <Stack.Protected guard={!hasSession}>
+      <Stack.Protected guard={!hasRefreshToken}>
         <Stack.Screen name="sign-in" options={{ headerShown: false }} />
         <Stack.Screen name="sign-up" options={{ headerTitle: "" }} />
       </Stack.Protected>

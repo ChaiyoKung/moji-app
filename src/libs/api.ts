@@ -40,6 +40,7 @@ export interface User {
 export interface SignInResponse {
   user: User;
   accessToken: string;
+  refreshToken: string;
 }
 
 export async function signInWithUsername(data: {
@@ -54,6 +55,11 @@ export async function signInWithGoogle(idToken: string) {
   const response = await api.post<SignInResponse>("/auth/google", {
     idToken,
   });
+  return response.data;
+}
+
+export async function logout(refreshToken: string) {
+  const response = await api.post("/auth/logout", { refreshToken });
   return response.data;
 }
 
