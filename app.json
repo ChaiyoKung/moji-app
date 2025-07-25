@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "moji",
+    "name": "Moji",
     "slug": "moji",
     "scheme": "moji",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -20,7 +20,10 @@
         "tinted": "./assets/ios-tinted.png"
       },
       "supportsTablet": true,
-      "bundleIdentifier": "com.chaiyokung.moji"
+      "bundleIdentifier": "com.chaiyokung.moji",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -41,6 +44,12 @@
           "iosUrlScheme": "com.googleusercontent.apps.182176073255-cp209pgt14ug45f1562h969boe1v05j5"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "b5a9803b-7762-4bfc-accd-1b59c860afb8"
+      }
+    },
+    "owner": "chaiyokung"
   }
 }
