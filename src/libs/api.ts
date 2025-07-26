@@ -43,14 +43,6 @@ export interface SignInResponse {
   refreshToken: string;
 }
 
-export async function signInWithUsername(data: {
-  username: string;
-  password: string;
-}) {
-  const response = await api.post<SignInResponse>("/auth/login", data);
-  return response.data;
-}
-
 export async function signInWithGoogle(idToken: string) {
   const response = await api.post<SignInResponse>("/auth/google", {
     idToken,

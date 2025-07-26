@@ -149,7 +149,6 @@ function RootNavigation() {
 
       <Stack.Protected guard={!hasRefreshToken}>
         <Stack.Screen name="sign-in" options={{ headerShown: false }} />
-        <Stack.Screen name="sign-up" options={{ headerTitle: "" }} />
       </Stack.Protected>
     </Stack>
   );
