@@ -10,7 +10,7 @@ import { router } from "expo-router";
 import { useState } from "react";
 import { Input, InputField } from "../components/ui/input";
 import { Divider } from "../components/ui/divider";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { useMutation } from "@tanstack/react-query";
 import colors from "tailwindcss/colors";
 import { signInWithGoogle, signInWithUsername } from "../libs/api";
@@ -96,7 +96,7 @@ export default function SignIn() {
   });
 
   return (
-    <KeyboardAwareScrollView className="flex-1 bg-gray-100" enableOnAndroid>
+    <KeyboardAwareScrollView className="flex-1 bg-gray-100">
       <SafeAreaView edges={["top"]}>
         <Center className="px-6 py-20">
           <Image
@@ -106,6 +106,9 @@ export default function SignIn() {
             className="w-48 h-48"
           />
         </Center>
+      </SafeAreaView>
+
+      <SafeAreaView edges={["bottom"]}>
         <VStack
           space="lg"
           className="bg-white p-6 rounded-t-3xl border-t border-gray-200 h-full"
