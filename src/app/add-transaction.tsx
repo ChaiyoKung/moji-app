@@ -1,5 +1,4 @@
 import { router, useLocalSearchParams } from "expo-router";
-import { ScrollView } from "react-native";
 import { Heading } from "../components/ui/heading";
 import { VStack } from "../components/ui/vstack";
 import { Text } from "../components/ui/text";
@@ -26,6 +25,7 @@ import {
 } from "../libs/api";
 import dayjs from "dayjs";
 import { DateLabel } from "../components/date-label";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 export default function Transaction() {
   const { mode, date } = useLocalSearchParams();
@@ -93,7 +93,7 @@ export default function Transaction() {
 
   return (
     <>
-      <ScrollView className="flex-1 bg-gray-100">
+      <KeyboardAwareScrollView className="flex-1 bg-gray-100">
         <VStack space="md" className="p-4">
           <VStack>
             <Heading size="3xl" className="text-typography-black">
@@ -174,7 +174,7 @@ export default function Transaction() {
             </Input>
           </VStack>
         </VStack>
-      </ScrollView>
+      </KeyboardAwareScrollView>
 
       <SafeAreaView
         edges={["bottom"]}
