@@ -106,6 +106,9 @@ export default function SignIn() {
             className="w-48 h-48"
           />
         </Center>
+      </SafeAreaView>
+
+      <SafeAreaView edges={["bottom"]}>
         <VStack
           space="lg"
           className="bg-white p-6 rounded-t-3xl border-t border-gray-200 h-full"
