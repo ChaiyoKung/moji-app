@@ -136,7 +136,7 @@ export interface Summary {
 export async function getSummary(params: {
   type: "income" | "expense";
   date: string;
-  timezone?: string;
+  timezone: string;
 }) {
   const response = await api.get<Summary>("/analytics/summary", { params });
   return response.data;

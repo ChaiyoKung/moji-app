@@ -75,7 +75,12 @@ export default function Home() {
 
   const summaryQuery = useQuery({
     queryKey: ["summary", selectedDate],
-    queryFn: () => getSummary({ type: "expense", date: selectedDate }),
+    queryFn: () =>
+      getSummary({
+        type: "expense",
+        date: selectedDate,
+        timezone: dayjs.tz.guess(),
+      }),
   });
 
   const startOfMonth = dayjs(currentMonth + "-01")
