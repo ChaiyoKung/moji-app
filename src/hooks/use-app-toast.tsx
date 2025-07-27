@@ -30,17 +30,13 @@ export function useAppToast() {
       duration: options.duration ?? defaultDuration,
       render: ({ id }) => {
         const uniqueToastId = "toast-" + id;
-        return React.createElement(
-          Toast,
-          {
-            nativeID: uniqueToastId,
-            action: type,
-            variant: "outline",
-          },
-          React.createElement(ToastTitle, null, options.title),
-          options.description
-            ? React.createElement(ToastDescription, null, options.description)
-            : null
+        return (
+          <Toast nativeID={uniqueToastId} action={type} variant="outline">
+            <ToastTitle>{options.title}</ToastTitle>
+            {options.description ? (
+              <ToastDescription>{options.description}</ToastDescription>
+            ) : null}
+          </Toast>
         );
       },
     });
