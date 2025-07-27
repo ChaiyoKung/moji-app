@@ -6,9 +6,11 @@ import { useMutation } from "@tanstack/react-query";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { logout } from "../../libs/api";
 import { getStorageItemAsync } from "../../hooks/use-storage-state";
+import { useAppToast } from "../../hooks/use-app-toast";
 
 export default function Profile() {
   const { signOut } = useSession();
+  const toast = useAppToast();
 
   const signOutMutation = useMutation({
     mutationFn: GoogleSignin.signOut,
@@ -32,6 +34,7 @@ export default function Profile() {
     onError: (error) => {
       // Handle error, e.g., show a toast or alert
       console.error("Sign out failed:", error);
+      toast.error("ออกจากระบบไม่สำเร็จ", "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");
     },
   });
 
