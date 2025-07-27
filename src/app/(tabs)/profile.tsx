@@ -26,6 +26,10 @@ export default function Profile() {
         console.log("Logged out from backend successfully");
       } catch (error) {
         console.error("Failed to logout from backend:", error);
+        toast.error(
+          "ออกจากระบบไม่สำเร็จ",
+          "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง"
+        );
       }
 
       signOut();
