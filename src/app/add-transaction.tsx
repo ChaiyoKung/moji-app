@@ -58,8 +58,8 @@ export default function Transaction() {
 
   const createTransactionMutation = useMutation({
     mutationFn: createTransaction,
-    onSuccess: (data) => {
-      console.log("Transaction created successfully:", data);
+    onSuccess: () => {
+      console.log("Transaction created successfully");
 
       // Show success toast
       toast.success("บันทึกรายการสำเร็จ");
