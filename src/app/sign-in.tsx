@@ -17,6 +17,7 @@ import {
   isErrorWithCode,
   statusCodes,
 } from "@react-native-google-signin/google-signin";
+import { useAppToast } from "../hooks/use-app-toast";
 
 GoogleSignin.configure({
   webClientId: env.EXPO_PUBLIC_GOOGLE_OAUTH_WEB_CLIENT_ID,
@@ -26,6 +27,7 @@ GoogleSignin.configure({
 
 export default function SignIn() {
   const { signIn } = useSession();
+  const toast = useAppToast();
 
   const signInGoogleMutation = useMutation({
     mutationFn: async () => {
@@ -58,6 +60,7 @@ export default function SignIn() {
     },
     onError: (error) => {
       console.error("Google Sign-In failed:", error);
+
       if (isErrorWithCode(error)) {
         switch (error.code) {
           case statusCodes.IN_PROGRESS:
@@ -65,12 +68,21 @@ export default function SignIn() {
             break;
           case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
             // Android only, play services not available or outdated
+            toast.error(
+              "ไม่พบ Google Play Services",
+              "กรุณาอัปเดต Google Play Services"
+            );
             break;
           default:
-          // some other error happened
+            // some other error happened
+            toast.error("เข้าสู่ระบบไม่สำเร็จ", "กรุณาลองใหม่อีกครั้ง");
         }
       } else {
         // an error that's not related to google sign in occurred
+        toast.error(
+          "เกิดข้อผิดพลาดในการเข้าสู่ระบบ",
+          "กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต"
+        );
       }
     },
   });

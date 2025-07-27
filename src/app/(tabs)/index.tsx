@@ -46,6 +46,7 @@ import {
   ButtonText,
 } from "../../components/ui/button";
 import { useSession } from "../../components/session-provider";
+import { useAppToast } from "../../hooks/use-app-toast";
 
 LocaleConfig.defaultLocale = "th";
 
@@ -57,6 +58,8 @@ export default function Home() {
   );
   const [showBalanceModal, setShowBalanceModal] = useState<boolean>(false);
   const [inputBalance, setInputBalance] = useState<string>("");
+
+  const toast = useAppToast();
 
   const accountQuery = useQuery({
     queryKey: ["accounts"],
@@ -122,7 +125,7 @@ export default function Home() {
     },
     onError: (error) => {
       console.error("Failed to create account:", error);
-      // Handle error, e.g., show a toast or alert
+      toast.error("ไม่สามารถสร้างบัญชีได้", "กรุณาลองใหม่อีกครั้ง");
     },
   });
 
@@ -131,6 +134,7 @@ export default function Home() {
   const handleSaveBalance = () => {
     if (!userId) {
       console.error("User ID is not available. Cannot create account.");
+      toast.error("ไม่พบข้อมูลผู้ใช้", "กรุณาลองใหม่อีกครั้ง");
       return;
     }
 

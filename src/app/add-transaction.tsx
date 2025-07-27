@@ -26,6 +26,7 @@ import {
 import dayjs from "dayjs";
 import { DateLabel } from "../components/date-label";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
+import { useAppToast } from "../hooks/use-app-toast";
 
 export default function Transaction() {
   const { mode, date } = useLocalSearchParams();
@@ -39,6 +40,7 @@ export default function Transaction() {
   }
 
   const queryClient = useQueryClient();
+  const toast = useAppToast();
 
   const categoriesQuery = useQuery({
     queryKey: ["categories", mode],
@@ -56,9 +58,13 @@ export default function Transaction() {
 
   const createTransactionMutation = useMutation({
     mutationFn: createTransaction,
-    onSuccess: (data) => {
-      console.log("Transaction created successfully:", data);
-      // Optionally, you can navigate back or show a success message
+    onSuccess: () => {
+      console.log("Transaction created successfully");
+
+      // Show success toast
+      toast.success("บันทึกรายการสำเร็จ");
+
+      // Invalidate queries to refresh data
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
       queryClient.invalidateQueries({ queryKey: ["transactions", date] });
       queryClient.invalidateQueries({ queryKey: ["summary", date] });
@@ -73,7 +79,9 @@ export default function Transaction() {
     },
     onError: (error) => {
       console.error("Error creating transaction:", error);
-      // Optionally, you can show an error message to the user
+
+      // Show error toast
+      toast.error("เกิดข้อผิดพลาดในการบันทึกรายการ", "กรุณาลองใหม่อีกครั้ง");
     },
   });
 

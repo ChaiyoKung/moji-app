@@ -26,9 +26,11 @@ export function TransactionItem({ data }: TransactionItemProps) {
         <Text size="lg" className="text-typography-black">
           {data.categoryId.name}
         </Text>
-        <Text size="sm" className="text-typography-500">
-          {data.note || "-"}
-        </Text>
+        {data.note ? (
+          <Text size="sm" className="text-typography-500">
+            {data.note}
+          </Text>
+        ) : null}
       </VStack>
       <AmountText
         size="4xl"
