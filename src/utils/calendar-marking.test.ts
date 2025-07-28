@@ -30,6 +30,54 @@ describe("getMarkedDates", () => {
     expect(result2["2025-06-21"].dots).toBeUndefined();
   });
 
+  it("should use gray[500] for selected date with <=2 items", () => {
+    const result = getMarkedDates(
+      [{ _id: "2025-07-01", ids: ["a", "b"] }],
+      "2025-07-01"
+    );
+    expect(result["2025-07-01"].dots[0].color).toBe(colors.gray[500]);
+  });
+
+  it("should use gray[300] for selected date with 3-5 items", () => {
+    const result = getMarkedDates(
+      [{ _id: "2025-07-02", ids: ["a", "b", "c", "d"] }],
+      "2025-07-02"
+    );
+    expect(result["2025-07-02"].dots[0].color).toBe(colors.gray[300]);
+  });
+
+  it("should use gray[100] for selected date with >5 items", () => {
+    const result = getMarkedDates(
+      [{ _id: "2025-07-03", ids: ["a", "b", "c", "d", "e", "f"] }],
+      "2025-07-03"
+    );
+    expect(result["2025-07-03"].dots[0].color).toBe(colors.gray[100]);
+  });
+
+  it("should use blue[300] for non-selected date with <=2 items", () => {
+    const result = getMarkedDates(
+      [{ _id: "2025-07-04", ids: ["a", "b"] }],
+      "2025-07-99"
+    );
+    expect(result["2025-07-04"].dots[0].color).toBe(colors.blue[300]);
+  });
+
+  it("should use blue[500] for non-selected date with 3-5 items", () => {
+    const result = getMarkedDates(
+      [{ _id: "2025-07-05", ids: ["a", "b", "c", "d", "e"] }],
+      "2025-07-99"
+    );
+    expect(result["2025-07-05"].dots[0].color).toBe(colors.blue[500]);
+  });
+
+  it("should use blue[700] for non-selected date with >5 items", () => {
+    const result = getMarkedDates(
+      [{ _id: "2025-07-06", ids: ["a", "b", "c", "d", "e", "f", "g"] }],
+      "2025-07-99"
+    );
+    expect(result["2025-07-06"].dots[0].color).toBe(colors.blue[700]);
+  });
+
   it("should apply correct color intensity based on transaction count", () => {
     const mockTransactionDates = [
       { _id: "2025-06-01", ids: ["id1"] }, // 1 item
