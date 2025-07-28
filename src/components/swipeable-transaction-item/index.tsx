@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 import { Pressable } from "../ui/pressable";
 import { Icon } from "../ui/icon";
+import { Spinner } from "../ui/spinner";
 import { Trash2 } from "lucide-react-native";
 import colors from "tailwindcss/colors";
 import { TransactionItem } from "../transaction-item";
@@ -43,7 +44,11 @@ export function SwipeableTransactionItem({
           className="bg-red-500 justify-center items-center rounded-2xl aspect-square"
           disabled={deleteTransactionMutation.isPending}
         >
-          <Icon as={Trash2} size="xl" className="text-white" />
+          {deleteTransactionMutation.isPending ? (
+            <Spinner className="text-white" />
+          ) : (
+            <Icon as={Trash2} size="xl" className="text-white" />
+          )}
         </Pressable>
       )}
       containerStyle={{
