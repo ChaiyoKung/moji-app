@@ -30,7 +30,9 @@ export function getMarkedDates(
 ) {
   const marked: Record<string, any> = {};
 
-  transactionIdsByDate.forEach(({ _id: date, ids }) => {
+  for (const item of transactionIdsByDate) {
+    const { _id: date, ids } = item;
+
     const count = ids.length;
     const isSelected = date === selectedDate;
 
@@ -42,7 +44,7 @@ export function getMarkedDates(
         },
       ],
     };
-  });
+  }
 
   marked[selectedDate] = {
     ...(marked[selectedDate] || {}),
