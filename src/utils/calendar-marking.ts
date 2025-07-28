@@ -7,10 +7,10 @@ import colors from "tailwindcss/colors";
  */
 function getDotColor(count: number, isSelected: boolean): string {
   if (isSelected) {
-    // For selected days: more items = lighter gray
-    if (count <= 2) return colors.gray[500];
-    if (count <= 5) return colors.gray[300];
-    return colors.gray[100];
+    // For selected days: more items = lighter blue/white
+    if (count <= 2) return colors.blue[300];
+    if (count <= 5) return colors.blue[100];
+    return colors.white;
   } else {
     // For non-selected days: more items = darker blue
     if (count <= 2) return colors.blue[300];
