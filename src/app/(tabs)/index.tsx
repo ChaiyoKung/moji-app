@@ -15,11 +15,10 @@ import { useEffect, useState } from "react";
 import colors from "tailwindcss/colors";
 import { fromNowDate, nowDate } from "../../libs/dayjs";
 import dayjs from "dayjs";
-import { TransactionItem } from "../../components/transaction-item";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { SwipeableTransactionItem } from "../../components/swipeable-transaction-item";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   createAccount,
-  deleteTransaction,
   getAllAccounts,
   getAllTransactions,
   getSummary,
@@ -38,7 +37,7 @@ import {
   ModalHeader,
 } from "../../components/ui/modal";
 import { Icon } from "../../components/ui/icon";
-import { SaveIcon, Trash2, X } from "lucide-react-native";
+import { SaveIcon, X } from "lucide-react-native";
 import { Input, InputField } from "../../components/ui/input";
 import {
   Button,
@@ -48,8 +47,6 @@ import {
 } from "../../components/ui/button";
 import { useSession } from "../../components/session-provider";
 import { useAppToast } from "../../hooks/use-app-toast";
-import Swipeable from "react-native-gesture-handler/ReanimatedSwipeable";
-import { Pressable } from "../../components/ui/pressable";
 
 LocaleConfig.defaultLocale = "th";
 
@@ -62,7 +59,6 @@ export default function Home() {
   const [showBalanceModal, setShowBalanceModal] = useState<boolean>(false);
   const [inputBalance, setInputBalance] = useState<string>("");
 
-  const queryClient = useQueryClient();
   const toast = useAppToast();
 
   const accountQuery = useQuery({
@@ -152,22 +148,6 @@ export default function Home() {
     });
   };
 
-  const deleteTransactionMutation = useMutation({
-    mutationFn: deleteTransaction,
-    onSuccess: () => {
-      // Invalidate all related queries
-      queryClient.invalidateQueries({ queryKey: ["transactions"] });
-      queryClient.invalidateQueries({ queryKey: ["accounts"] });
-      queryClient.invalidateQueries({ queryKey: ["summary"] });
-      queryClient.invalidateQueries({ queryKey: ["transactionIdsByDate"] });
-      toast.success("ลบรายการเรียบร้อยแล้ว");
-    },
-    onError: (error) => {
-      console.error("Failed to delete transaction:", error);
-      toast.error("ไม่สามารถลบรายการได้", "กรุณาลองใหม่อีกครั้ง");
-    },
-  });
-
   return (
     <SafeAreaView edges={["top"]} className="flex-1 bg-gray-100">
       <ScrollView>
@@ -243,25 +223,7 @@ export default function Home() {
               </Center>
             ) : (
               transactionsQuery.data.map((item) => (
-                <Swipeable
-                  key={item._id}
-                  renderRightActions={() => (
-                    <Pressable
-                      onPress={() => deleteTransactionMutation.mutate(item._id)}
-                      className="bg-red-500 justify-center items-center rounded-2xl aspect-square"
-                    >
-                      <Icon as={Trash2} size="xl" className="text-white" />
-                    </Pressable>
-                  )}
-                  containerStyle={{
-                    backgroundColor: colors.red[500],
-                    borderRadius: 16,
-                    overflow: "visible",
-                    marginHorizontal: 16,
-                  }}
-                >
-                  <TransactionItem data={item} />
-                </Swipeable>
+                <SwipeableTransactionItem key={item._id} data={item} />
               ))
             )}
           </VStack>
