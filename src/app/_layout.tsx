@@ -20,6 +20,7 @@ import { Heading } from "../components/ui/heading";
 import { ReactNode, useState } from "react";
 import { isAxiosError } from "axios";
 import { KeyboardProvider } from "react-native-keyboard-controller";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 interface BackButtonProps {
   onPress?: PressableProps["onPress"];
@@ -56,16 +57,18 @@ export function ErrorBoundary({ error }: ErrorBoundaryProps) {
 
 export default function RootLayout() {
   return (
-    <KeyboardProvider>
-      <GluestackUIProvider>
-        <SessionProvider>
-          <SplashScreenController />
-          <QueryProvider>
-            <RootNavigation />
-          </QueryProvider>
-        </SessionProvider>
-      </GluestackUIProvider>
-    </KeyboardProvider>
+    <GestureHandlerRootView>
+      <KeyboardProvider>
+        <GluestackUIProvider>
+          <SessionProvider>
+            <SplashScreenController />
+            <QueryProvider>
+              <RootNavigation />
+            </QueryProvider>
+          </SessionProvider>
+        </GluestackUIProvider>
+      </KeyboardProvider>
+    </GestureHandlerRootView>
   );
 }
 

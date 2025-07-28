@@ -27,7 +27,7 @@ export function TransactionItem({ data }: TransactionItemProps) {
           {data.categoryId.name}
         </Text>
         {data.note ? (
-          <Text size="sm" className="text-typography-500">
+          <Text size="sm" className="text-typography-500" numberOfLines={1}>
             {data.note}
           </Text>
         ) : null}

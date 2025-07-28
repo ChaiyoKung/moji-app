@@ -164,3 +164,8 @@ export async function createAccount(data: CreateAccountDto) {
   const response = await api.post<Account>("/accounts", data);
   return response.data;
 }
+
+export async function deleteTransaction(id: string) {
+  const response = await api.delete(`/transactions/${id}`);
+  return response.data;
+}

@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 import colors from "tailwindcss/colors";
 import { fromNowDate, nowDate } from "../../libs/dayjs";
 import dayjs from "dayjs";
-import { TransactionItem } from "../../components/transaction-item";
+import { SwipeableTransactionItem } from "../../components/swipeable-transaction-item";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   createAccount,
@@ -204,26 +204,26 @@ export default function Home() {
             />
           </VStack>
 
-          <VStack space="sm">
-            <Heading size="lg" bold className="text-typography-500">
+          <VStack space="sm" className="-mx-4">
+            <Heading size="lg" bold className="text-typography-500 px-4">
               รายการ
             </Heading>
             {transactionsQuery.isLoading ? (
-              <Center className="h-40">
+              <Center className="h-40 px-4">
                 <Spinner />
               </Center>
             ) : transactionsQuery.error ? (
-              <Center className="h-40">
+              <Center className="h-40 px-4">
                 <Text className="text-red-500">ไม่สามารถโหลดรายการได้</Text>
               </Center>
             ) : transactionsQuery.data === undefined ||
               transactionsQuery.data.length === 0 ? (
-              <Center className="h-40">
+              <Center className="h-40 px-4">
                 <Text className="text-gray-500">{`ไม่พบรายการใน${fromNowDate(selectedDate)}`}</Text>
               </Center>
             ) : (
               transactionsQuery.data.map((item) => (
-                <TransactionItem key={item._id} data={item} />
+                <SwipeableTransactionItem key={item._id} data={item} />
               ))
             )}
           </VStack>
