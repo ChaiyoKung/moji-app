@@ -33,7 +33,12 @@ export function useAppToast() {
         const uniqueToastId = "toast-" + id;
         return (
           <SafeAreaView edges={["top"]}>
-            <Toast nativeID={uniqueToastId} action={type} variant="outline">
+            <Toast
+              nativeID={uniqueToastId}
+              action={type}
+              variant="outline"
+              className="rounded-2xl"
+            >
               <ToastTitle>{options.title}</ToastTitle>
               {options.description ? (
                 <ToastDescription>{options.description}</ToastDescription>
