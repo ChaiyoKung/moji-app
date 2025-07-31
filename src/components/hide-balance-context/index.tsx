@@ -1,5 +1,5 @@
 import { use, createContext, type PropsWithChildren } from "react";
-import { useAsyncStorageState } from "../hooks/use-async-storage-state";
+import { useAsyncStorageState } from "../../hooks/use-async-storage-state";
 
 const HideBalanceContext = createContext<{
   toggleHideBalance: () => void;
