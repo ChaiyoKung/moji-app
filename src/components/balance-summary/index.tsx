@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getAllAccounts } from "../../libs/api";
 
 export function BalanceSummary() {
-  const [[loading, hideBalance], setHideBalance] =
+  const [[loadingHide, hideBalance], setHideBalance] =
     useAsyncStorageState("hideBalance");
   const isBalanceHidden = hideBalance === "true";
 
@@ -20,7 +20,7 @@ export function BalanceSummary() {
   });
 
   const value = accountQuery.data?.[0]?.balance;
-  const isLoading = accountQuery.isLoading || loading;
+  const isLoading = accountQuery.isLoading || loadingHide;
   const error = accountQuery.error;
 
   let content;
