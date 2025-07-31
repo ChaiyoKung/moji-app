@@ -18,6 +18,7 @@ export interface AmountTextProps {
     | "6xl";
   bold?: boolean;
   showSign?: boolean;
+  hideValue?: boolean;
 }
 
 export function AmountText({
@@ -26,10 +27,12 @@ export function AmountText({
   size = "md",
   bold,
   showSign,
+  hideValue,
 }: AmountTextProps) {
   const sign = showSign ? (type === "income" ? "+" : "-") : "";
   const color = type === "income" ? "text-green-500" : "text-red-500";
-  const displayValue = sign + formatBaht(value);
+  const formattedValue = hideValue ? "******" : formatBaht(value);
+  const displayValue = sign + formattedValue;
 
   return (
     <Text size={size} bold={bold} className={color}>

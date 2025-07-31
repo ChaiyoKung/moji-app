@@ -2,20 +2,29 @@ import { VStack } from "../ui/vstack";
 import { Text } from "../ui/text";
 import { AmountText } from "../amount-text";
 import { Spinner } from "../ui/spinner";
+import { Pressable } from "../ui/pressable";
+import { Eye, EyeOff } from "lucide-react-native";
+import { Icon } from "../ui/icon";
+import { useHideBalance } from "../hide-balance-context";
+import { useQuery } from "@tanstack/react-query";
+import { getAllAccounts } from "../../libs/api";
 
-export interface BalanceSummaryProps {
-  label: string;
-  value?: number | null;
-  isLoading?: boolean;
-  error?: Error | null;
-}
+export function BalanceSummary() {
+  const {
+    isLoading: loadingHide,
+    isBalanceHidden,
+    toggleHideBalance,
+  } = useHideBalance();
 
-export function BalanceSummary({
-  label,
-  value,
-  isLoading,
-  error,
-}: BalanceSummaryProps) {
+  const accountQuery = useQuery({
+    queryKey: ["accounts"],
+    queryFn: getAllAccounts,
+  });
+
+  const value = accountQuery.data?.[0]?.balance;
+  const isLoading = accountQuery.isLoading || loadingHide;
+  const error = accountQuery.error;
+
   let content;
   if (isLoading) {
     content = <Spinner />;
@@ -24,13 +33,31 @@ export function BalanceSummary({
   } else if (value === null || value === undefined) {
     content = <Text className="text-gray-500">ไม่พบข้อมูล</Text>;
   } else {
-    content = <AmountText type="income" value={value} size="2xl" bold />;
+    content = (
+      <AmountText
+        type="income"
+        value={value}
+        size="xl"
+        bold
+        hideValue={isBalanceHidden}
+      />
+    );
   }
 
   return (
     <VStack className="items-start">
-      <Text className="text-typography-500">{label}</Text>
-      {content}
+      <Text className="text-typography-500">เงินคงเหลือ</Text>
+      <Pressable
+        className="flex-row items-center gap-1"
+        onPress={toggleHideBalance}
+      >
+        {content}
+        {isBalanceHidden ? (
+          <Icon as={EyeOff} size="sm" className="text-typography-300" />
+        ) : (
+          <Icon as={Eye} size="sm" className="text-typography-300" />
+        )}
+      </Pressable>
     </VStack>
   );
 }

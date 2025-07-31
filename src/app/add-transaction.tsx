@@ -7,6 +7,10 @@ import { Input, InputField } from "../components/ui/input";
 import { useState } from "react";
 import { formatBaht } from "../utils/format-baht";
 import colors from "tailwindcss/colors";
+import { Pressable } from "../components/ui/pressable";
+import { Icon } from "../components/ui/icon";
+import { Eye, EyeOff, SaveIcon } from "lucide-react-native";
+import { useHideBalance } from "../components/hide-balance-context";
 import {
   Button,
   ButtonIcon,
@@ -14,7 +18,6 @@ import {
   ButtonText,
 } from "../components/ui/button";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { SaveIcon } from "lucide-react-native";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Spinner } from "../components/ui/spinner";
 import { CategoryChip } from "../components/category-chip";
@@ -55,6 +58,8 @@ export default function Transaction() {
   const [selectedCatagoryId, setSelectedCatagoryId] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
   const [note, setNote] = useState<string>("");
+
+  const { isLoading, isBalanceHidden, toggleHideBalance } = useHideBalance();
 
   const createTransactionMutation = useMutation({
     mutationFn: createTransaction,
@@ -152,19 +157,31 @@ export default function Transaction() {
             </Input>
             <HStack space="xs" className="items-baseline">
               <Text className="text-teal-500">เงินคงเหลือ</Text>
-              {accountQuery.isLoading ? (
-                <Spinner />
-              ) : accountQuery.error ? (
-                <Text className="text-red-500">
-                  เกิดข้อผิดพลาดในการโหลดยอดเงิน
-                </Text>
-              ) : accountQuery.data?.[0]?.balance === undefined ? (
-                <Text className="text-gray-500">ไม่มีบัญชี</Text>
-              ) : (
-                <Text className="text-teal-500">
-                  {formatBaht(accountQuery.data[0].balance)}
-                </Text>
-              )}
+              <Pressable
+                className="flex-row items-center gap-1"
+                onPress={toggleHideBalance}
+              >
+                {accountQuery.isLoading || isLoading ? (
+                  <Spinner />
+                ) : accountQuery.error ? (
+                  <Text className="text-red-500">
+                    เกิดข้อผิดพลาดในการโหลดยอดเงิน
+                  </Text>
+                ) : accountQuery.data?.[0]?.balance === undefined ? (
+                  <Text className="text-gray-500">ไม่มีบัญชี</Text>
+                ) : (
+                  <Text className="text-teal-500">
+                    {isBalanceHidden
+                      ? "******"
+                      : formatBaht(accountQuery.data[0].balance)}
+                  </Text>
+                )}
+                {isBalanceHidden ? (
+                  <Icon as={EyeOff} size="sm" className="text-typography-300" />
+                ) : (
+                  <Icon as={Eye} size="sm" className="text-typography-300" />
+                )}
+              </Pressable>
             </HStack>
           </VStack>
 

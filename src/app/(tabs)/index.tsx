@@ -152,12 +152,7 @@ export default function Home() {
     <SafeAreaView edges={["top"]} className="flex-1 bg-gray-100">
       <ScrollView>
         <VStack space="md" className="p-4 pb-[5.75rem]">
-          <BalanceSummary
-            label="เงินคงเหลือ"
-            value={accountQuery.data?.[0]?.balance}
-            isLoading={accountQuery.isLoading}
-            error={accountQuery.error}
-          />
+          <BalanceSummary />
 
           <SummaryCard label={`รายจ่าย${fromNowDate(selectedDate)}`}>
             {summaryQuery.isLoading ? (
