@@ -10,7 +10,7 @@ import colors from "tailwindcss/colors";
 import { Pressable } from "../components/ui/pressable";
 import { Icon } from "../components/ui/icon";
 import { Eye, EyeOff } from "lucide-react-native";
-import { useAsyncStorageState } from "../hooks/use-async-storage-state";
+import { useHideBalance } from "../components/hide-balance-context";
 import {
   Button,
   ButtonIcon,
@@ -60,9 +60,7 @@ export default function Transaction() {
   const [amount, setAmount] = useState<string>("");
   const [note, setNote] = useState<string>("");
 
-  const [[loadingHide, hideBalance], setHideBalance] =
-    useAsyncStorageState("hideBalance");
-  const isBalanceHidden = hideBalance === "true";
+  const { isLoading, isBalanceHidden, toggleHideBalance } = useHideBalance();
 
   const createTransactionMutation = useMutation({
     mutationFn: createTransaction,
@@ -162,11 +160,9 @@ export default function Transaction() {
               <Text className="text-teal-500">เงินคงเหลือ</Text>
               <Pressable
                 className="flex-row items-center gap-1"
-                onPress={() =>
-                  setHideBalance(isBalanceHidden ? "false" : "true")
-                }
+                onPress={toggleHideBalance}
               >
-                {accountQuery.isLoading || loadingHide ? (
+                {accountQuery.isLoading || isLoading ? (
                   <Spinner />
                 ) : accountQuery.error ? (
                   <Text className="text-red-500">

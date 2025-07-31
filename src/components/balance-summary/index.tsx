@@ -5,14 +5,16 @@ import { Spinner } from "../ui/spinner";
 import { Pressable } from "../ui/pressable";
 import { Eye, EyeOff } from "lucide-react-native";
 import { Icon } from "../ui/icon";
-import { useAsyncStorageState } from "../../hooks/use-async-storage-state";
+import { useHideBalance } from "../hide-balance-context";
 import { useQuery } from "@tanstack/react-query";
 import { getAllAccounts } from "../../libs/api";
 
 export function BalanceSummary() {
-  const [[loadingHide, hideBalance], setHideBalance] =
-    useAsyncStorageState("hideBalance");
-  const isBalanceHidden = hideBalance === "true";
+  const {
+    isLoading: loadingHide,
+    isBalanceHidden,
+    toggleHideBalance,
+  } = useHideBalance();
 
   const accountQuery = useQuery({
     queryKey: ["accounts"],
@@ -47,7 +49,7 @@ export function BalanceSummary() {
       <Text className="text-typography-500">เงินคงเหลือ</Text>
       <Pressable
         className="flex-row items-center gap-1"
-        onPress={() => setHideBalance(isBalanceHidden ? "false" : "true")}
+        onPress={toggleHideBalance}
       >
         {content}
         {isBalanceHidden ? (
