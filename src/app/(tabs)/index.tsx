@@ -1,7 +1,7 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import { VStack } from "../../components/ui/vstack";
 import { BalanceSummary } from "../../components/balance-summary";
-import { SummaryCard, SummaryCardValue } from "../../components/summary-card";
+import { ExpenseSummaryCard } from "../../components/expense-summary-card";
 import { Calendar } from "react-native-calendars";
 import { ScrollView } from "react-native";
 import { Heading } from "../../components/ui/heading";
@@ -20,7 +20,6 @@ import {
   createAccount,
   getAllAccounts,
   getAllTransactions,
-  getSummary,
   getTransactionIdsByDate,
 } from "../../libs/api";
 import { Text } from "../../components/ui/text";
@@ -69,16 +68,6 @@ export default function Home() {
       getAllTransactions({
         startDate: selectedDate,
         endDate: selectedDate,
-        timezone: dayjs.tz.guess(),
-      }),
-  });
-
-  const summaryQuery = useQuery({
-    queryKey: ["summary", selectedDate],
-    queryFn: () =>
-      getSummary({
-        type: "expense",
-        date: selectedDate,
         timezone: dayjs.tz.guess(),
       }),
   });
@@ -151,17 +140,7 @@ export default function Home() {
         <VStack space="md" className="p-4 pb-[5.75rem]">
           <BalanceSummary />
 
-          <SummaryCard label={`รายจ่าย${fromNowDate(selectedDate)}`}>
-            {summaryQuery.isLoading ? (
-              <Spinner />
-            ) : summaryQuery.isError ? (
-              <Text className="text-red-500">ไม่สามารถโหลดข้อมูลได้</Text>
-            ) : summaryQuery.data === undefined ? (
-              <Text className="text-gray-500">ไม่พบข้อมูล</Text>
-            ) : (
-              <SummaryCardValue value={summaryQuery.data.total} />
-            )}
-          </SummaryCard>
+          <ExpenseSummaryCard date={selectedDate} />
 
           <VStack>
             {selectedDate !== todayDate && (
