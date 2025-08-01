@@ -1,92 +1,13 @@
 import { StatusBar } from "expo-status-bar";
-import { Button, ButtonSpinner, ButtonText } from "../components/ui/button";
+import { GoogleSignInButton } from "../components/google-sign-in-button";
 import { Heading } from "../components/ui/heading";
 import { VStack } from "../components/ui/vstack";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Center } from "../components/ui/center";
 import { Image } from "../components/ui/image";
-import { useSession } from "../components/session-provider";
-import { router } from "expo-router";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
-import { useMutation } from "@tanstack/react-query";
-import { signInWithGoogle } from "../libs/api";
-import { env } from "../env";
-import {
-  GoogleSignin,
-  isSuccessResponse,
-  isErrorWithCode,
-  statusCodes,
-} from "@react-native-google-signin/google-signin";
-import { useAppToast } from "../hooks/use-app-toast";
-
-GoogleSignin.configure({
-  webClientId: env.EXPO_PUBLIC_GOOGLE_OAUTH_WEB_CLIENT_ID,
-  iosClientId: env.EXPO_PUBLIC_GOOGLE_OAUTH_IOS_CLIENT_ID,
-  offlineAccess: true,
-});
 
 export default function SignIn() {
-  const { signIn } = useSession();
-  const toast = useAppToast();
-
-  const signInGoogleMutation = useMutation({
-    mutationFn: async () => {
-      await GoogleSignin.hasPlayServices();
-      const googleSignInResponse = await GoogleSignin.signIn();
-      if (isSuccessResponse(googleSignInResponse)) {
-        const idToken = googleSignInResponse.data.idToken;
-        if (!idToken) {
-          throw new Error("Google Sign-In failed: No ID token received.");
-        }
-
-        return signInWithGoogle(idToken);
-      } else {
-        // sign in was cancelled by user
-        console.log("Sign in cancelled");
-        return null;
-      }
-    },
-    onSuccess: (data) => {
-      if (!data) {
-        console.warn("Google Sign-In was cancelled or failed.");
-        return;
-      }
-
-      console.log("Google Sign-In Success");
-      signIn(data.user._id, data.accessToken, data.refreshToken);
-      // Navigate after signing in. You may want to tweak this to ensure sign-in is
-      // successful before navigating.
-      router.replace("/");
-    },
-    onError: (error) => {
-      console.error("Google Sign-In failed:", error);
-
-      if (isErrorWithCode(error)) {
-        switch (error.code) {
-          case statusCodes.IN_PROGRESS:
-            // operation (eg. sign in) already in progress
-            break;
-          case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
-            // Android only, play services not available or outdated
-            toast.error(
-              "ไม่พบ Google Play Services",
-              "กรุณาอัปเดต Google Play Services"
-            );
-            break;
-          default:
-            // some other error happened
-            toast.error("เข้าสู่ระบบไม่สำเร็จ", "กรุณาลองใหม่อีกครั้ง");
-        }
-      } else {
-        // an error that's not related to google sign in occurred
-        toast.error(
-          "เกิดข้อผิดพลาดในการเข้าสู่ระบบ",
-          "กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต"
-        );
-      }
-    },
-  });
-
   return (
     <KeyboardAwareScrollView className="flex-1 bg-gray-100">
       <SafeAreaView edges={["top"]}>
@@ -109,14 +30,7 @@ export default function SignIn() {
             เข้าสู่ระบบ
           </Heading>
 
-          <Button
-            className="rounded-2xl"
-            isDisabled={signInGoogleMutation.isPending}
-            onPress={() => signInGoogleMutation.mutate()}
-          >
-            {signInGoogleMutation.isPending && <ButtonSpinner />}
-            <ButtonText>เข้าสู่ระบบด้วย Google</ButtonText>
-          </Button>
+          <GoogleSignInButton />
 
           <StatusBar style="auto" />
         </VStack>
