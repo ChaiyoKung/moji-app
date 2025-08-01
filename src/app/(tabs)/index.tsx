@@ -11,17 +11,10 @@ import { AddIncomeFab } from "../../components/add-income-fab";
 import { AddExpenseFab } from "../../components/add-expense-fab";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
-import { fromNowDate, nowDate } from "../../libs/dayjs";
-import dayjs from "dayjs";
-import { SwipeableTransactionItem } from "../../components/swipeable-transaction-item";
+import { nowDate } from "../../libs/dayjs";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import {
-  createAccount,
-  getAllAccounts,
-  getAllTransactions,
-} from "../../libs/api";
-import { Text } from "../../components/ui/text";
-import { Spinner } from "../../components/ui/spinner";
+import { createAccount, getAllAccounts } from "../../libs/api";
+import { TransactionList } from "../../features/transaction-list";
 import { BalanceSetupModal } from "../../components/balance-setup-modal";
 import { useSession } from "../../components/session-provider";
 import { useAppToast } from "../../hooks/use-app-toast";
@@ -35,16 +28,6 @@ export default function Home() {
   const accountQuery = useQuery({
     queryKey: ["accounts"],
     queryFn: getAllAccounts,
-  });
-
-  const transactionsQuery = useQuery({
-    queryKey: ["transactions", selectedDate],
-    queryFn: () =>
-      getAllTransactions({
-        startDate: selectedDate,
-        endDate: selectedDate,
-        timezone: dayjs.tz.guess(),
-      }),
   });
 
   const isBalanceDataMissing =
@@ -112,24 +95,7 @@ export default function Home() {
             <Heading size="lg" bold className="text-typography-500 px-4">
               รายการ
             </Heading>
-            {transactionsQuery.isLoading ? (
-              <Center className="h-40 px-4">
-                <Spinner />
-              </Center>
-            ) : transactionsQuery.error ? (
-              <Center className="h-40 px-4">
-                <Text className="text-red-500">ไม่สามารถโหลดรายการได้</Text>
-              </Center>
-            ) : transactionsQuery.data === undefined ||
-              transactionsQuery.data.length === 0 ? (
-              <Center className="h-40 px-4">
-                <Text className="text-gray-500">{`ไม่พบรายการใน${fromNowDate(selectedDate)}`}</Text>
-              </Center>
-            ) : (
-              transactionsQuery.data.map((item) => (
-                <SwipeableTransactionItem key={item._id} data={item} />
-              ))
-            )}
+            <TransactionList selectedDate={selectedDate} />
           </VStack>
         </VStack>
       </ScrollView>
