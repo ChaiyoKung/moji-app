@@ -37,6 +37,18 @@ export default function Home() {
     }
   }, [isBalanceDataMissing]);
 
+  const handleAddTransaction = (type: "income" | "expense") => {
+    if (isBalanceDataMissing) {
+      setShowBalanceModal(true);
+      return;
+    }
+
+    router.push({
+      pathname: "/add-transaction",
+      params: { type, date: selectedDate },
+    });
+  };
+
   return (
     <SafeAreaView edges={["top"]} className="flex-1 bg-gray-100">
       <ScrollView>
@@ -66,26 +78,8 @@ export default function Home() {
         </VStack>
       </ScrollView>
 
-      <AddIncomeFab
-        onPress={() =>
-          isBalanceDataMissing
-            ? setShowBalanceModal(true)
-            : router.push({
-                pathname: "/add-transaction",
-                params: { type: "income", date: selectedDate },
-              })
-        }
-      />
-      <AddExpenseFab
-        onPress={() =>
-          isBalanceDataMissing
-            ? setShowBalanceModal(true)
-            : router.push({
-                pathname: "/add-transaction",
-                params: { type: "expense", date: selectedDate },
-              })
-        }
-      />
+      <AddIncomeFab onPress={() => handleAddTransaction("income")} />
+      <AddExpenseFab onPress={() => handleAddTransaction("expense")} />
 
       <BalanceSetupModal
         isOpen={showBalanceModal}
