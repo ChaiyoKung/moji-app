@@ -11,6 +11,7 @@ import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 
 import { LocaleConfig } from "react-native-calendars";
+import "./libs/calendar-locale-config.th";
 
 dayjs.locale("th");
 dayjs.extend(isToday);

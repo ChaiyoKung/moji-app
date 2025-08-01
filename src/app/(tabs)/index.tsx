@@ -1,4 +1,3 @@
-import "../../libs/calendar-locale-config.th";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { VStack } from "../../components/ui/vstack";
 import { BalanceSummary } from "../../components/balance-summary";
