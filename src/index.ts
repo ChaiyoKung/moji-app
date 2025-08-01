@@ -10,8 +10,12 @@ import isYesterday from "dayjs/plugin/isYesterday";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 
+import { LocaleConfig } from "react-native-calendars";
+
 dayjs.locale("th");
 dayjs.extend(isToday);
 dayjs.extend(isYesterday);
 dayjs.extend(utc);
 dayjs.extend(timezone);
+
+LocaleConfig.defaultLocale = "th";

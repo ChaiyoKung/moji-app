@@ -3,7 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { VStack } from "../../components/ui/vstack";
 import { BalanceSummary } from "../../components/balance-summary";
 import { SummaryCard, SummaryCardValue } from "../../components/summary-card";
-import { Calendar, LocaleConfig } from "react-native-calendars";
+import { Calendar } from "react-native-calendars";
 import { ScrollView } from "react-native";
 import { Heading } from "../../components/ui/heading";
 import { Center } from "../../components/ui/center";
@@ -47,8 +47,6 @@ import {
 } from "../../components/ui/button";
 import { useSession } from "../../components/session-provider";
 import { useAppToast } from "../../hooks/use-app-toast";
-
-LocaleConfig.defaultLocale = "th";
 
 export default function Home() {
   const todayDate = nowDate();
