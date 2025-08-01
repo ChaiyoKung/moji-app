@@ -28,10 +28,10 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { useAppToast } from "../hooks/use-app-toast";
 
 export default function Transaction() {
-  const { mode, date } = useLocalSearchParams();
+  const { type, date } = useLocalSearchParams();
 
-  if (mode !== "income" && mode !== "expense") {
-    throw new Error("Invalid mode parameter.");
+  if (type !== "income" && type !== "expense") {
+    throw new Error("Invalid type parameter.");
   }
 
   if (typeof date !== "string") {
@@ -85,7 +85,7 @@ export default function Transaction() {
       userId: accountQuery.data?.[0]?.userId || "",
       accountId: accountQuery.data?.[0]?._id || "",
       categoryId: selectedCatagoryId,
-      type: mode,
+      type: type,
       amount: parseFloat(amount),
       currency: "THB", // Assuming THB for Thai Baht
       note: note.trim() || undefined,
@@ -100,7 +100,7 @@ export default function Transaction() {
         <VStack space="md" className="p-4">
           <VStack>
             <Heading size="3xl" className="text-typography-black">
-              {mode === "income" ? "เพิ่มรายรับ" : "เพิ่มรายจ่าย"}
+              {type === "income" ? "เพิ่มรายรับ" : "เพิ่มรายจ่าย"}
             </Heading>
             <DateLabel date={date} />
           </VStack>
@@ -110,7 +110,7 @@ export default function Transaction() {
               ประเภท
             </Heading>
             <CategorySelector
-              type={mode}
+              type={type}
               value={selectedCatagoryId}
               onChange={(item) => setSelectedCatagoryId(item._id)}
             />

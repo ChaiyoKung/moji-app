@@ -231,7 +231,7 @@ export default function Home() {
             ? setShowBalanceModal(true)
             : router.push({
                 pathname: "/add-transaction",
-                params: { mode: "income", date: selectedDate },
+                params: { type: "income", date: selectedDate },
               })
         }
       />
@@ -241,7 +241,7 @@ export default function Home() {
             ? setShowBalanceModal(true)
             : router.push({
                 pathname: "/add-transaction",
-                params: { mode: "expense", date: selectedDate },
+                params: { type: "expense", date: selectedDate },
               })
         }
       />
