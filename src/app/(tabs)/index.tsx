@@ -2,7 +2,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { VStack } from "../../components/ui/vstack";
 import { BalanceSummary } from "../../components/balance-summary";
 import { ExpenseSummaryCard } from "../../components/expense-summary-card";
-import { Calendar } from "react-native-calendars";
+import { TransactionCalendar } from "../../components/calendar-with-marking";
 import { ScrollView } from "react-native";
 import { Heading } from "../../components/ui/heading";
 import { Center } from "../../components/ui/center";
@@ -11,7 +11,6 @@ import { AddIncomeFab } from "../../components/add-income-fab";
 import { AddExpenseFab } from "../../components/add-expense-fab";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
-import colors from "tailwindcss/colors";
 import { fromNowDate, nowDate } from "../../libs/dayjs";
 import dayjs from "dayjs";
 import { SwipeableTransactionItem } from "../../components/swipeable-transaction-item";
@@ -20,11 +19,9 @@ import {
   createAccount,
   getAllAccounts,
   getAllTransactions,
-  getTransactionIdsByDate,
 } from "../../libs/api";
 import { Text } from "../../components/ui/text";
 import { Spinner } from "../../components/ui/spinner";
-import { getMarkedDates } from "../../utils/calendar-marking";
 import { BalanceSetupModal } from "../../components/balance-setup-modal";
 import { useSession } from "../../components/session-provider";
 import { useAppToast } from "../../hooks/use-app-toast";
@@ -32,11 +29,7 @@ import { useAppToast } from "../../hooks/use-app-toast";
 export default function Home() {
   const todayDate = nowDate();
   const [selectedDate, setSelectedDate] = useState<string>(todayDate);
-  const [currentMonth, setCurrentMonth] = useState<string>(
-    dayjs(todayDate).format("YYYY-MM")
-  );
   const [showBalanceModal, setShowBalanceModal] = useState<boolean>(false);
-
   const toast = useAppToast();
 
   const accountQuery = useQuery({
@@ -53,27 +46,6 @@ export default function Home() {
         timezone: dayjs.tz.guess(),
       }),
   });
-
-  const startOfMonth = dayjs(currentMonth + "-01")
-    .startOf("month")
-    .format("YYYY-MM-DD");
-  const endOfMonth = dayjs(currentMonth + "-01")
-    .endOf("month")
-    .format("YYYY-MM-DD");
-  const transactionIdsByDateQuery = useQuery({
-    queryKey: ["transactionIdsByDate", startOfMonth, endOfMonth],
-    queryFn: () =>
-      getTransactionIdsByDate({
-        startDate: startOfMonth,
-        endDate: endOfMonth,
-        timezone: dayjs.tz.guess(),
-      }),
-  });
-
-  const markedDates = getMarkedDates(
-    transactionIdsByDateQuery.data ?? [],
-    selectedDate
-  );
 
   const isBalanceDataMissing =
     accountQuery.isSuccess && accountQuery.data[0]?.balance === undefined;
@@ -123,37 +95,16 @@ export default function Home() {
           <BalanceSummary />
 
           <ExpenseSummaryCard date={selectedDate} />
-
           <VStack>
             {selectedDate !== todayDate && (
               <Center>
                 <TodayButton onPress={() => setSelectedDate(todayDate)} />
               </Center>
             )}
-            <Calendar
-              onDayPress={(day) => {
-                setSelectedDate(day.dateString);
-              }}
-              onMonthChange={(month) => {
-                setCurrentMonth(dayjs(month.dateString).format("YYYY-MM"));
-              }}
-              current={selectedDate}
-              maxDate={todayDate}
-              enableSwipeMonths={true}
-              displayLoadingIndicator={transactionIdsByDateQuery.isLoading}
-              markedDates={markedDates}
-              markingType="multi-dot"
-              theme={{
-                calendarBackground: colors.transparent,
-                arrowColor: colors.gray[500],
-                monthTextColor: colors.gray[800],
-                dayTextColor: colors.gray[800],
-                selectedDayBackgroundColor: colors.blue[500],
-                selectedDayTextColor: colors.white,
-                todayTextColor: colors.blue[500],
-                textDisabledColor: colors.gray[300],
-                textSectionTitleColor: colors.gray[500],
-              }}
+            <TransactionCalendar
+              selectedDate={selectedDate}
+              onSelectedDateChange={setSelectedDate}
+              todayDate={todayDate}
             />
           </VStack>
 
