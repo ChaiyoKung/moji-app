@@ -25,24 +25,7 @@ import {
 import { Text } from "../../components/ui/text";
 import { Spinner } from "../../components/ui/spinner";
 import { getMarkedDates } from "../../utils/calendar-marking";
-import {
-  Modal,
-  ModalBackdrop,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-} from "../../components/ui/modal";
-import { Icon } from "../../components/ui/icon";
-import { SaveIcon, X } from "lucide-react-native";
-import { Input, InputField } from "../../components/ui/input";
-import {
-  Button,
-  ButtonIcon,
-  ButtonSpinner,
-  ButtonText,
-} from "../../components/ui/button";
+import { BalanceSetupModal } from "../../components/balance-setup-modal";
 import { useSession } from "../../components/session-provider";
 import { useAppToast } from "../../hooks/use-app-toast";
 
@@ -53,7 +36,6 @@ export default function Home() {
     dayjs(todayDate).format("YYYY-MM")
   );
   const [showBalanceModal, setShowBalanceModal] = useState<boolean>(false);
-  const [inputBalance, setInputBalance] = useState<string>("");
 
   const toast = useAppToast();
 
@@ -117,7 +99,7 @@ export default function Home() {
 
   const { userId } = useSession();
 
-  const handleSaveBalance = () => {
+  const handleSaveBalance = (balance: string) => {
     if (!userId) {
       console.error("User ID is not available. Cannot create account.");
       toast.error("ไม่พบข้อมูลผู้ใช้", "กรุณาลองใหม่อีกครั้ง");
@@ -128,7 +110,7 @@ export default function Home() {
       userId: userId,
       name: "กระเป๋าสตางค์",
       type: "cash",
-      balance: parseFloat(inputBalance),
+      balance: parseFloat(balance),
       currency: "THB",
       icon: "💵",
     });
@@ -222,55 +204,12 @@ export default function Home() {
         }
       />
 
-      <Modal
+      <BalanceSetupModal
         isOpen={showBalanceModal}
         onClose={() => setShowBalanceModal(false)}
-      >
-        <ModalBackdrop />
-        <ModalContent className="rounded-2xl">
-          <ModalHeader>
-            <Heading size="md" className="text-typography-black">
-              กรอกยอดเงินคงเหลือ
-            </Heading>
-            <ModalCloseButton>
-              <Icon
-                as={X}
-                size="md"
-                className="text-gray-500 group-[:hover]/modal-close-button:text-gray-600 group-[:active]/modal-close-button:text-gray-700 group-[:focus-visible]/modal-close-button:text-gray-700"
-              />
-            </ModalCloseButton>
-          </ModalHeader>
-          <ModalBody>
-            <Text size="sm" className="text-gray-500 mb-2">
-              กรุณากรอกยอดเงินคงเหลือปัจจุบันของคุณ เพื่อเริ่มต้นใช้งานแอป
-            </Text>
-            <Input className="rounded-2xl">
-              <InputField
-                type="text"
-                value={inputBalance}
-                onChangeText={setInputBalance}
-                placeholder="0"
-                keyboardType="numeric"
-                autoFocus
-              />
-            </Input>
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              isDisabled={!inputBalance || createAccountMutation.isPending}
-              onPress={handleSaveBalance}
-              className="rounded-2xl"
-            >
-              {createAccountMutation.isPending ? (
-                <ButtonSpinner />
-              ) : (
-                <ButtonIcon as={SaveIcon} />
-              )}
-              <ButtonText>บันทึก</ButtonText>
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+        isSaving={createAccountMutation.isPending}
+        onSave={handleSaveBalance}
+      />
     </SafeAreaView>
   );
 }
