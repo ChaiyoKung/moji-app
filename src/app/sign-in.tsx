@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import { GoogleSignInButton } from "../components/google-sign-in-button";
 import { Heading } from "../components/ui/heading";
 import { VStack } from "../components/ui/vstack";
@@ -31,8 +30,6 @@ export default function SignIn() {
           </Heading>
 
           <GoogleSignInButton />
-
-          <StatusBar style="auto" />
         </VStack>
       </SafeAreaView>
     </KeyboardAwareScrollView>
