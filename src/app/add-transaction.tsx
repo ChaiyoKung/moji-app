@@ -19,13 +19,9 @@ import {
 } from "../components/ui/button";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { CategorySelector } from "../components/category-selector";
 import { Spinner } from "../components/ui/spinner";
-import { CategoryChip } from "../components/category-chip";
-import {
-  getAllGategoriesByType,
-  getAllAccounts,
-  createTransaction,
-} from "../libs/api";
+import { getAllAccounts, createTransaction } from "../libs/api";
 import dayjs from "dayjs";
 import { DateLabel } from "../components/date-label";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
@@ -44,12 +40,6 @@ export default function Transaction() {
 
   const queryClient = useQueryClient();
   const toast = useAppToast();
-
-  const categoriesQuery = useQuery({
-    queryKey: ["categories", mode],
-    queryFn: () => getAllGategoriesByType(mode),
-  });
-
   const accountQuery = useQuery({
     queryKey: ["accounts"],
     queryFn: getAllAccounts,
@@ -119,27 +109,11 @@ export default function Transaction() {
             <Heading size="md" bold className="text-typography-black">
               ประเภท
             </Heading>
-            {categoriesQuery.isLoading ? (
-              <Spinner />
-            ) : categoriesQuery.error ? (
-              <Text className="text-red-500">
-                เกิดข้อผิดพลาดในการโหลดประเภท
-              </Text>
-            ) : categoriesQuery.data === undefined ||
-              categoriesQuery.data.length === 0 ? (
-              <Text className="text-gray-500">ไม่มีประเภท</Text>
-            ) : (
-              <HStack space="sm" className="flex-wrap">
-                {categoriesQuery.data.map((category) => (
-                  <CategoryChip
-                    key={category._id}
-                    data={category}
-                    selected={selectedCatagoryId === category._id}
-                    onPress={() => setSelectedCatagoryId(category._id)}
-                  />
-                ))}
-              </HStack>
-            )}
+            <CategorySelector
+              type={mode}
+              value={selectedCatagoryId}
+              onChange={(item) => setSelectedCatagoryId(item._id)}
+            />
           </VStack>
 
           <VStack space="sm">
