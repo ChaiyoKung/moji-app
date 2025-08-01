@@ -86,5 +86,3 @@ export function GoogleSignInButton() {
     </Button>
   );
 }
-
-export default GoogleSignInButton;
