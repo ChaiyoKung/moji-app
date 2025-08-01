@@ -14,24 +14,50 @@ import { X, SaveIcon } from "lucide-react-native";
 import { Text } from "../ui/text";
 import { Input, InputField } from "../ui/input";
 import { Button, ButtonIcon, ButtonSpinner, ButtonText } from "../ui/button";
+import { useSession } from "../session-provider";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createAccount } from "../../libs/api";
+import { useAppToast } from "../../hooks/use-app-toast";
 
 export interface BalanceSetupModalProps {
   isOpen: boolean;
   onClose: () => void;
-  isSaving: boolean;
-  onSave: (balance: string) => void;
 }
 
-export function BalanceSetupModal({
-  isOpen,
-  onClose,
-  isSaving,
-  onSave,
-}: BalanceSetupModalProps) {
+export function BalanceSetupModal({ isOpen, onClose }: BalanceSetupModalProps) {
+  const { userId } = useSession();
+  const toast = useAppToast();
+  const queryClient = useQueryClient();
+
   const [balance, setBalance] = useState<string>("");
 
-  const handleSave = () => {
-    onSave(balance);
+  const createAccountMutation = useMutation({
+    mutationFn: createAccount,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["accounts"] });
+      onClose();
+    },
+    onError: (error) => {
+      console.error("Failed to create account:", error);
+      toast.error("ไม่สามารถสร้างบัญชีได้", "กรุณาลองใหม่อีกครั้ง");
+    },
+  });
+
+  const handleSaveBalance = () => {
+    if (!userId) {
+      console.error("User ID is not available. Cannot create account.");
+      toast.error("ไม่พบข้อมูลผู้ใช้", "กรุณาลองใหม่อีกครั้ง");
+      return;
+    }
+
+    createAccountMutation.mutate({
+      userId: userId,
+      name: "กระเป๋าสตางค์",
+      type: "cash",
+      balance: parseFloat(balance),
+      currency: "THB",
+      icon: "💵",
+    });
   };
 
   return (
@@ -67,11 +93,15 @@ export function BalanceSetupModal({
         </ModalBody>
         <ModalFooter>
           <Button
-            isDisabled={!balance || isSaving}
-            onPress={handleSave}
+            isDisabled={!balance || createAccountMutation.isPending}
+            onPress={handleSaveBalance}
             className="rounded-2xl"
           >
-            {isSaving ? <ButtonSpinner /> : <ButtonIcon as={SaveIcon} />}
+            {createAccountMutation.isPending ? (
+              <ButtonSpinner />
+            ) : (
+              <ButtonIcon as={SaveIcon} />
+            )}
             <ButtonText>บันทึก</ButtonText>
           </Button>
         </ModalFooter>

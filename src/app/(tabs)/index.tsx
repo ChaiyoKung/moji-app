@@ -12,18 +12,15 @@ import { AddExpenseFab } from "../../components/add-expense-fab";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import { nowDate } from "../../libs/dayjs";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { createAccount, getAllAccounts } from "../../libs/api";
+import { useQuery } from "@tanstack/react-query";
+import { getAllAccounts } from "../../libs/api";
 import { TransactionList } from "../../features/transaction-list";
 import { BalanceSetupModal } from "../../components/balance-setup-modal";
-import { useSession } from "../../components/session-provider";
-import { useAppToast } from "../../hooks/use-app-toast";
 
 export default function Home() {
   const todayDate = nowDate();
   const [selectedDate, setSelectedDate] = useState<string>(todayDate);
   const [showBalanceModal, setShowBalanceModal] = useState<boolean>(false);
-  const toast = useAppToast();
 
   const accountQuery = useQuery({
     queryKey: ["accounts"],
@@ -39,37 +36,6 @@ export default function Home() {
       setShowBalanceModal(true);
     }
   }, [isBalanceDataMissing]);
-
-  const createAccountMutation = useMutation({
-    mutationFn: createAccount,
-    onSuccess: () => {
-      accountQuery.refetch();
-      setShowBalanceModal(false);
-    },
-    onError: (error) => {
-      console.error("Failed to create account:", error);
-      toast.error("ไม่สามารถสร้างบัญชีได้", "กรุณาลองใหม่อีกครั้ง");
-    },
-  });
-
-  const { userId } = useSession();
-
-  const handleSaveBalance = (balance: string) => {
-    if (!userId) {
-      console.error("User ID is not available. Cannot create account.");
-      toast.error("ไม่พบข้อมูลผู้ใช้", "กรุณาลองใหม่อีกครั้ง");
-      return;
-    }
-
-    createAccountMutation.mutate({
-      userId: userId,
-      name: "กระเป๋าสตางค์",
-      type: "cash",
-      balance: parseFloat(balance),
-      currency: "THB",
-      icon: "💵",
-    });
-  };
 
   return (
     <SafeAreaView edges={["top"]} className="flex-1 bg-gray-100">
@@ -124,8 +90,6 @@ export default function Home() {
       <BalanceSetupModal
         isOpen={showBalanceModal}
         onClose={() => setShowBalanceModal(false)}
-        isSaving={createAccountMutation.isPending}
-        onSave={handleSaveBalance}
       />
     </SafeAreaView>
   );
