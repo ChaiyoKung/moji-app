@@ -2,7 +2,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { VStack } from "../../components/ui/vstack";
 import { BalanceSummary } from "../../features/balance-summary";
 import { ExpenseSummaryCard } from "../../features/expense-summary-card";
-import { TransactionCalendar } from "../../features/calendar-with-marking";
+import { TransactionCalendar } from "../../features/transaction-calendar";
 import { ScrollView } from "react-native";
 import { Heading } from "../../components/ui/heading";
 import { Center } from "../../components/ui/center";
