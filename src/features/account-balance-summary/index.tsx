@@ -1,15 +1,15 @@
-import { VStack } from "../ui/vstack";
-import { Text } from "../ui/text";
-import { AmountText } from "../amount-text";
-import { Spinner } from "../ui/spinner";
-import { Pressable } from "../ui/pressable";
+import { VStack } from "../../components/ui/vstack";
+import { Text } from "../../components/ui/text";
+import { AmountText } from "../../components/amount-text";
+import { Spinner } from "../../components/ui/spinner";
+import { Pressable } from "../../components/ui/pressable";
 import { Eye, EyeOff } from "lucide-react-native";
-import { Icon } from "../ui/icon";
-import { useHideBalance } from "../hide-balance-context";
+import { Icon } from "../../components/ui/icon";
+import { useHideBalance } from "../../components/hide-balance-context";
 import { useQuery } from "@tanstack/react-query";
 import { getAllAccounts } from "../../libs/api";
 
-export function BalanceSummary() {
+export function AccountBalanceSummary() {
   const {
     isLoading: loadingHide,
     isBalanceHidden,

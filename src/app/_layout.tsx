@@ -1,4 +1,5 @@
 import { ErrorBoundaryProps, Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { GluestackUIProvider } from "../components/ui/gluestack-ui-provider";
 import { Center } from "../components/ui/center";
 import { Text } from "../components/ui/text";
@@ -59,6 +60,7 @@ export function ErrorBoundary({ error }: ErrorBoundaryProps) {
 export default function RootLayout() {
   return (
     <GestureHandlerRootView>
+      <StatusBar style="auto" />
       <KeyboardProvider>
         <GluestackUIProvider>
           <SessionProvider>

@@ -5,12 +5,8 @@ import { Text } from "../components/ui/text";
 import { HStack } from "../components/ui/hstack";
 import { Input, InputField } from "../components/ui/input";
 import { useState } from "react";
-import { formatBaht } from "../utils/format-baht";
 import colors from "tailwindcss/colors";
-import { Pressable } from "../components/ui/pressable";
-import { Icon } from "../components/ui/icon";
-import { Eye, EyeOff, SaveIcon } from "lucide-react-native";
-import { useHideBalance } from "../components/hide-balance-context";
+import { SaveIcon } from "lucide-react-native";
 import {
   Button,
   ButtonIcon,
@@ -19,23 +15,19 @@ import {
 } from "../components/ui/button";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Spinner } from "../components/ui/spinner";
-import { CategoryChip } from "../components/category-chip";
-import {
-  getAllGategoriesByType,
-  getAllAccounts,
-  createTransaction,
-} from "../libs/api";
+import { CategorySelector } from "../features/category-selector";
+import { AccountBalanceInline } from "../features/account-balance-inline";
+import { getAllAccounts, createTransaction } from "../libs/api";
 import dayjs from "dayjs";
 import { DateLabel } from "../components/date-label";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { useAppToast } from "../hooks/use-app-toast";
 
 export default function Transaction() {
-  const { mode, date } = useLocalSearchParams();
+  const { type, date } = useLocalSearchParams();
 
-  if (mode !== "income" && mode !== "expense") {
-    throw new Error("Invalid mode parameter.");
+  if (type !== "income" && type !== "expense") {
+    throw new Error("Invalid type parameter.");
   }
 
   if (typeof date !== "string") {
@@ -45,11 +37,6 @@ export default function Transaction() {
   const queryClient = useQueryClient();
   const toast = useAppToast();
 
-  const categoriesQuery = useQuery({
-    queryKey: ["categories", mode],
-    queryFn: () => getAllGategoriesByType(mode),
-  });
-
   const accountQuery = useQuery({
     queryKey: ["accounts"],
     queryFn: getAllAccounts,
@@ -58,8 +45,6 @@ export default function Transaction() {
   const [selectedCatagoryId, setSelectedCatagoryId] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
   const [note, setNote] = useState<string>("");
-
-  const { isLoading, isBalanceHidden, toggleHideBalance } = useHideBalance();
 
   const createTransactionMutation = useMutation({
     mutationFn: createTransaction,
@@ -95,7 +80,7 @@ export default function Transaction() {
       userId: accountQuery.data?.[0]?.userId || "",
       accountId: accountQuery.data?.[0]?._id || "",
       categoryId: selectedCatagoryId,
-      type: mode,
+      type: type,
       amount: parseFloat(amount),
       currency: "THB", // Assuming THB for Thai Baht
       note: note.trim() || undefined,
@@ -110,7 +95,7 @@ export default function Transaction() {
         <VStack space="md" className="p-4">
           <VStack>
             <Heading size="3xl" className="text-typography-black">
-              {mode === "income" ? "เพิ่มรายรับ" : "เพิ่มรายจ่าย"}
+              {type === "income" ? "เพิ่มรายรับ" : "เพิ่มรายจ่าย"}
             </Heading>
             <DateLabel date={date} />
           </VStack>
@@ -119,27 +104,11 @@ export default function Transaction() {
             <Heading size="md" bold className="text-typography-black">
               ประเภท
             </Heading>
-            {categoriesQuery.isLoading ? (
-              <Spinner />
-            ) : categoriesQuery.error ? (
-              <Text className="text-red-500">
-                เกิดข้อผิดพลาดในการโหลดประเภท
-              </Text>
-            ) : categoriesQuery.data === undefined ||
-              categoriesQuery.data.length === 0 ? (
-              <Text className="text-gray-500">ไม่มีประเภท</Text>
-            ) : (
-              <HStack space="sm" className="flex-wrap">
-                {categoriesQuery.data.map((category) => (
-                  <CategoryChip
-                    key={category._id}
-                    data={category}
-                    selected={selectedCatagoryId === category._id}
-                    onPress={() => setSelectedCatagoryId(category._id)}
-                  />
-                ))}
-              </HStack>
-            )}
+            <CategorySelector
+              type={type}
+              value={selectedCatagoryId}
+              onChange={(item) => setSelectedCatagoryId(item._id)}
+            />
           </VStack>
 
           <VStack space="sm">
@@ -157,31 +126,7 @@ export default function Transaction() {
             </Input>
             <HStack space="xs" className="items-baseline">
               <Text className="text-teal-500">เงินคงเหลือ</Text>
-              <Pressable
-                className="flex-row items-center gap-1"
-                onPress={toggleHideBalance}
-              >
-                {accountQuery.isLoading || isLoading ? (
-                  <Spinner />
-                ) : accountQuery.error ? (
-                  <Text className="text-red-500">
-                    เกิดข้อผิดพลาดในการโหลดยอดเงิน
-                  </Text>
-                ) : accountQuery.data?.[0]?.balance === undefined ? (
-                  <Text className="text-gray-500">ไม่มีบัญชี</Text>
-                ) : (
-                  <Text className="text-teal-500">
-                    {isBalanceHidden
-                      ? "******"
-                      : formatBaht(accountQuery.data[0].balance)}
-                  </Text>
-                )}
-                {isBalanceHidden ? (
-                  <Icon as={EyeOff} size="sm" className="text-typography-300" />
-                ) : (
-                  <Icon as={Eye} size="sm" className="text-typography-300" />
-                )}
-              </Pressable>
+              <AccountBalanceInline />
             </HStack>
           </VStack>
 

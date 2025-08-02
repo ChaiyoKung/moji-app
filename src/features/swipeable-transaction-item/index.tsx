@@ -1,12 +1,12 @@
 import React from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swipeable from "react-native-gesture-handler/ReanimatedSwipeable";
-import { Pressable } from "../ui/pressable";
-import { Icon } from "../ui/icon";
-import { Spinner } from "../ui/spinner";
+import { Pressable } from "../../components/ui/pressable";
+import { Icon } from "../../components/ui/icon";
+import { Spinner } from "../../components/ui/spinner";
 import { Trash2 } from "lucide-react-native";
 import colors from "tailwindcss/colors";
-import { TransactionItem } from "../transaction-item";
+import { TransactionItem } from "../../components/transaction-item";
 import { deleteTransaction, TransactionWithCategory } from "../../libs/api";
 import { useAppToast } from "../../hooks/use-app-toast";
 
