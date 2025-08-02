@@ -4,7 +4,7 @@ import { VStack } from "../components/ui/vstack";
 import { Text } from "../components/ui/text";
 import { HStack } from "../components/ui/hstack";
 import { Input, InputField } from "../components/ui/input";
-import { useState } from "react";
+import { useState, useRef, RefObject } from "react";
 import colors from "tailwindcss/colors";
 import { SaveIcon } from "lucide-react-native";
 import {
@@ -22,6 +22,7 @@ import dayjs from "dayjs";
 import { DateLabel } from "../components/date-label";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { useAppToast } from "../hooks/use-app-toast";
+import { TextInput, TextInputProps } from "react-native";
 
 export default function Transaction() {
   const { type, date } = useLocalSearchParams();
@@ -45,6 +46,8 @@ export default function Transaction() {
   const [selectedCatagoryId, setSelectedCatagoryId] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
   const [note, setNote] = useState<string>("");
+
+  const amountInputRef = useRef<TextInput>(null);
 
   const createTransactionMutation = useMutation({
     mutationFn: createTransaction,
@@ -107,7 +110,10 @@ export default function Transaction() {
             <CategorySelector
               type={type}
               value={selectedCatagoryId}
-              onChange={(item) => setSelectedCatagoryId(item._id)}
+              onChange={(item) => {
+                setSelectedCatagoryId(item._id);
+                amountInputRef.current?.focus();
+              }}
             />
           </VStack>
 
@@ -115,8 +121,9 @@ export default function Transaction() {
             <Heading size="md" bold className="text-typography-black">
               จำนวนเงิน
             </Heading>
-            <Input className="rounded-2xl">
+            <Input size="xl" className="rounded-2xl">
               <InputField
+                ref={amountInputRef as RefObject<TextInputProps>}
                 type="text"
                 placeholder="0"
                 value={amount}
@@ -134,7 +141,7 @@ export default function Transaction() {
             <Heading size="md" bold className="text-typography-black">
               บันทึกช่วยจำ
             </Heading>
-            <Input className="rounded-2xl">
+            <Input size="xl" className="rounded-2xl">
               <InputField
                 type="text"
                 placeholder="เพิ่มข้อความ..."
@@ -151,6 +158,7 @@ export default function Transaction() {
         className="p-4 bg-white border-t border-gray-200 rounded-t-2xl overflow-hidden"
       >
         <Button
+          size="xl"
           className="rounded-2xl bg-blue-500 data-[hover=true]:bg-blue-600 data-[active=true]:bg-blue-700"
           onPress={handleSave}
           isDisabled={

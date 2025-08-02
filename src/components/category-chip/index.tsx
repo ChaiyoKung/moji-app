@@ -20,9 +20,9 @@ export function CategoryChip({ data, selected, onPress }: CategoryChipProps) {
       }}
       onPress={onPress}
     >
-      {data.icon !== undefined && <Text size="lg">{data.icon}</Text>}
+      {data.icon !== undefined && <Text size="xl">{data.icon}</Text>}
       <Text
-        size="lg"
+        size="xl"
         style={{
           color: selected ? colors.white : data.color,
         }}
