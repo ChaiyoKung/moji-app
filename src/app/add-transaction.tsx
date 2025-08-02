@@ -36,6 +36,7 @@ export default function Transaction() {
 
   const queryClient = useQueryClient();
   const toast = useAppToast();
+
   const accountQuery = useQuery({
     queryKey: ["accounts"],
     queryFn: getAllAccounts,
