@@ -15,7 +15,7 @@ import { nowDate } from "../../libs/dayjs";
 import { useQuery } from "@tanstack/react-query";
 import { getAllAccounts } from "../../libs/api";
 import { TransactionList } from "../../features/transaction-list";
-import { BalanceSetupModal } from "../../features/balance-setup-modal";
+import { AccountBalanceSetupModal } from "../../features/account-balance-setup-modal";
 
 export default function Home() {
   const todayDate = nowDate();
@@ -81,7 +81,7 @@ export default function Home() {
       <AddIncomeFab onPress={() => handleAddTransaction("income")} />
       <AddExpenseFab onPress={() => handleAddTransaction("expense")} />
 
-      <BalanceSetupModal
+      <AccountBalanceSetupModal
         isOpen={showBalanceModal}
         onClose={() => setShowBalanceModal(false)}
       />

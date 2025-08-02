@@ -24,12 +24,15 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createAccount } from "../../libs/api";
 import { useAppToast } from "../../hooks/use-app-toast";
 
-export interface BalanceSetupModalProps {
+export interface AccountBalanceSetupModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export function BalanceSetupModal({ isOpen, onClose }: BalanceSetupModalProps) {
+export function AccountBalanceSetupModal({
+  isOpen,
+  onClose,
+}: AccountBalanceSetupModalProps) {
   const { userId } = useSession();
   const toast = useAppToast();
   const queryClient = useQueryClient();
