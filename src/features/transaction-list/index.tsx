@@ -1,7 +1,7 @@
 import { Center } from "../../components/ui/center";
 import { Text } from "../../components/ui/text";
 import { Spinner } from "../../components/ui/spinner";
-import { SwipeableTransactionItem } from "../../components/swipeable-transaction-item";
+import { SwipeableTransactionItem } from "../../features/swipeable-transaction-item";
 import { useQuery } from "@tanstack/react-query";
 import { getAllTransactions } from "../../libs/api";
 import { fromNowDate } from "../../libs/dayjs";
