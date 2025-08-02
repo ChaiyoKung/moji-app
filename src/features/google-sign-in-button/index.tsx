@@ -1,5 +1,5 @@
-import { Button, ButtonSpinner, ButtonText } from "../ui/button";
-import { useSession } from "../session-provider";
+import { Button, ButtonSpinner, ButtonText } from "../../components/ui/button";
+import { useSession } from "../../components/session-provider";
 import { useAppToast } from "../../hooks/use-app-toast";
 import { useMutation } from "@tanstack/react-query";
 import { signInWithGoogle } from "../../libs/api";

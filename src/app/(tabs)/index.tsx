@@ -1,8 +1,8 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import { VStack } from "../../components/ui/vstack";
-import { BalanceSummary } from "../../components/balance-summary";
-import { ExpenseSummaryCard } from "../../components/expense-summary-card";
-import { TransactionCalendar } from "../../components/calendar-with-marking";
+import { BalanceSummary } from "../../features/balance-summary";
+import { ExpenseSummaryCard } from "../../features/expense-summary-card";
+import { TransactionCalendar } from "../../features/calendar-with-marking";
 import { ScrollView } from "react-native";
 import { Heading } from "../../components/ui/heading";
 import { Center } from "../../components/ui/center";
@@ -15,7 +15,7 @@ import { nowDate } from "../../libs/dayjs";
 import { useQuery } from "@tanstack/react-query";
 import { getAllAccounts } from "../../libs/api";
 import { TransactionList } from "../../features/transaction-list";
-import { BalanceSetupModal } from "../../components/balance-setup-modal";
+import { BalanceSetupModal } from "../../features/balance-setup-modal";
 
 export default function Home() {
   const todayDate = nowDate();

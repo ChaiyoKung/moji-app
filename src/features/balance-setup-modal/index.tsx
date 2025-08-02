@@ -7,14 +7,19 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-} from "../ui/modal";
-import { Heading } from "../ui/heading";
-import { Icon } from "../ui/icon";
+} from "../../components/ui/modal";
+import { Heading } from "../../components/ui/heading";
+import { Icon } from "../../components/ui/icon";
 import { X, SaveIcon } from "lucide-react-native";
-import { Text } from "../ui/text";
-import { Input, InputField } from "../ui/input";
-import { Button, ButtonIcon, ButtonSpinner, ButtonText } from "../ui/button";
-import { useSession } from "../session-provider";
+import { Text } from "../../components/ui/text";
+import { Input, InputField } from "../../components/ui/input";
+import {
+  Button,
+  ButtonIcon,
+  ButtonSpinner,
+  ButtonText,
+} from "../../components/ui/button";
+import { useSession } from "../../components/session-provider";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createAccount } from "../../libs/api";
 import { useAppToast } from "../../hooks/use-app-toast";

@@ -15,8 +15,8 @@ import {
 } from "../components/ui/button";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { CategorySelector } from "../components/category-selector";
-import { AccountBalanceToggle } from "../components/account-balance-toggle";
+import { CategorySelector } from "../features/category-selector";
+import { AccountBalanceToggle } from "../features/account-balance-toggle";
 import { getAllAccounts, createTransaction } from "../libs/api";
 import dayjs from "dayjs";
 import { DateLabel } from "../components/date-label";

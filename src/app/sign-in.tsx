@@ -1,4 +1,4 @@
-import { GoogleSignInButton } from "../components/google-sign-in-button";
+import { GoogleSignInButton } from "../features/google-sign-in-button";
 import { Heading } from "../components/ui/heading";
 import { VStack } from "../components/ui/vstack";
 import { SafeAreaView } from "react-native-safe-area-context";

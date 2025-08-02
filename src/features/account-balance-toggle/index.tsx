@@ -1,9 +1,9 @@
-import { Pressable } from "../ui/pressable";
-import { Icon } from "../ui/icon";
+import { Pressable } from "../../components/ui/pressable";
+import { Icon } from "../../components/ui/icon";
 import { Eye, EyeOff } from "lucide-react-native";
-import { Spinner } from "../ui/spinner";
-import { Text } from "../ui/text";
-import { useHideBalance } from "../hide-balance-context";
+import { Spinner } from "../../components/ui/spinner";
+import { Text } from "../../components/ui/text";
+import { useHideBalance } from "../../components/hide-balance-context";
 import { useQuery } from "@tanstack/react-query";
 import { getAllAccounts } from "../../libs/api";
 import { formatBaht } from "../../utils/format-baht";

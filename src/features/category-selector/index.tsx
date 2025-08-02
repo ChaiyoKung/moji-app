@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { HStack } from "../ui/hstack";
-import { Text } from "../ui/text";
-import { Spinner } from "../ui/spinner";
-import { CategoryChip } from "../category-chip";
+import { HStack } from "../../components/ui/hstack";
+import { Text } from "../../components/ui/text";
+import { Spinner } from "../../components/ui/spinner";
+import { CategoryChip } from "../../components/category-chip";
 import { getAllGategoriesByType, Category } from "../../libs/api";
 
 export type CategorySelectorProps = {
