@@ -115,7 +115,7 @@ export default function Transaction() {
             <Heading size="md" bold className="text-typography-black">
               จำนวนเงิน
             </Heading>
-            <Input className="rounded-2xl">
+            <Input size="xl" className="rounded-2xl">
               <InputField
                 type="text"
                 placeholder="0"
@@ -134,7 +134,7 @@ export default function Transaction() {
             <Heading size="md" bold className="text-typography-black">
               บันทึกช่วยจำ
             </Heading>
-            <Input className="rounded-2xl">
+            <Input size="xl" className="rounded-2xl">
               <InputField
                 type="text"
                 placeholder="เพิ่มข้อความ..."
@@ -151,6 +151,7 @@ export default function Transaction() {
         className="p-4 bg-white border-t border-gray-200 rounded-t-2xl overflow-hidden"
       >
         <Button
+          size="xl"
           className="rounded-2xl bg-blue-500 data-[hover=true]:bg-blue-600 data-[active=true]:bg-blue-700"
           onPress={handleSave}
           isDisabled={
