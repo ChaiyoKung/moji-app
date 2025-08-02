@@ -1,6 +1,6 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import { VStack } from "../../components/ui/vstack";
-import { BalanceSummary } from "../../features/balance-summary";
+import { AccountBalanceSummary } from "../../features/account-balance-summary";
 import { ExpenseSummaryCard } from "../../features/expense-summary-card";
 import { TransactionCalendar } from "../../features/transaction-calendar";
 import { ScrollView } from "react-native";
@@ -53,7 +53,7 @@ export default function Home() {
     <SafeAreaView edges={["top"]} className="flex-1 bg-gray-100">
       <ScrollView>
         <VStack space="md" className="p-4 pb-[5.75rem]">
-          <BalanceSummary />
+          <AccountBalanceSummary />
 
           <ExpenseSummaryCard date={selectedDate} />
           <VStack>

@@ -16,7 +16,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CategorySelector } from "../features/category-selector";
-import { AccountBalanceToggle } from "../features/account-balance-toggle";
+import { AccountBalanceInline } from "../features/account-balance-inline";
 import { getAllAccounts, createTransaction } from "../libs/api";
 import dayjs from "dayjs";
 import { DateLabel } from "../components/date-label";
@@ -126,7 +126,7 @@ export default function Transaction() {
             </Input>
             <HStack space="xs" className="items-baseline">
               <Text className="text-teal-500">เงินคงเหลือ</Text>
-              <AccountBalanceToggle />
+              <AccountBalanceInline />
             </HStack>
           </VStack>
 

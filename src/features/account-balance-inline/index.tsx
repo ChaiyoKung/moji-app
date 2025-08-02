@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getAllAccounts } from "../../libs/api";
 import { formatBaht } from "../../utils/format-baht";
 
-export function AccountBalanceToggle() {
+export function AccountBalanceInline() {
   const accountQuery = useQuery({
     queryKey: ["accounts"],
     queryFn: getAllAccounts,

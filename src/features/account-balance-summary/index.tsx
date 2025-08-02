@@ -9,7 +9,7 @@ import { useHideBalance } from "../../components/hide-balance-context";
 import { useQuery } from "@tanstack/react-query";
 import { getAllAccounts } from "../../libs/api";
 
-export function BalanceSummary() {
+export function AccountBalanceSummary() {
   const {
     isLoading: loadingHide,
     isBalanceHidden,
