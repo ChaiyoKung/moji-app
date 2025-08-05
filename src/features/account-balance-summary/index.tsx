@@ -5,16 +5,16 @@ import { Spinner } from "../../components/ui/spinner";
 import { Pressable } from "../../components/ui/pressable";
 import { Eye, EyeOff } from "lucide-react-native";
 import { Icon } from "../../components/ui/icon";
-import { useHideBalance } from "../../components/hide-balance-context";
 import { useQuery } from "@tanstack/react-query";
 import { getAllAccounts } from "../../libs/api";
+import { useHideBalanceStore } from "../../stores/use-hide-balance-store";
 
 export function AccountBalanceSummary() {
-  const {
-    isLoading: loadingHide,
-    isBalanceHidden,
-    toggleHideBalance,
-  } = useHideBalance();
+  const loadingHide = useHideBalanceStore((state) => state.isLoading);
+  const isBalanceHidden = useHideBalanceStore((state) => state.isBalanceHidden);
+  const toggleHideBalance = useHideBalanceStore(
+    (state) => state.toggleHideBalance
+  );
 
   const accountQuery = useQuery({
     queryKey: ["accounts"],
