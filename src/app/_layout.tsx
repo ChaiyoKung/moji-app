@@ -12,7 +12,6 @@ import { Icon } from "../components/ui/icon";
 import { Box } from "../components/ui/box";
 import { SplashScreenController } from "../components/splash-screen-controller";
 import { SessionProvider, useSession } from "../components/session-provider";
-import { HideBalanceProvider } from "../components/hide-balance-context";
 import {
   QueryCache,
   QueryClient,
@@ -64,12 +63,10 @@ export default function RootLayout() {
       <KeyboardProvider>
         <GluestackUIProvider>
           <SessionProvider>
-            <HideBalanceProvider>
-              <SplashScreenController />
-              <QueryProvider>
-                <RootNavigation />
-              </QueryProvider>
-            </HideBalanceProvider>
+            <SplashScreenController />
+            <QueryProvider>
+              <RootNavigation />
+            </QueryProvider>
           </SessionProvider>
         </GluestackUIProvider>
       </KeyboardProvider>

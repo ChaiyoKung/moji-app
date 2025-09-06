@@ -3,17 +3,21 @@ import { Icon } from "../../components/ui/icon";
 import { Eye, EyeOff } from "lucide-react-native";
 import { Spinner } from "../../components/ui/spinner";
 import { Text } from "../../components/ui/text";
-import { useHideBalance } from "../../components/hide-balance-context";
 import { useQuery } from "@tanstack/react-query";
 import { getAllAccounts } from "../../libs/api";
 import { formatBaht } from "../../utils/format-baht";
+import { useHideBalanceStore } from "../../stores/use-hide-balance-store";
 
 export function AccountBalanceInline() {
   const accountQuery = useQuery({
     queryKey: ["accounts"],
     queryFn: getAllAccounts,
   });
-  const { isLoading, isBalanceHidden, toggleHideBalance } = useHideBalance();
+  const isLoading = useHideBalanceStore((state) => state.isLoading);
+  const isBalanceHidden = useHideBalanceStore((state) => state.isBalanceHidden);
+  const toggleHideBalance = useHideBalanceStore(
+    (state) => state.toggleHideBalance
+  );
 
   return (
     <Pressable
