@@ -10,6 +10,7 @@ eas build --platform ios --profile preview
 ## Build Production
 
 ```bash
+pnpm run release
 eas build --platform android --profile production
 eas build --platform ios --profile production
 ```
