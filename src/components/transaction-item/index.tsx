@@ -6,6 +6,8 @@ import { Text } from "../ui/text";
 import { AmountText } from "../amount-text";
 import { TransactionWithCategory } from "../../libs/api";
 import { useToggle } from "../../hooks/use-toggle";
+import { ChevronDown, ChevronUp } from "lucide-react-native";
+import { Icon } from "../ui/icon";
 
 export interface TransactionItemProps {
   data: TransactionWithCategory;
@@ -48,6 +50,11 @@ export function TransactionItem({ data }: TransactionItemProps) {
           value={data.amount}
           showSign
         />
+        {isTruncated ? (
+          <Icon as={ChevronDown} size="xs" className="text-typography-500" />
+        ) : (
+          <Icon as={ChevronUp} size="xs" className="text-typography-500" />
+        )}
       </HStack>
     </Pressable>
   );
