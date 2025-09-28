@@ -21,7 +21,7 @@ export function TransactionItem({ data }: TransactionItemProps) {
   };
 
   return (
-    <Pressable onPress={handlePress}>
+    <Pressable onPress={handlePress} testID="transaction-pressable">
       <HStack
         key={data._id}
         space="md"
@@ -42,6 +42,7 @@ export function TransactionItem({ data }: TransactionItemProps) {
               size="sm" 
               className="text-typography-500" 
               numberOfLines={isNoteExpanded ? undefined : 1}
+              testID="transaction-note"
             >
               {data.note}
             </Text>
