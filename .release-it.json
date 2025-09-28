@@ -1,0 +1,19 @@
+{
+  "$schema": "https://unpkg.com/release-it@19/schema/release-it.json",
+  "git": {
+    "commitMessage": "chore: release v${version}",
+    "tagName": "v${version}",
+    "commit": true,
+    "tag": true,
+    "push": true,
+    "requireCleanWorkingDir": true
+  },
+  "plugins": {
+    "@release-it/bumper": {
+      "out": {
+        "file": "app.json",
+        "path": "expo.version"
+      }
+    }
+  }
+}

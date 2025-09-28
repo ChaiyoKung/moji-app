@@ -12,7 +12,8 @@
     "prebuild:clean": "expo prebuild --clean",
     "test": "jest",
     "test:watch": "jest --watchAll",
-    "format": "prettier \"**/*.{js,jsx,ts,tsx}\" --write"
+    "format": "prettier \"**/*.{js,jsx,ts,tsx}\" --write",
+    "release": "release-it"
   },
   "dependencies": {
     "@expo/html-elements": "0.4.2",
@@ -60,6 +61,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@release-it/bumper": "^7.0.5",
     "@tanstack/eslint-plugin-query": "^5.78.0",
     "@testing-library/react-native": "^13.2.0",
     "@types/jest": "^30.0.0",
@@ -72,6 +74,7 @@
     "jest": "~29.7.0",
     "jest-expo": "~53.0.9",
     "prettier": "^3.5.3",
+    "release-it": "^19.0.5",
     "typescript": "~5.8.3"
   },
   "private": true,
