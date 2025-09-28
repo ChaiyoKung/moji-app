@@ -1,5 +1,7 @@
 # Moji App
 
+The mobile application for Moji, a minimal and friendly expense tracker app to help you stay mindful with your money — with a touch of charm.
+
 ## Build Preview
 
 ```bash
