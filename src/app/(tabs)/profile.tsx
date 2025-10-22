@@ -15,7 +15,7 @@ export default function Profile() {
             source={{
               uri: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=256",
             }}
-            alt="Profile Picture"
+            alt="User Avatar"
             className="rounded-full bg-gray-300"
           />
           <VStack className="items-center">
