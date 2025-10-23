@@ -1,4 +1,3 @@
-// src/features/profile-details/index.tsx
 import { useQuery } from "@tanstack/react-query";
 import { getUserProfile } from "../../libs/api";
 import { env } from "../../env";
