@@ -42,7 +42,7 @@ export function ProfileDetails() {
   }
 
   return (
-    <>
+    <VStack space="md" className="items-center">
       <Image
         size="xl"
         source={{
@@ -57,6 +57,6 @@ export function ProfileDetails() {
         <Heading>{userProfileQuery.data?.displayName}</Heading>
         <Text className="text-gray-500">{userProfileQuery.data?.email}</Text>
       </VStack>
-    </>
+    </VStack>
   );
 }
