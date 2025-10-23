@@ -55,6 +55,11 @@ export async function logout(refreshToken: string) {
   return response.data;
 }
 
+export async function getUserProfile() {
+  const response = await api.get<User>("/auth/me");
+  return response.data;
+}
+
 export interface Account {
   _id: string;
   userId: string;

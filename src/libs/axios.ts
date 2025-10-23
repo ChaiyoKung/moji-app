@@ -6,7 +6,7 @@ import {
 } from "../hooks/use-storage-state";
 import * as AxiosLogger from "axios-logger";
 
-export const api = axios.create({ baseURL: env.EXPO_PUBLIC_API_URL });
+export const api = axios.create({ baseURL: `${env.EXPO_PUBLIC_API_URL}/api` });
 
 api.interceptors.request.use(
   async (request) => {
@@ -37,7 +37,7 @@ async function refreshAccessToken(): Promise<RefreshTokenResponse> {
   }
   console.warn("Refreshing token...");
   const refreshTokenResponse = await axios.post<RefreshTokenResponse>(
-    `${env.EXPO_PUBLIC_API_URL}/auth/refresh`,
+    `${env.EXPO_PUBLIC_API_URL}/api/auth/refresh`,
     { refreshToken }
   );
   const data = refreshTokenResponse.data;

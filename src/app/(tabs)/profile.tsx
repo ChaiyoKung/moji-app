@@ -1,12 +1,17 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Text } from "../../components/ui/text";
+import { VStack } from "../../components/ui/vstack";
 import { SignOutButton } from "../../features/sign-out-button";
+import { ProfileDetails } from "../../features/profile-details";
 
 export default function Profile() {
   return (
     <SafeAreaView edges={["top"]} className="flex-1 bg-gray-100">
-      <Text>Profile</Text>
-      <SignOutButton />
+      <VStack space="md" className="flex-1 p-4">
+        <VStack space="md" className="flex-1">
+          <ProfileDetails />
+        </VStack>
+        <SignOutButton />
+      </VStack>
     </SafeAreaView>
   );
 }
