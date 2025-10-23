@@ -54,7 +54,9 @@ export function ProfileDetails() {
       />
       <VStack className="items-center">
         <Heading>{userProfileQuery.data.displayName}</Heading>
-        <Text className="text-typography-500">{userProfileQuery.data.email}</Text>
+        <Text className="text-typography-500">
+          {userProfileQuery.data.email}
+        </Text>
       </VStack>
     </VStack>
   );

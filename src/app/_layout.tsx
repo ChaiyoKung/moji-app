@@ -137,7 +137,10 @@ function RootNavigation() {
                 ) : (
                   <BackButtonSpacer />
                 )}
-                <Heading className="flex-1 text-center text-typography-500" size="md">
+                <Heading
+                  className="flex-1 text-center text-typography-500"
+                  size="md"
+                >
                   {label}
                 </Heading>
                 <BackButtonSpacer />

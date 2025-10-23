@@ -26,7 +26,9 @@ export function CategorySelector({
   }
 
   if (categoriesQuery.error) {
-    return <Text className="text-error-500">เกิดข้อผิดพลาดในการโหลดประเภท</Text>;
+    return (
+      <Text className="text-error-500">เกิดข้อผิดพลาดในการโหลดประเภท</Text>
+    );
   }
 
   if (!categoriesQuery.data || categoriesQuery.data.length === 0) {
