@@ -47,15 +47,15 @@ export function ProfileDetails() {
         size="xl"
         source={{
           uri:
-            userProfileQuery.data?.avatarUrl ??
+            userProfileQuery.data.avatarUrl ??
             `${env.EXPO_PUBLIC_API_URL}/images/default-avatar.png`,
         }}
         alt="User Avatar"
         className="rounded-full bg-gray-300"
       />
       <VStack className="items-center">
-        <Heading>{userProfileQuery.data?.displayName}</Heading>
-        <Text className="text-gray-500">{userProfileQuery.data?.email}</Text>
+        <Heading>{userProfileQuery.data.displayName}</Heading>
+        <Text className="text-gray-500">{userProfileQuery.data.email}</Text>
       </VStack>
     </VStack>
   );
