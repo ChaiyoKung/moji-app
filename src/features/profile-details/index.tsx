@@ -18,7 +18,7 @@ export function ProfileDetails() {
 
   if (userProfileQuery.isLoading) {
     return (
-      <Center className="w-full h-32">
+      <Center className="h-32 w-full">
         <Spinner />
       </Center>
     );
@@ -26,7 +26,7 @@ export function ProfileDetails() {
 
   if (userProfileQuery.isError) {
     return (
-      <Center className="w-full h-32">
+      <Center className="h-32 w-full">
         <Text className="text-red-500">
           เกิดข้อผิดพลาดในการโหลดข้อมูลโปรไฟล์
         </Text>
@@ -36,7 +36,7 @@ export function ProfileDetails() {
 
   if (userProfileQuery.data === undefined) {
     return (
-      <Center className="w-full h-32">
+      <Center className="h-32 w-full">
         <Text className="text-gray-500">ไม่พบข้อมูลโปรไฟล์ผู้ใช้</Text>
       </Center>
     );

@@ -21,10 +21,10 @@ export function TransactionItem({ data }: TransactionItemProps) {
       <HStack
         key={data._id}
         space="md"
-        className="bg-white p-4 rounded-2xl border border-gray-200 items-center"
+        className="items-center rounded-2xl border border-gray-200 bg-white p-4"
       >
         <Center
-          className="rounded-full w-12 h-12"
+          className="h-12 w-12 rounded-full"
           style={{ backgroundColor: data.categoryId.color }}
         >
           <Text size="2xl">{data.categoryId.icon}</Text>

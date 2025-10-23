@@ -25,7 +25,7 @@ const formControlStyle = tva({
 });
 
 const formControlErrorIconStyle = tva({
-  base: "text-error-700 fill-none",
+  base: "fill-none text-error-700",
   variants: {
     size: {
       "2xs": "h-3 w-3",
@@ -39,7 +39,7 @@ const formControlErrorIconStyle = tva({
 });
 
 const formControlErrorStyle = tva({
-  base: "flex flex-row justify-start items-center mt-1 gap-1",
+  base: "mt-1 flex flex-row items-center justify-start gap-1",
 });
 
 const formControlErrorTextStyle = tva({
@@ -83,7 +83,7 @@ const formControlErrorTextStyle = tva({
 });
 
 const formControlHelperStyle = tva({
-  base: "flex flex-row justify-start items-center mt-1",
+  base: "mt-1 flex flex-row items-center justify-start",
 });
 
 const formControlHelperTextStyle = tva({
@@ -127,7 +127,7 @@ const formControlHelperTextStyle = tva({
 });
 
 const formControlLabelStyle = tva({
-  base: "flex flex-row justify-start items-center mb-1",
+  base: "mb-1 flex flex-row items-center justify-start",
 });
 
 const formControlLabelTextStyle = tva({

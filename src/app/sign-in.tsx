@@ -15,7 +15,7 @@ export default function SignIn() {
             source={require("../../assets/moji-logo.png")}
             alt="Moji Logo"
             resizeMode="contain"
-            className="w-48 h-48"
+            className="h-48 w-48"
           />
         </Center>
       </SafeAreaView>
@@ -23,7 +23,7 @@ export default function SignIn() {
       <SafeAreaView edges={["bottom"]}>
         <VStack
           space="lg"
-          className="bg-white p-6 rounded-t-3xl border-t border-gray-200 h-full"
+          className="h-full rounded-t-3xl border-t border-gray-200 bg-white p-6"
         >
           <Heading size="3xl" className="my-4 text-typography-black">
             เข้าสู่ระบบ

@@ -70,7 +70,7 @@ export default function Home() {
           </VStack>
 
           <VStack space="sm" className="-mx-4">
-            <Heading size="lg" bold className="text-typography-500 px-4">
+            <Heading size="lg" bold className="px-4 text-typography-500">
               รายการ
             </Heading>
             <TransactionList selectedDate={selectedDate} />

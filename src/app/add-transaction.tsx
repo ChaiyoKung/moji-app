@@ -155,7 +155,7 @@ export default function Transaction() {
 
       <SafeAreaView
         edges={["bottom"]}
-        className="p-4 bg-white border-t border-gray-200 rounded-t-2xl overflow-hidden"
+        className="overflow-hidden rounded-t-2xl border-t border-gray-200 bg-white p-4"
       >
         <Button
           size="xl"

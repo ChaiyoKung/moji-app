@@ -11,8 +11,8 @@ export interface SummaryCardProps {
 
 export function SummaryCard({ label, children }: SummaryCardProps) {
   return (
-    <Box className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
-      <Center className="px-4 py-2 border-b border-gray-200 bg-red-100">
+    <Box className="overflow-hidden rounded-2xl border border-gray-200 bg-white">
+      <Center className="border-b border-gray-200 bg-red-100 px-4 py-2">
         <Text bold className="text-red-800">
           {label}
         </Text>
