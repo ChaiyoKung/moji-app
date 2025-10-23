@@ -103,7 +103,6 @@ export function AccountBalanceSetupModal({
           <Button
             isDisabled={!balance || createAccountMutation.isPending}
             onPress={handleSaveBalance}
-            className="rounded-2xl"
           >
             {createAccountMutation.isPending ? (
               <ButtonSpinner />

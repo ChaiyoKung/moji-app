@@ -39,7 +39,7 @@ export function SignOutButton() {
 
   return (
     <Button
-      className="rounded-2xl border-red-300 bg-red-500 data-[hover=true]:border-red-400 data-[hover=true]:bg-red-600 data-[active=true]:border-red-500 data-[active=true]:bg-red-700"
+      action="negative"
       isDisabled={signOutMutation.isPending}
       onPress={() => signOutMutation.mutate()}
     >
