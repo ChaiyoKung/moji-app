@@ -9,6 +9,8 @@ import { Image } from "../../components/ui/image";
 import { VStack } from "../../components/ui/vstack";
 import { Heading } from "../../components/ui/heading";
 
+const defaultAvatarUrl = `${env.EXPO_PUBLIC_API_URL}/images/default-avatar.png`;
+
 export function ProfileDetails() {
   const userProfileQuery = useQuery({
     queryKey: ["userProfile"],
@@ -46,9 +48,7 @@ export function ProfileDetails() {
       <Image
         size="xl"
         source={{
-          uri:
-            userProfileQuery.data.avatarUrl ??
-            `${env.EXPO_PUBLIC_API_URL}/images/default-avatar.png`,
+          uri: userProfileQuery.data.avatarUrl ?? defaultAvatarUrl,
         }}
         alt="User Avatar"
         className="rounded-full bg-gray-300"
