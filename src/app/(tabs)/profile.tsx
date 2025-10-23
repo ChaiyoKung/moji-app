@@ -5,7 +5,7 @@ import { ProfileDetails } from "../../features/profile-details";
 
 export default function Profile() {
   return (
-    <SafeAreaView edges={["top"]} className="flex-1 bg-gray-100">
+    <SafeAreaView edges={["top"]} className="flex-1 bg-background-100">
       <VStack space="md" className="flex-1 p-4">
         <VStack space="md" className="flex-1">
           <ProfileDetails />

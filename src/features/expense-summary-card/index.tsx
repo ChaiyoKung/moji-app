@@ -26,9 +26,9 @@ export function ExpenseSummaryCard({ date }: ExpenseSummaryCardProps) {
       {summaryQuery.isLoading ? (
         <Spinner />
       ) : summaryQuery.isError ? (
-        <Text className="text-red-500">ไม่สามารถโหลดข้อมูลได้</Text>
+        <Text className="text-error-500">ไม่สามารถโหลดข้อมูลได้</Text>
       ) : summaryQuery.data === undefined ? (
-        <Text className="text-gray-500">ไม่พบข้อมูล</Text>
+        <Text className="text-typography-500">ไม่พบข้อมูล</Text>
       ) : (
         <SummaryCardValue value={summaryQuery.data.total} />
       )}

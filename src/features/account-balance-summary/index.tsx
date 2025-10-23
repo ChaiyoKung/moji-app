@@ -29,9 +29,9 @@ export function AccountBalanceSummary() {
   if (isLoading) {
     content = <Spinner />;
   } else if (error) {
-    content = <Text className="text-red-500">เกิดข้อผิดพลาด</Text>;
+    content = <Text className="text-error-500">เกิดข้อผิดพลาด</Text>;
   } else if (value === null || value === undefined) {
-    content = <Text className="text-gray-500">ไม่พบข้อมูล</Text>;
+    content = <Text className="text-typography-500">ไม่พบข้อมูล</Text>;
   } else {
     content = (
       <AmountText

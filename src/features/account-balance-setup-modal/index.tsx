@@ -80,12 +80,12 @@ export function AccountBalanceSetupModal({
             <Icon
               as={X}
               size="md"
-              className="text-gray-500 group-[:active]/modal-close-button:text-gray-700 group-[:focus-visible]/modal-close-button:text-gray-700 group-[:hover]/modal-close-button:text-gray-600"
+              className="text-typography-500 group-[:active]/modal-close-button:text-typography-700 group-[:focus-visible]/modal-close-button:text-typography-700 group-[:hover]/modal-close-button:text-typography-600"
             />
           </ModalCloseButton>
         </ModalHeader>
         <ModalBody>
-          <Text size="sm" className="mb-2 text-gray-500">
+          <Text size="sm" className="mb-2 text-typography-500">
             กรุณากรอกยอดเงินคงเหลือปัจจุบันของคุณ เพื่อเริ่มต้นใช้งานแอป
           </Text>
           <Input className="rounded-2xl">

@@ -94,7 +94,7 @@ export default function Transaction() {
 
   return (
     <>
-      <KeyboardAwareScrollView className="flex-1 bg-gray-100">
+      <KeyboardAwareScrollView className="flex-1 bg-background-100">
         <VStack space="md" className="p-4">
           <VStack>
             <Heading size="3xl" className="text-typography-black">
@@ -132,7 +132,7 @@ export default function Transaction() {
               />
             </Input>
             <HStack space="xs" className="items-baseline">
-              <Text className="text-teal-500">เงินคงเหลือ</Text>
+              <Text className="text-secondary-500">เงินคงเหลือ</Text>
               <AccountBalanceInline />
             </HStack>
           </VStack>
@@ -155,7 +155,7 @@ export default function Transaction() {
 
       <SafeAreaView
         edges={["bottom"]}
-        className="overflow-hidden rounded-t-2xl border-t border-gray-200 bg-white p-4"
+        className="overflow-hidden rounded-t-2xl border-t border-outline-200 bg-white p-4"
       >
         <Button
           size="xl"

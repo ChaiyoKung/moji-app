@@ -33,7 +33,7 @@ function BackButton({ onPress }: BackButtonProps) {
       {({ pressed }) => (
         <Icon
           as={ChevronLeftIcon}
-          className={pressed ? "text-gray-700" : "text-gray-500"}
+          className={pressed ? "text-typography-700" : "text-typography-500"}
         />
       )}
     </Pressable>
@@ -50,8 +50,8 @@ function BackButtonSpacer() {
 
 export function ErrorBoundary({ error }: ErrorBoundaryProps) {
   return (
-    <Center className="flex-1 bg-gray-100 p-4">
-      <Text className="text-center text-red-500">{error.message}</Text>
+    <Center className="flex-1 bg-background-100 p-4">
+      <Text className="text-center text-error-500">{error.message}</Text>
     </Center>
   );
 }
@@ -129,7 +129,7 @@ function RootNavigation() {
           return (
             <SafeAreaView
               edges={["top"]}
-              className="overflow-hidden rounded-2xl border-b border-gray-200 bg-white"
+              className="overflow-hidden rounded-2xl border-b border-outline-200 bg-white"
             >
               <HStack className="items-center px-2 py-3">
                 {back ? (
@@ -137,7 +137,7 @@ function RootNavigation() {
                 ) : (
                   <BackButtonSpacer />
                 )}
-                <Heading className="flex-1 text-center text-gray-500" size="md">
+                <Heading className="flex-1 text-center text-typography-500" size="md">
                   {label}
                 </Heading>
                 <BackButtonSpacer />

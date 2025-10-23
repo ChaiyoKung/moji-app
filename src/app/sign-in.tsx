@@ -8,7 +8,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 export default function SignIn() {
   return (
-    <KeyboardAwareScrollView className="flex-1 bg-gray-100">
+    <KeyboardAwareScrollView className="flex-1 bg-background-100">
       <SafeAreaView edges={["top"]}>
         <Center className="px-6 py-20">
           <Image
@@ -23,7 +23,7 @@ export default function SignIn() {
       <SafeAreaView edges={["bottom"]}>
         <VStack
           space="lg"
-          className="h-full rounded-t-3xl border-t border-gray-200 bg-white p-6"
+          className="h-full rounded-t-3xl border-t border-outline-200 bg-white p-6"
         >
           <Heading size="3xl" className="my-4 text-typography-black">
             เข้าสู่ระบบ

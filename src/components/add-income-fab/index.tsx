@@ -9,7 +9,7 @@ export function AddIncomeFab({ onPress }: AddIncomeFabProps) {
     <Fab
       size="lg"
       placement="bottom left"
-      className="rounded-2xl bg-green-500 hover:bg-green-600 active:bg-green-700"
+      className="rounded-2xl bg-success-500 hover:bg-success-600 active:bg-success-700"
       onPress={onPress}
     >
       <FabIcon as={BanknoteArrowUpIcon} />

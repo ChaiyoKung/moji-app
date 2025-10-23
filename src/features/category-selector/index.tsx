@@ -26,11 +26,11 @@ export function CategorySelector({
   }
 
   if (categoriesQuery.error) {
-    return <Text className="text-red-500">เกิดข้อผิดพลาดในการโหลดประเภท</Text>;
+    return <Text className="text-error-500">เกิดข้อผิดพลาดในการโหลดประเภท</Text>;
   }
 
   if (!categoriesQuery.data || categoriesQuery.data.length === 0) {
-    return <Text className="text-gray-500">ไม่มีประเภท</Text>;
+    return <Text className="text-typography-500">ไม่มีประเภท</Text>;
   }
 
   return (

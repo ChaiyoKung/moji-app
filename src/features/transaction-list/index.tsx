@@ -33,7 +33,7 @@ export function TransactionList({ selectedDate }: TransactionListProps) {
   if (transactionsQuery.error) {
     return (
       <Center className="h-40 px-4">
-        <Text className="text-red-500">ไม่สามารถโหลดรายการได้</Text>
+        <Text className="text-error-500">ไม่สามารถโหลดรายการได้</Text>
       </Center>
     );
   }
@@ -44,7 +44,7 @@ export function TransactionList({ selectedDate }: TransactionListProps) {
   ) {
     return (
       <Center className="h-40 px-4">
-        <Text className="text-gray-500">
+        <Text className="text-typography-500">
           {`ไม่พบรายการใน${fromNowDate(selectedDate)}`}
         </Text>
       </Center>

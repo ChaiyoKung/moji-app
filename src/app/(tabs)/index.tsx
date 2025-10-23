@@ -50,7 +50,7 @@ export default function Home() {
   };
 
   return (
-    <SafeAreaView edges={["top"]} className="flex-1 bg-gray-100">
+    <SafeAreaView edges={["top"]} className="flex-1 bg-background-100">
       <ScrollView>
         <VStack space="md" className="p-4 pb-[5.75rem]">
           <AccountBalanceSummary />

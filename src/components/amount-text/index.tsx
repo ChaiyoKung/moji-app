@@ -30,7 +30,7 @@ export function AmountText({
   hideValue,
 }: AmountTextProps) {
   const sign = showSign ? (type === "income" ? "+" : "-") : "";
-  const color = type === "income" ? "text-green-500" : "text-red-500";
+  const color = type === "income" ? "text-success-500" : "text-error-500";
   const formattedValue = hideValue ? "******" : formatBaht(value);
   const displayValue = sign + formattedValue;
 

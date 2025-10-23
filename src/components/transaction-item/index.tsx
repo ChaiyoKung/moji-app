@@ -21,7 +21,7 @@ export function TransactionItem({ data }: TransactionItemProps) {
       <HStack
         key={data._id}
         space="md"
-        className="items-center rounded-2xl border border-gray-200 bg-white p-4"
+        className="items-center rounded-2xl border border-outline-200 bg-white p-4"
       >
         <Center
           className="h-12 w-12 rounded-full"

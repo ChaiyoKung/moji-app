@@ -41,7 +41,7 @@ export function SwipeableTransactionItem({
       renderRightActions={() => (
         <Pressable
           onPress={() => deleteTransactionMutation.mutate(data._id)}
-          className="aspect-square items-center justify-center rounded-2xl bg-red-500"
+          className="aspect-square items-center justify-center rounded-2xl bg-error-500"
           disabled={deleteTransactionMutation.isPending}
         >
           {deleteTransactionMutation.isPending ? (

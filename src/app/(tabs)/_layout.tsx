@@ -20,7 +20,7 @@ export default function TabLayout() {
         return (
           <SafeAreaView
             edges={["bottom"]}
-            className="overflow-hidden rounded-t-2xl border-t border-gray-200 bg-white"
+            className="overflow-hidden rounded-t-2xl border-t border-outline-200 bg-white"
           >
             <HStack>
               {state.routes.map((route, index) => {
@@ -76,10 +76,10 @@ export default function TabLayout() {
                   >
                     {({ pressed }) => {
                       const textColor = isFocused
-                        ? "text-blue-500"
+                        ? "text-primary-500"
                         : pressed
-                          ? "text-gray-700"
-                          : "text-gray-500";
+                          ? "text-typography-700"
+                          : "text-typography-500";
 
                       return (
                         <VStack space="xs" className="items-center">
