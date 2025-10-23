@@ -5,7 +5,6 @@ import { Text } from "../components/ui/text";
 import { HStack } from "../components/ui/hstack";
 import { Input, InputField } from "../components/ui/input";
 import { useState, useRef, RefObject } from "react";
-import colors from "tailwindcss/colors";
 import { SaveIcon } from "lucide-react-native";
 import {
   Button,
@@ -169,7 +168,7 @@ export default function Transaction() {
           }
         >
           {createTransactionMutation.isPending ? (
-            <ButtonSpinner color={colors.white} />
+            <ButtonSpinner className="text-typography-0" />
           ) : (
             <ButtonIcon as={SaveIcon} />
           )}

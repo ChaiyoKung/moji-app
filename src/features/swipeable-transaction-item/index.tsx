@@ -45,9 +45,9 @@ export function SwipeableTransactionItem({
           disabled={deleteTransactionMutation.isPending}
         >
           {deleteTransactionMutation.isPending ? (
-            <Spinner className="text-white" />
+            <Spinner className="text-typography-0" />
           ) : (
-            <Icon as={Trash2} size="xl" className="text-white" />
+            <Icon as={Trash2} size="xl" className="text-typography-0" />
           )}
         </Pressable>
       )}
