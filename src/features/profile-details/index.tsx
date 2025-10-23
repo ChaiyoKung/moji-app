@@ -1,0 +1,62 @@
+// src/features/profile-details/index.tsx
+import { useQuery } from "@tanstack/react-query";
+import { getUserProfile } from "../../libs/api";
+import { env } from "../../env";
+import { Center } from "../../components/ui/center";
+import { Spinner } from "../../components/ui/spinner";
+import { Text } from "../../components/ui/text";
+import { Image } from "../../components/ui/image";
+import { VStack } from "../../components/ui/vstack";
+import { Heading } from "../../components/ui/heading";
+
+export function ProfileDetails() {
+  const userProfileQuery = useQuery({
+    queryKey: ["userProfile"],
+    queryFn: getUserProfile,
+  });
+
+  if (userProfileQuery.isLoading) {
+    return (
+      <Center className="w-full h-32">
+        <Spinner />
+      </Center>
+    );
+  }
+
+  if (userProfileQuery.isError) {
+    return (
+      <Center className="w-full h-32">
+        <Text className="text-red-500">
+          เกิดข้อผิดพลาดในการโหลดข้อมูลโปรไฟล์
+        </Text>
+      </Center>
+    );
+  }
+
+  if (userProfileQuery.data === undefined) {
+    return (
+      <Center className="w-full h-32">
+        <Text className="text-gray-500">ไม่พบข้อมูลโปรไฟล์ผู้ใช้</Text>
+      </Center>
+    );
+  }
+
+  return (
+    <>
+      <Image
+        size="xl"
+        source={{
+          uri:
+            userProfileQuery.data?.avatarUrl ??
+            `${env.EXPO_PUBLIC_API_URL}/images/default-avatar.png`,
+        }}
+        alt="User Avatar"
+        className="rounded-full bg-gray-300"
+      />
+      <VStack className="items-center">
+        <Heading>{userProfileQuery.data?.displayName}</Heading>
+        <Text className="text-gray-500">{userProfileQuery.data?.email}</Text>
+      </VStack>
+    </>
+  );
+}
