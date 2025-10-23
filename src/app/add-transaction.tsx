@@ -52,8 +52,6 @@ export default function Transaction() {
     mutationFn: createTransaction,
     onSuccess: () => {
       console.log("Transaction created successfully");
-
-      // Show success toast
       toast.success("บันทึกรายการสำเร็จ");
 
       // Invalidate queries to refresh data
@@ -71,8 +69,6 @@ export default function Transaction() {
     },
     onError: (error) => {
       console.error("Error creating transaction:", error);
-
-      // Show error toast
       toast.error("เกิดข้อผิดพลาดในการบันทึกรายการ", "กรุณาลองใหม่อีกครั้ง");
     },
   });
