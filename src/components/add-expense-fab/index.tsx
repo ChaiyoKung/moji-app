@@ -9,7 +9,8 @@ export function AddExpenseFab({ onPress }: AddExpenseFabProps) {
     <Fab
       size="lg"
       placement="bottom right"
-      className="rounded-2xl bg-error-500 hover:bg-error-600 active:bg-error-700"
+      action="negative"
+      className="rounded-2xl"
       onPress={onPress}
     >
       <FabLabel bold>เพิ่มรายจ่าย</FabLabel>
