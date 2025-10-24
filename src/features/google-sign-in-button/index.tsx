@@ -77,6 +77,7 @@ export function GoogleSignInButton() {
 
   return (
     <Button
+      action="google"
       isDisabled={signInGoogleMutation.isPending}
       onPress={() => signInGoogleMutation.mutate()}
     >
