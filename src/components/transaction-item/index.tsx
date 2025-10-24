@@ -30,9 +30,7 @@ export function TransactionItem({ data }: TransactionItemProps) {
           <Text size="2xl">{data.categoryId.icon}</Text>
         </Center>
         <VStack className="flex-1">
-          <Text size="lg" className="text-typography-black">
-            {data.categoryId.name}
-          </Text>
+          <Text size="lg">{data.categoryId.name}</Text>
           {data.note ? (
             <Text
               size="sm"

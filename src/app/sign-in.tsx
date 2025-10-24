@@ -25,7 +25,7 @@ export default function SignIn() {
           space="lg"
           className="h-full rounded-t-3xl border-t border-outline-200 bg-white p-6"
         >
-          <Heading size="3xl" className="my-4 text-typography-black">
+          <Heading size="3xl" className="my-4">
             เข้าสู่ระบบ
           </Heading>
 

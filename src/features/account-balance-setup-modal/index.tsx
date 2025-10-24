@@ -73,9 +73,7 @@ export function AccountBalanceSetupModal({
       <ModalBackdrop />
       <ModalContent className="rounded-2xl">
         <ModalHeader>
-          <Heading size="md" className="text-typography-black">
-            กรอกยอดเงินคงเหลือ
-          </Heading>
+          <Heading size="md">กรอกยอดเงินคงเหลือ</Heading>
           <ModalCloseButton>
             <Icon
               as={X}

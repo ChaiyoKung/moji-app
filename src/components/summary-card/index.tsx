@@ -28,7 +28,7 @@ export interface SummaryCardTextProps {
 
 export function SummaryCardValue({ value }: SummaryCardTextProps) {
   return (
-    <Text size="4xl" bold className="text-typography-black">
+    <Text size="4xl" bold>
       {formatBaht(value)}
     </Text>
   );

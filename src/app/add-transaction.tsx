@@ -92,14 +92,14 @@ export default function Transaction() {
       <KeyboardAwareScrollView className="flex-1 bg-background-100">
         <VStack space="md" className="p-4">
           <VStack>
-            <Heading size="3xl" className="text-typography-black">
+            <Heading size="3xl">
               {type === "income" ? "เพิ่มรายรับ" : "เพิ่มรายจ่าย"}
             </Heading>
             <DateLabel date={date} />
           </VStack>
 
           <VStack space="sm">
-            <Heading size="md" bold className="text-typography-black">
+            <Heading size="md" bold>
               ประเภท
             </Heading>
             <CategorySelector
@@ -113,7 +113,7 @@ export default function Transaction() {
           </VStack>
 
           <VStack space="sm">
-            <Heading size="md" bold className="text-typography-black">
+            <Heading size="md" bold className="">
               จำนวนเงิน
             </Heading>
             <Input size="xl" className="rounded-2xl">
@@ -133,7 +133,7 @@ export default function Transaction() {
           </VStack>
 
           <VStack space="sm">
-            <Heading size="md" bold className="text-typography-black">
+            <Heading size="md" bold className="">
               บันทึกช่วยจำ
             </Heading>
             <Input size="xl" className="rounded-2xl">
