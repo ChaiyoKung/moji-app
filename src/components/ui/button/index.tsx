@@ -48,6 +48,8 @@ const buttonStyle = tva({
         "border-success-300 bg-success-500 data-[focus-visible=true]:web:ring-indicator-info data-[hover=true]:border-success-400 data-[hover=true]:bg-success-600 data-[active=true]:border-success-500 data-[active=true]:bg-success-700",
       negative:
         "border-error-300 bg-error-500 data-[focus-visible=true]:web:ring-indicator-info data-[hover=true]:border-error-400 data-[hover=true]:bg-error-600 data-[active=true]:border-error-500 data-[active=true]:bg-error-700",
+      google:
+        "border-blue-300 bg-background-0 data-[focus-visible=true]:web:ring-indicator-info data-[hover=true]:border-blue-400 data-[hover=true]:bg-background-100 data-[active=true]:border-blue-500 data-[active=true]:bg-background-200",
       default:
         "bg-transparent data-[hover=true]:bg-background-50 data-[active=true]:bg-transparent",
     },
@@ -68,6 +70,12 @@ const buttonStyle = tva({
   },
   compoundVariants: [
     {
+      action: "google",
+      variant: "solid",
+      class:
+        "border border-outline-200 data-[hover=true]:border-outline-200 data-[active=true]:border-outline-200",
+    },
+    {
       action: "primary",
       variant: "link",
       class:
@@ -92,6 +100,12 @@ const buttonStyle = tva({
         "bg-transparent px-0 data-[hover=true]:bg-transparent data-[active=true]:bg-transparent",
     },
     {
+      action: "google",
+      variant: "link",
+      class:
+        "bg-transparent px-0 data-[hover=true]:bg-transparent data-[active=true]:bg-transparent",
+    },
+    {
       action: "primary",
       variant: "outline",
       class:
@@ -111,6 +125,12 @@ const buttonStyle = tva({
     },
     {
       action: "negative",
+      variant: "outline",
+      class:
+        "bg-transparent data-[hover=true]:bg-background-50 data-[active=true]:bg-transparent",
+    },
+    {
+      action: "google",
       variant: "outline",
       class:
         "bg-transparent data-[hover=true]:bg-background-50 data-[active=true]:bg-transparent",
@@ -130,6 +150,8 @@ const buttonTextStyle = tva({
         "text-success-600 data-[hover=true]:text-success-600 data-[active=true]:text-success-700",
       negative:
         "text-error-600 data-[hover=true]:text-error-600 data-[active=true]:text-error-700",
+      google:
+        "text-blue-500 data-[hover=true]:text-blue-500 data-[active=true]:text-blue-500",
     },
     variant: {
       link: "data-[hover=true]:underline data-[active=true]:underline",
@@ -171,6 +193,12 @@ const buttonTextStyle = tva({
         "text-typography-0 data-[hover=true]:text-typography-0 data-[active=true]:text-typography-0",
     },
     {
+      variant: "solid",
+      action: "google",
+      class:
+        "text-blue-500 data-[hover=true]:text-blue-500 data-[active=true]:text-blue-500",
+    },
+    {
       variant: "outline",
       action: "primary",
       class:
@@ -193,6 +221,12 @@ const buttonTextStyle = tva({
       action: "negative",
       class:
         "text-error-500 data-[hover=true]:text-error-500 data-[active=true]:text-error-500",
+    },
+    {
+      variant: "outline",
+      action: "google",
+      class:
+        "text-blue-500 data-[hover=true]:text-blue-500 data-[active=true]:text-blue-500",
     },
   ],
 });
@@ -220,9 +254,10 @@ const buttonIconStyle = tva({
         "text-secondary-500 data-[hover=true]:text-secondary-600 data-[active=true]:text-secondary-700",
       positive:
         "text-success-600 data-[hover=true]:text-success-600 data-[active=true]:text-success-700",
-
       negative:
         "text-error-600 data-[hover=true]:text-error-600 data-[active=true]:text-error-700",
+      google:
+        "text-blue-600 data-[hover=true]:text-blue-600 data-[active=true]:text-blue-700",
     },
   },
   parentCompoundVariants: [
@@ -249,6 +284,12 @@ const buttonIconStyle = tva({
       action: "negative",
       class:
         "text-typography-0 data-[hover=true]:text-typography-0 data-[active=true]:text-typography-0",
+    },
+    {
+      variant: "solid",
+      action: "google",
+      class:
+        "text-blue-600 data-[hover=true]:text-blue-600 data-[active=true]:text-blue-600",
     },
   ],
 });
