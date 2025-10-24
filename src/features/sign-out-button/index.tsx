@@ -39,6 +39,7 @@ export function SignOutButton() {
 
   return (
     <Button
+      variant="outline"
       action="negative"
       isDisabled={signOutMutation.isPending}
       onPress={() => signOutMutation.mutate()}
