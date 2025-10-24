@@ -20,7 +20,7 @@ export default function TabLayout() {
         return (
           <SafeAreaView
             edges={["bottom"]}
-            className="bg-white border-t border-gray-200 rounded-t-2xl overflow-hidden"
+            className="overflow-hidden rounded-t-2xl border-t border-outline-200 bg-background-0"
           >
             <HStack>
               {state.routes.map((route, index) => {
@@ -72,14 +72,14 @@ export default function TabLayout() {
                     accessibilityState={isFocused ? { selected: true } : {}}
                     accessibilityLabel={options.tabBarAccessibilityLabel}
                     testID={options.tabBarButtonTestID}
-                    className="flex-1 pt-3 pb-2"
+                    className="flex-1 pb-2 pt-3"
                   >
                     {({ pressed }) => {
                       const textColor = isFocused
-                        ? "text-blue-500"
+                        ? "text-primary-500"
                         : pressed
-                          ? "text-gray-700"
-                          : "text-gray-500";
+                          ? "text-typography-700"
+                          : "text-typography-500";
 
                       return (
                         <VStack space="xs" className="items-center">

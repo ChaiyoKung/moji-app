@@ -10,17 +10,17 @@ export function DateLabel({ date }: DateLabelProps) {
 
   if (dayjs(date).isToday()) {
     return (
-      <Text className="text-gray-500">{`ของวันนี้ (${relativeDate})`}</Text>
+      <Text className="text-typography-500">{`ของวันนี้ (${relativeDate})`}</Text>
     );
   }
 
   if (dayjs(date).isYesterday()) {
     return (
-      <Text className="text-orange-500">{`⚠️ ของเมื่อวาน (${relativeDate})`}</Text>
+      <Text className="text-tertiary-500">{`⚠️ ของเมื่อวาน (${relativeDate})`}</Text>
     );
   }
 
   return (
-    <Text className="text-orange-500">{`⚠️ ของวันที่ ${relativeDate}`}</Text>
+    <Text className="text-tertiary-500">{`⚠️ ของวันที่ ${relativeDate}`}</Text>
   );
 }

@@ -27,11 +27,11 @@ export function AccountBalanceInline() {
       {accountQuery.isLoading || isLoading ? (
         <Spinner />
       ) : accountQuery.error ? (
-        <Text className="text-red-500">เกิดข้อผิดพลาดในการโหลดยอดเงิน</Text>
+        <Text className="text-error-500">เกิดข้อผิดพลาดในการโหลดยอดเงิน</Text>
       ) : accountQuery.data?.[0]?.balance === undefined ? (
-        <Text className="text-gray-500">ไม่มีบัญชี</Text>
+        <Text className="text-typography-500">ไม่มีบัญชี</Text>
       ) : (
-        <Text className="text-teal-500">
+        <Text className="text-secondary-500">
           {isBalanceHidden
             ? "******"
             : formatBaht(accountQuery.data[0].balance)}

@@ -41,13 +41,13 @@ export function SwipeableTransactionItem({
       renderRightActions={() => (
         <Pressable
           onPress={() => deleteTransactionMutation.mutate(data._id)}
-          className="bg-red-500 justify-center items-center rounded-2xl aspect-square"
+          className="aspect-square items-center justify-center rounded-2xl bg-error-500"
           disabled={deleteTransactionMutation.isPending}
         >
           {deleteTransactionMutation.isPending ? (
-            <Spinner className="text-white" />
+            <Spinner className="text-typography-0" />
           ) : (
-            <Icon as={Trash2} size="xl" className="text-white" />
+            <Icon as={Trash2} size="xl" className="text-typography-0" />
           )}
         </Pressable>
       )}

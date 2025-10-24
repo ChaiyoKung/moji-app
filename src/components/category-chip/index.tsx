@@ -13,7 +13,7 @@ export interface CategoryChipProps {
 export function CategoryChip({ data, selected, onPress }: CategoryChipProps) {
   return (
     <Pressable
-      className="flex-row items-center gap-2 border rounded-full px-4 py-1"
+      className="flex-row items-center gap-2 rounded-full border px-4 py-1"
       style={{
         borderColor: data.color,
         backgroundColor: selected ? data.color : "transparent",

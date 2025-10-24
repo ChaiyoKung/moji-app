@@ -3,7 +3,7 @@ import { Text } from "../../components/ui/text";
 
 export default function Dashboard() {
   return (
-    <SafeAreaView edges={["top"]} className="flex-1 bg-gray-100">
+    <SafeAreaView edges={["top"]} className="flex-1 bg-background-100">
       <Text>Dashboard</Text>
     </SafeAreaView>
   );

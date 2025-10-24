@@ -21,18 +21,16 @@ export function TransactionItem({ data }: TransactionItemProps) {
       <HStack
         key={data._id}
         space="md"
-        className="bg-white p-4 rounded-2xl border border-gray-200 items-center"
+        className="items-center rounded-2xl border border-outline-200 bg-background-0 p-4"
       >
         <Center
-          className="rounded-full w-12 h-12"
+          className="h-12 w-12 rounded-full"
           style={{ backgroundColor: data.categoryId.color }}
         >
           <Text size="2xl">{data.categoryId.icon}</Text>
         </Center>
         <VStack className="flex-1">
-          <Text size="lg" className="text-typography-black">
-            {data.categoryId.name}
-          </Text>
+          <Text size="lg">{data.categoryId.name}</Text>
           {data.note ? (
             <Text
               size="sm"

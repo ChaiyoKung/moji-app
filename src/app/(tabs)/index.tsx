@@ -50,7 +50,7 @@ export default function Home() {
   };
 
   return (
-    <SafeAreaView edges={["top"]} className="flex-1 bg-gray-100">
+    <SafeAreaView edges={["top"]} className="flex-1 bg-background-100">
       <ScrollView>
         <VStack space="md" className="p-4 pb-[5.75rem]">
           <AccountBalanceSummary />
@@ -70,7 +70,7 @@ export default function Home() {
           </VStack>
 
           <VStack space="sm" className="-mx-4">
-            <Heading size="lg" bold className="text-typography-500 px-4">
+            <Heading size="lg" bold className="px-4 text-typography-500">
               รายการ
             </Heading>
             <TransactionList selectedDate={selectedDate} />

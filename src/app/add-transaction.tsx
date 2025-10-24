@@ -5,7 +5,6 @@ import { Text } from "../components/ui/text";
 import { HStack } from "../components/ui/hstack";
 import { Input, InputField } from "../components/ui/input";
 import { useState, useRef, RefObject } from "react";
-import colors from "tailwindcss/colors";
 import { SaveIcon } from "lucide-react-native";
 import {
   Button,
@@ -53,8 +52,6 @@ export default function Transaction() {
     mutationFn: createTransaction,
     onSuccess: () => {
       console.log("Transaction created successfully");
-
-      // Show success toast
       toast.success("บันทึกรายการสำเร็จ");
 
       // Invalidate queries to refresh data
@@ -72,8 +69,6 @@ export default function Transaction() {
     },
     onError: (error) => {
       console.error("Error creating transaction:", error);
-
-      // Show error toast
       toast.error("เกิดข้อผิดพลาดในการบันทึกรายการ", "กรุณาลองใหม่อีกครั้ง");
     },
   });
@@ -94,17 +89,17 @@ export default function Transaction() {
 
   return (
     <>
-      <KeyboardAwareScrollView className="flex-1 bg-gray-100">
+      <KeyboardAwareScrollView className="flex-1 bg-background-100">
         <VStack space="md" className="p-4">
           <VStack>
-            <Heading size="3xl" className="text-typography-black">
+            <Heading size="3xl">
               {type === "income" ? "เพิ่มรายรับ" : "เพิ่มรายจ่าย"}
             </Heading>
             <DateLabel date={date} />
           </VStack>
 
           <VStack space="sm">
-            <Heading size="md" bold className="text-typography-black">
+            <Heading size="md" bold>
               ประเภท
             </Heading>
             <CategorySelector
@@ -118,7 +113,7 @@ export default function Transaction() {
           </VStack>
 
           <VStack space="sm">
-            <Heading size="md" bold className="text-typography-black">
+            <Heading size="md" bold className="">
               จำนวนเงิน
             </Heading>
             <Input size="xl" className="rounded-2xl">
@@ -132,13 +127,13 @@ export default function Transaction() {
               />
             </Input>
             <HStack space="xs" className="items-baseline">
-              <Text className="text-teal-500">เงินคงเหลือ</Text>
+              <Text className="text-secondary-500">เงินคงเหลือ</Text>
               <AccountBalanceInline />
             </HStack>
           </VStack>
 
           <VStack space="sm">
-            <Heading size="md" bold className="text-typography-black">
+            <Heading size="md" bold className="">
               บันทึกช่วยจำ
             </Heading>
             <Input size="xl" className="rounded-2xl">
@@ -155,11 +150,10 @@ export default function Transaction() {
 
       <SafeAreaView
         edges={["bottom"]}
-        className="p-4 bg-white border-t border-gray-200 rounded-t-2xl overflow-hidden"
+        className="overflow-hidden rounded-t-2xl border-t border-outline-200 bg-background-0 p-4"
       >
         <Button
           size="xl"
-          className="rounded-2xl bg-blue-500 data-[hover=true]:bg-blue-600 data-[active=true]:bg-blue-700"
           onPress={handleSave}
           isDisabled={
             !selectedCatagoryId ||
@@ -170,7 +164,7 @@ export default function Transaction() {
           }
         >
           {createTransactionMutation.isPending ? (
-            <ButtonSpinner color={colors.white} />
+            <ButtonSpinner className="text-typography-0" />
           ) : (
             <ButtonIcon as={SaveIcon} />
           )}

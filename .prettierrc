@@ -8,5 +8,7 @@
   "singleQuote": false,
   "tabWidth": 2,
   "trailingComma": "es5",
-  "useTabs": false
+  "useTabs": false,
+  "plugins": ["prettier-plugin-tailwindcss"],
+  "tailwindFunctions": ["tva"]
 }

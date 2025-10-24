@@ -18,7 +18,7 @@ export function ProfileDetails() {
 
   if (userProfileQuery.isLoading) {
     return (
-      <Center className="w-full h-32">
+      <Center className="h-32 w-full">
         <Spinner />
       </Center>
     );
@@ -26,8 +26,8 @@ export function ProfileDetails() {
 
   if (userProfileQuery.isError) {
     return (
-      <Center className="w-full h-32">
-        <Text className="text-red-500">
+      <Center className="h-32 w-full">
+        <Text className="text-error-500">
           เกิดข้อผิดพลาดในการโหลดข้อมูลโปรไฟล์
         </Text>
       </Center>
@@ -36,8 +36,8 @@ export function ProfileDetails() {
 
   if (userProfileQuery.data === undefined) {
     return (
-      <Center className="w-full h-32">
-        <Text className="text-gray-500">ไม่พบข้อมูลโปรไฟล์ผู้ใช้</Text>
+      <Center className="h-32 w-full">
+        <Text className="text-typography-500">ไม่พบข้อมูลโปรไฟล์ผู้ใช้</Text>
       </Center>
     );
   }
@@ -50,11 +50,13 @@ export function ProfileDetails() {
           uri: userProfileQuery.data.avatarUrl ?? defaultAvatarUrl,
         }}
         alt="User Avatar"
-        className="rounded-full bg-gray-300"
+        className="rounded-full bg-background-300"
       />
       <VStack className="items-center">
         <Heading>{userProfileQuery.data.displayName}</Heading>
-        <Text className="text-gray-500">{userProfileQuery.data.email}</Text>
+        <Text className="text-typography-500">
+          {userProfileQuery.data.email}
+        </Text>
       </VStack>
     </VStack>
   );

@@ -77,11 +77,13 @@ export function GoogleSignInButton() {
 
   return (
     <Button
-      className="rounded-2xl"
+      action="google"
       isDisabled={signInGoogleMutation.isPending}
       onPress={() => signInGoogleMutation.mutate()}
     >
-      {signInGoogleMutation.isPending && <ButtonSpinner />}
+      {signInGoogleMutation.isPending && (
+        <ButtonSpinner className="text-blue-500" />
+      )}
       <ButtonText>เข้าสู่ระบบด้วย Google</ButtonText>
     </Button>
   );

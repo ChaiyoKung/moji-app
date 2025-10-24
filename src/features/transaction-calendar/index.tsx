@@ -68,14 +68,14 @@ export function TransactionCalendar({
       markingType="multi-dot"
       theme={{
         calendarBackground: colors.transparent,
-        arrowColor: colors.gray[500],
-        monthTextColor: colors.gray[800],
-        dayTextColor: colors.gray[800],
+        arrowColor: colors.zinc[500],
+        monthTextColor: colors.zinc[800],
+        dayTextColor: colors.zinc[800],
         selectedDayBackgroundColor: colors.blue[500],
         selectedDayTextColor: colors.white,
         todayTextColor: colors.blue[500],
-        textDisabledColor: colors.gray[300],
-        textSectionTitleColor: colors.gray[500],
+        textDisabledColor: colors.zinc[300],
+        textSectionTitleColor: colors.zinc[500],
       }}
     />
   );
