@@ -1,4 +1,4 @@
-import { Button, ButtonText } from "../../components/ui/button";
+import { Button, ButtonSpinner, ButtonText } from "../../components/ui/button";
 import { useSession } from "../../components/session-provider";
 import { useMutation } from "@tanstack/react-query";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
@@ -39,10 +39,14 @@ export function SignOutButton() {
 
   return (
     <Button
+      variant="outline"
       action="negative"
       isDisabled={signOutMutation.isPending}
       onPress={() => signOutMutation.mutate()}
     >
+      {signOutMutation.isPending && (
+        <ButtonSpinner className="text-error-500" />
+      )}
       <ButtonText>ออกจากระบบ</ButtonText>
     </Button>
   );
