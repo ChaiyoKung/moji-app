@@ -129,7 +129,7 @@ function RootNavigation() {
           return (
             <SafeAreaView
               edges={["top"]}
-              className="overflow-hidden rounded-2xl border-b border-outline-200 bg-white"
+              className="overflow-hidden rounded-2xl border-b border-outline-200 bg-background-0"
             >
               <HStack className="items-center px-2 py-3">
                 {back ? (

@@ -20,7 +20,7 @@ export default function TabLayout() {
         return (
           <SafeAreaView
             edges={["bottom"]}
-            className="overflow-hidden rounded-t-2xl border-t border-outline-200 bg-white"
+            className="overflow-hidden rounded-t-2xl border-t border-outline-200 bg-background-0"
           >
             <HStack>
               {state.routes.map((route, index) => {

@@ -23,7 +23,7 @@ export default function SignIn() {
       <SafeAreaView edges={["bottom"]}>
         <VStack
           space="lg"
-          className="h-full rounded-t-3xl border-t border-outline-200 bg-white p-6"
+          className="h-full rounded-t-3xl border-t border-outline-200 bg-background-0 p-6"
         >
           <Heading size="3xl" className="my-4">
             เข้าสู่ระบบ
