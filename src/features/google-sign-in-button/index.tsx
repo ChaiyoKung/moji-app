@@ -82,7 +82,7 @@ export function GoogleSignInButton() {
       onPress={() => signInGoogleMutation.mutate()}
     >
       {signInGoogleMutation.isPending && (
-        <ButtonSpinner className="text-typography-0" />
+        <ButtonSpinner className="text-blue-500" />
       )}
       <ButtonText>เข้าสู่ระบบด้วย Google</ButtonText>
     </Button>
