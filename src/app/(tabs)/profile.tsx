@@ -2,6 +2,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { VStack } from "../../components/ui/vstack";
 import { SignOutButton } from "../../features/sign-out-button";
 import { ProfileDetails } from "../../features/profile-details";
+import { AppVersion } from "../../features/app-version";
+import { Center } from "../../components/ui/center";
 
 export default function Profile() {
   return (
@@ -11,6 +13,9 @@ export default function Profile() {
           <ProfileDetails />
         </VStack>
         <SignOutButton />
+        <Center>
+          <AppVersion />
+        </Center>
       </VStack>
     </SafeAreaView>
   );
