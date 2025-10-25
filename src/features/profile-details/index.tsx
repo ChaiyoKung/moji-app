@@ -1,14 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { getUserProfile } from "../../libs/api";
-import { env } from "../../env";
 import { Center } from "../../components/ui/center";
 import { Spinner } from "../../components/ui/spinner";
 import { Text } from "../../components/ui/text";
-import { Image } from "../../components/ui/image";
 import { VStack } from "../../components/ui/vstack";
 import { Heading } from "../../components/ui/heading";
-
-const defaultAvatarUrl = `${env.EXPO_PUBLIC_API_URL}/images/default-avatar.png`;
+import {
+  Avatar,
+  AvatarFallbackText,
+  AvatarImage,
+} from "../../components/ui/avatar";
 
 export function ProfileDetails() {
   const userProfileQuery = useQuery({
@@ -44,14 +45,15 @@ export function ProfileDetails() {
 
   return (
     <VStack space="md" className="items-center">
-      <Image
-        size="xl"
-        source={{
-          uri: userProfileQuery.data.avatarUrl ?? defaultAvatarUrl,
-        }}
-        alt="User Avatar"
-        className="rounded-full bg-background-300"
-      />
+      <Avatar size="2xl">
+        <AvatarFallbackText>
+          {userProfileQuery.data.displayName}
+        </AvatarFallbackText>
+        <AvatarImage
+          source={{ uri: userProfileQuery.data.avatarUrl }}
+          alt="User Avatar"
+        />
+      </Avatar>
       <VStack className="items-center">
         <Heading>{userProfileQuery.data.displayName}</Heading>
         <Text className="text-typography-500">
