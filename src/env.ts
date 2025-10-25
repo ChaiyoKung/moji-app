@@ -8,4 +8,8 @@ export const env = {
   EXPO_PUBLIC_GOOGLE_OAUTH_IOS_CLIENT_ID: z
     .string()
     .parse(process.env.EXPO_PUBLIC_GOOGLE_OAUTH_IOS_CLIENT_ID),
+  EXPO_PUBLIC_TRANSACTION_INSERT_MAX_BATCH_SIZE: z.coerce
+    .number()
+    .default(10)
+    .parse(process.env.EXPO_PUBLIC_TRANSACTION_INSERT_MAX_BATCH_SIZE),
 };

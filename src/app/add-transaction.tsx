@@ -28,9 +28,10 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { useAppToast } from "../hooks/use-app-toast";
 import { TextInput, TextInputProps } from "react-native";
 import { arrayFill } from "../utils/array";
+import { env } from "../env";
 
 const minQuantity: number = 1;
-const maxQuantity: number = 10;
+const maxQuantity: number = env.EXPO_PUBLIC_TRANSACTION_INSERT_MAX_BATCH_SIZE;
 
 export default function Transaction() {
   const { type, date } = useLocalSearchParams();
