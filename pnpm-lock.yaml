@@ -11,6 +11,9 @@ importers:
       '@expo/html-elements':
         specifier: 0.4.2
         version: 0.4.2
+      '@gluestack-ui/avatar':
+        specifier: ^0.1.18
+        version: 0.1.18(react-dom@19.1.0(react@19.0.0))(react-native@0.79.5(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       '@gluestack-ui/button':
         specifier: ^1.0.14
         version: 1.0.14(react-dom@19.1.0(react@19.0.0))(react-native@0.79.5(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -856,6 +859,12 @@ packages:
 
   '@formatjs/intl-localematcher@0.6.1':
     resolution: {integrity: sha512-ePEgLgVCqi2BBFnTMWPfIghu6FkbZnnBVhO2sSxvLfrdFw7wCHAHiDoM2h4NRgjbaY7+B7HgOLZGkK187pZTZg==}
+
+  '@gluestack-ui/avatar@0.1.18':
+    resolution: {integrity: sha512-VA9XwtavYLYCWrjxHc2u9gRpV97cPRcr/6KJ4tLiMiQbiRL1b4zckiL+/F39fB6xjUOUQHl3Fjo/Yd8swa0MBg==}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
 
   '@gluestack-ui/button@1.0.14':
     resolution: {integrity: sha512-Rqv5PY18jzeVACBwsVxXlyDbHjBiSXGVqY29VO6KHZGMMokCPW6MXYXT8ZpriLxMc1DRkgTtpTVYZCJBFaYTbg==}
@@ -7194,6 +7203,14 @@ snapshots:
   '@formatjs/intl-localematcher@0.6.1':
     dependencies:
       tslib: 2.8.1
+
+  '@gluestack-ui/avatar@0.1.18(react-dom@19.1.0(react@19.0.0))(react-native@0.79.5(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
+    dependencies:
+      '@gluestack-ui/utils': 0.1.15(react-dom@19.1.0(react@19.0.0))(react-native@0.79.5(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+      react: 19.0.0
+      react-dom: 19.1.0(react@19.0.0)
+    transitivePeerDependencies:
+      - react-native
 
   '@gluestack-ui/button@1.0.14(react-dom@19.1.0(react@19.0.0))(react-native@0.79.5(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
     dependencies:
