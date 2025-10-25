@@ -108,6 +108,11 @@ export async function createTransaction(data: CreateTransactionDto) {
   return response.data;
 }
 
+export async function createTransactionMany(list: CreateTransactionDto[]) {
+  const response = await api.post<Transaction[]>("/transactions/batch", list);
+  return response.data;
+}
+
 export type TransactionWithCategory = Transaction & {
   categoryId: Category;
 };
