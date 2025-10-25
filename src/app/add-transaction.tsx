@@ -27,6 +27,7 @@ import { DateLabel } from "../components/date-label";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { useAppToast } from "../hooks/use-app-toast";
 import { TextInput, TextInputProps } from "react-native";
+import { arrayFill } from "../utils/array";
 
 const minQuantity: number = 1;
 const maxQuantity: number = 10;
@@ -102,8 +103,7 @@ export default function Transaction() {
       date: date,
       timezone: dayjs.tz.guess(),
     };
-    const transactions =
-      Array<CreateTransactionDto>(quantity).fill(transaction);
+    const transactions = arrayFill(quantity, transaction);
     createTransactionManyMutation.mutate(transactions);
   };
 
