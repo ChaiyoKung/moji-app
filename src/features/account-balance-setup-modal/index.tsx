@@ -62,7 +62,7 @@ export function AccountBalanceSetupModal({
       userId: userId,
       name: "กระเป๋าสตางค์",
       type: "cash",
-      balance: parseFloat(balance),
+      balance: parseInt(balance),
       currency: "THB",
       icon: "💵",
     });

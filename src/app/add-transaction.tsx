@@ -5,9 +5,10 @@ import { Text } from "../components/ui/text";
 import { HStack } from "../components/ui/hstack";
 import { Input, InputField } from "../components/ui/input";
 import { useState, useRef, RefObject } from "react";
-import { SaveIcon } from "lucide-react-native";
+import { MinusIcon, PlusIcon, SaveIcon } from "lucide-react-native";
 import {
   Button,
+  ButtonGroup,
   ButtonIcon,
   ButtonSpinner,
   ButtonText,
@@ -16,12 +17,21 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CategorySelector } from "../features/category-selector";
 import { AccountBalanceInline } from "../features/account-balance-inline";
-import { getAllAccounts, createTransaction } from "../libs/api";
+import {
+  getAllAccounts,
+  createTransactionMany,
+  CreateTransactionDto,
+} from "../libs/api";
 import dayjs from "dayjs";
 import { DateLabel } from "../components/date-label";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { useAppToast } from "../hooks/use-app-toast";
 import { TextInput, TextInputProps } from "react-native";
+import { arrayFill } from "../utils/array";
+import { env } from "../env";
+
+const minQuantity: number = 1;
+const maxQuantity: number = env.EXPO_PUBLIC_TRANSACTION_INSERT_MAX_BATCH_SIZE;
 
 export default function Transaction() {
   const { type, date } = useLocalSearchParams();
@@ -45,11 +55,12 @@ export default function Transaction() {
   const [selectedCatagoryId, setSelectedCatagoryId] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
   const [note, setNote] = useState<string>("");
+  const [quantity, setQuantity] = useState<number>(minQuantity);
 
   const amountInputRef = useRef<TextInput>(null);
 
-  const createTransactionMutation = useMutation({
-    mutationFn: createTransaction,
+  const createTransactionManyMutation = useMutation({
+    mutationFn: createTransactionMany,
     onSuccess: () => {
       console.log("Transaction created successfully");
       toast.success("บันทึกรายการสำเร็จ");
@@ -73,19 +84,36 @@ export default function Transaction() {
     },
   });
 
+  const handleIncreaseQuantity = () => {
+    setQuantity((prev) => Math.min(maxQuantity, prev + 1));
+  };
+
+  const handleDecreaseQuantity = () => {
+    setQuantity((prev) => Math.max(minQuantity, prev - 1));
+  };
+
   const handleSave = () => {
-    createTransactionMutation.mutate({
+    const transaction: CreateTransactionDto = {
       userId: accountQuery.data?.[0]?.userId || "",
       accountId: accountQuery.data?.[0]?._id || "",
       categoryId: selectedCatagoryId,
       type: type,
-      amount: parseFloat(amount),
+      amount: parseInt(amount),
       currency: "THB", // Assuming THB for Thai Baht
       note: note.trim() || undefined,
       date: date,
       timezone: dayjs.tz.guess(),
-    });
+    };
+    const transactions = arrayFill(quantity, transaction);
+    createTransactionManyMutation.mutate(transactions);
   };
+
+  const isButtonDisabled =
+    !selectedCatagoryId ||
+    !amount.trim() ||
+    isNaN(parseInt(amount)) ||
+    parseInt(amount) <= 0 ||
+    createTransactionManyMutation.isPending;
 
   return (
     <>
@@ -152,24 +180,37 @@ export default function Transaction() {
         edges={["bottom"]}
         className="overflow-hidden rounded-t-2xl border-t border-outline-200 bg-background-0 p-4"
       >
-        <Button
-          size="xl"
-          onPress={handleSave}
-          isDisabled={
-            !selectedCatagoryId ||
-            !amount.trim() ||
-            isNaN(parseFloat(amount)) ||
-            parseFloat(amount) <= 0 ||
-            createTransactionMutation.isPending
-          }
-        >
-          {createTransactionMutation.isPending ? (
-            <ButtonSpinner className="text-typography-0" />
-          ) : (
-            <ButtonIcon as={SaveIcon} />
-          )}
-          <ButtonText>บันทึก</ButtonText>
-        </Button>
+        <ButtonGroup flexDirection="row" className="gap-[1px]">
+          <Button
+            size="xl"
+            className="aspect-square rounded-r-none p-0"
+            onPress={handleDecreaseQuantity}
+            isDisabled={isButtonDisabled || quantity <= minQuantity}
+          >
+            <ButtonIcon as={MinusIcon} />
+          </Button>
+          <Button
+            size="xl"
+            className="flex-1 rounded-none"
+            onPress={handleSave}
+            isDisabled={isButtonDisabled}
+          >
+            {createTransactionManyMutation.isPending ? (
+              <ButtonSpinner className="text-typography-0" />
+            ) : (
+              <ButtonIcon as={SaveIcon} />
+            )}
+            <ButtonText>บันทึก {quantity} รายการ</ButtonText>
+          </Button>
+          <Button
+            size="xl"
+            className="aspect-square rounded-l-none p-0"
+            onPress={handleIncreaseQuantity}
+            isDisabled={isButtonDisabled || quantity >= maxQuantity}
+          >
+            <ButtonIcon as={PlusIcon} />
+          </Button>
+        </ButtonGroup>
       </SafeAreaView>
     </>
   );
