@@ -43,22 +43,20 @@ export function ProfileDetails() {
     );
   }
 
+  const userProfile = userProfileQuery.data;
+
   return (
     <VStack space="md" className="items-center">
       <Avatar size="2xl">
-        <AvatarFallbackText>
-          {userProfileQuery.data.displayName}
-        </AvatarFallbackText>
+        <AvatarFallbackText>{userProfile.displayName}</AvatarFallbackText>
         <AvatarImage
-          source={{ uri: userProfileQuery.data.avatarUrl }}
+          source={{ uri: userProfile.avatarUrl }}
           alt="User Avatar"
         />
       </Avatar>
       <VStack className="items-center">
-        <Heading>{userProfileQuery.data.displayName}</Heading>
-        <Text className="text-typography-500">
-          {userProfileQuery.data.email}
-        </Text>
+        <Heading>{userProfile.displayName}</Heading>
+        <Text className="text-typography-500">{userProfile.email}</Text>
       </VStack>
     </VStack>
   );
