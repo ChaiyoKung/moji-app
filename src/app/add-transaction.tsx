@@ -79,7 +79,7 @@ export default function Transaction() {
       accountId: accountQuery.data?.[0]?._id || "",
       categoryId: selectedCatagoryId,
       type: type,
-      amount: parseFloat(amount),
+      amount: parseInt(amount),
       currency: "THB", // Assuming THB for Thai Baht
       note: note.trim() || undefined,
       date: date,
@@ -158,8 +158,8 @@ export default function Transaction() {
           isDisabled={
             !selectedCatagoryId ||
             !amount.trim() ||
-            isNaN(parseFloat(amount)) ||
-            parseFloat(amount) <= 0 ||
+            isNaN(parseInt(amount)) ||
+            parseInt(amount) <= 0 ||
             createTransactionMutation.isPending
           }
         >
