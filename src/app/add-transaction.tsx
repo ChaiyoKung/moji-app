@@ -196,7 +196,7 @@ export default function Transaction() {
             isDisabled={isButtonDisabled}
           >
             {createTransactionManyMutation.isPending ? (
-              <ButtonSpinner className="text-typography-0" />
+              <ButtonSpinner />
             ) : (
               <ButtonIcon as={SaveIcon} />
             )}

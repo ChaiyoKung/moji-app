@@ -81,9 +81,7 @@ export function GoogleSignInButton() {
       isDisabled={signInGoogleMutation.isPending}
       onPress={() => signInGoogleMutation.mutate()}
     >
-      {signInGoogleMutation.isPending && (
-        <ButtonSpinner className="text-blue-500" />
-      )}
+      {signInGoogleMutation.isPending && <ButtonSpinner />}
       <ButtonText>เข้าสู่ระบบด้วย Google</ButtonText>
     </Button>
   );
