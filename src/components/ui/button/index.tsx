@@ -49,7 +49,7 @@ const buttonStyle = tva({
       negative:
         "border-error-300 bg-error-500 data-[focus-visible=true]:web:ring-indicator-info data-[hover=true]:border-error-400 data-[hover=true]:bg-error-600 data-[active=true]:border-error-500 data-[active=true]:bg-error-700",
       google:
-        "border-blue-300 bg-background-0 data-[focus-visible=true]:web:ring-indicator-info data-[hover=true]:border-blue-400 data-[hover=true]:bg-background-100 data-[active=true]:border-blue-500 data-[active=true]:bg-background-200",
+        "border-sky-300 bg-background-0 data-[focus-visible=true]:web:ring-indicator-info data-[hover=true]:border-sky-400 data-[hover=true]:bg-background-100 data-[active=true]:border-sky-500 data-[active=true]:bg-background-200",
       default:
         "bg-transparent data-[hover=true]:bg-background-50 data-[active=true]:bg-transparent",
     },
@@ -151,7 +151,7 @@ const buttonTextStyle = tva({
       negative:
         "text-error-600 data-[hover=true]:text-error-600 data-[active=true]:text-error-700",
       google:
-        "text-blue-500 data-[hover=true]:text-blue-500 data-[active=true]:text-blue-500",
+        "text-sky-600 data-[hover=true]:text-sky-600 data-[active=true]:text-sky-700",
     },
     variant: {
       link: "data-[hover=true]:underline data-[active=true]:underline",
@@ -196,7 +196,7 @@ const buttonTextStyle = tva({
       variant: "solid",
       action: "google",
       class:
-        "text-blue-500 data-[hover=true]:text-blue-500 data-[active=true]:text-blue-500",
+        "text-sky-500 data-[hover=true]:text-sky-500 data-[active=true]:text-sky-500",
     },
     {
       variant: "outline",
@@ -226,7 +226,7 @@ const buttonTextStyle = tva({
       variant: "outline",
       action: "google",
       class:
-        "text-blue-500 data-[hover=true]:text-blue-500 data-[active=true]:text-blue-500",
+        "text-sky-500 data-[hover=true]:text-sky-500 data-[active=true]:text-sky-500",
     },
   ],
 });
@@ -257,7 +257,7 @@ const buttonIconStyle = tva({
       negative:
         "text-error-600 data-[hover=true]:text-error-600 data-[active=true]:text-error-700",
       google:
-        "text-blue-600 data-[hover=true]:text-blue-600 data-[active=true]:text-blue-700",
+        "text-sky-600 data-[hover=true]:text-sky-600 data-[active=true]:text-sky-700",
     },
   },
   parentCompoundVariants: [
@@ -289,7 +289,7 @@ const buttonIconStyle = tva({
       variant: "solid",
       action: "google",
       class:
-        "text-blue-600 data-[hover=true]:text-blue-600 data-[active=true]:text-blue-600",
+        "text-sky-600 data-[hover=true]:text-sky-600 data-[active=true]:text-sky-600",
     },
   ],
 });
@@ -307,7 +307,7 @@ const buttonSpinnerStyle = tva({
       secondary: "text-secondary-600",
       positive: "text-success-600",
       negative: "text-error-600",
-      google: "text-blue-600",
+      google: "text-sky-600",
     },
   },
   parentCompoundVariants: [
@@ -334,7 +334,7 @@ const buttonSpinnerStyle = tva({
     {
       variant: "solid",
       action: "google",
-      class: "text-blue-600",
+      class: "text-sky-600",
     },
   ],
 });
