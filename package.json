@@ -66,7 +66,7 @@
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@release-it/bumper": "^7.0.5",
-    "@tanstack/eslint-plugin-query": "^5.78.0",
+    "@tanstack/eslint-plugin-query": "^5.91.2",
     "@testing-library/react-native": "^13.2.0",
     "@types/jest": "^29.5.14",
     "@types/react": "~19.1.17",
