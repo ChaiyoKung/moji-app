@@ -18,7 +18,9 @@ eas build --platform android --profile preview
 eas build --platform ios --profile preview
 ```
 
-## Build Production (`.aab`)
+## Build Production (`.apk`)
+
+> Note: The Android production build now generates an `.apk` file (see `build.production.buildType` in `eas.json`).
 
 ```bash
 eas build --platform android --profile production
