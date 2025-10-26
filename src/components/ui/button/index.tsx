@@ -294,6 +294,51 @@ const buttonIconStyle = tva({
   ],
 });
 
+const buttonSpinnerStyle = tva({
+  base: "",
+  parentVariants: {
+    variant: {
+      link: "",
+      outline: "",
+      solid: "text-typography-0",
+    },
+    action: {
+      primary: "text-primary-600",
+      secondary: "text-secondary-600",
+      positive: "text-success-600",
+      negative: "text-error-600",
+      google: "text-blue-600",
+    },
+  },
+  parentCompoundVariants: [
+    {
+      variant: "solid",
+      action: "primary",
+      class: "text-typography-0",
+    },
+    {
+      variant: "solid",
+      action: "secondary",
+      class: "text-typography-0",
+    },
+    {
+      variant: "solid",
+      action: "positive",
+      class: "text-typography-0",
+    },
+    {
+      variant: "solid",
+      action: "negative",
+      class: "text-typography-0",
+    },
+    {
+      variant: "solid",
+      action: "google",
+      class: "text-blue-600",
+    },
+  ],
+});
+
 const buttonGroupStyle = tva({
   base: "",
   variants: {
@@ -374,7 +419,33 @@ const ButtonText = React.forwardRef<
   );
 });
 
-const ButtonSpinner = UIButton.Spinner;
+type IButtonSpinnerProps = React.ComponentPropsWithoutRef<
+  typeof UIButton.Spinner
+> &
+  VariantProps<typeof buttonSpinnerStyle> & { className?: string };
+
+const ButtonSpinner = React.forwardRef<
+  React.ComponentRef<typeof UIButton.Spinner>,
+  IButtonSpinnerProps
+>(function ButtonSpinner({ className, variant, action, ...props }, ref) {
+  const { variant: parentVariant, action: parentAction } =
+    useStyleContext(SCOPE);
+  return (
+    <UIButton.Spinner
+      ref={ref}
+      {...props}
+      className={buttonSpinnerStyle({
+        parentVariants: {
+          variant: parentVariant,
+          action: parentAction,
+        },
+        variant,
+        action,
+        class: className,
+      })}
+    />
+  );
+});
 
 type IButtonIcon = React.ComponentPropsWithoutRef<typeof UIButton.Icon> &
   VariantProps<typeof buttonIconStyle> & {
