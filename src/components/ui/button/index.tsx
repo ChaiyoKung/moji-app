@@ -49,7 +49,7 @@ const buttonStyle = tva({
       negative:
         "border-error-300 bg-error-500 data-[focus-visible=true]:web:ring-indicator-info data-[hover=true]:border-error-400 data-[hover=true]:bg-error-600 data-[active=true]:border-error-500 data-[active=true]:bg-error-700",
       google:
-        "border-blue-300 bg-background-0 data-[focus-visible=true]:web:ring-indicator-info data-[hover=true]:border-blue-400 data-[hover=true]:bg-background-100 data-[active=true]:border-blue-500 data-[active=true]:bg-background-200",
+        "border-sky-300 bg-background-0 data-[focus-visible=true]:web:ring-indicator-info data-[hover=true]:border-sky-400 data-[hover=true]:bg-background-100 data-[active=true]:border-sky-500 data-[active=true]:bg-background-200",
       default:
         "bg-transparent data-[hover=true]:bg-background-50 data-[active=true]:bg-transparent",
     },
@@ -151,7 +151,7 @@ const buttonTextStyle = tva({
       negative:
         "text-error-600 data-[hover=true]:text-error-600 data-[active=true]:text-error-700",
       google:
-        "text-blue-500 data-[hover=true]:text-blue-500 data-[active=true]:text-blue-500",
+        "text-sky-600 data-[hover=true]:text-sky-600 data-[active=true]:text-sky-700",
     },
     variant: {
       link: "data-[hover=true]:underline data-[active=true]:underline",
@@ -196,7 +196,7 @@ const buttonTextStyle = tva({
       variant: "solid",
       action: "google",
       class:
-        "text-blue-500 data-[hover=true]:text-blue-500 data-[active=true]:text-blue-500",
+        "text-sky-500 data-[hover=true]:text-sky-500 data-[active=true]:text-sky-500",
     },
     {
       variant: "outline",
@@ -208,7 +208,7 @@ const buttonTextStyle = tva({
       variant: "outline",
       action: "secondary",
       class:
-        "text-secondary-500 data-[hover=true]:text-secondary-600 data-[active=true]:text-secondary-700",
+        "text-secondary-500 data-[hover=true]:text-secondary-500 data-[active=true]:text-secondary-500",
     },
     {
       variant: "outline",
@@ -226,7 +226,7 @@ const buttonTextStyle = tva({
       variant: "outline",
       action: "google",
       class:
-        "text-blue-500 data-[hover=true]:text-blue-500 data-[active=true]:text-blue-500",
+        "text-sky-500 data-[hover=true]:text-sky-500 data-[active=true]:text-sky-500",
     },
   ],
 });
@@ -251,13 +251,13 @@ const buttonIconStyle = tva({
       primary:
         "text-primary-600 data-[hover=true]:text-primary-600 data-[active=true]:text-primary-700",
       secondary:
-        "text-secondary-500 data-[hover=true]:text-secondary-600 data-[active=true]:text-secondary-700",
+        "text-secondary-600 data-[hover=true]:text-secondary-600 data-[active=true]:text-secondary-700",
       positive:
         "text-success-600 data-[hover=true]:text-success-600 data-[active=true]:text-success-700",
       negative:
         "text-error-600 data-[hover=true]:text-error-600 data-[active=true]:text-error-700",
       google:
-        "text-blue-600 data-[hover=true]:text-blue-600 data-[active=true]:text-blue-700",
+        "text-sky-600 data-[hover=true]:text-sky-600 data-[active=true]:text-sky-700",
     },
   },
   parentCompoundVariants: [
@@ -289,7 +289,52 @@ const buttonIconStyle = tva({
       variant: "solid",
       action: "google",
       class:
-        "text-blue-600 data-[hover=true]:text-blue-600 data-[active=true]:text-blue-600",
+        "text-sky-600 data-[hover=true]:text-sky-600 data-[active=true]:text-sky-600",
+    },
+  ],
+});
+
+const buttonSpinnerStyle = tva({
+  base: "",
+  parentVariants: {
+    variant: {
+      link: "",
+      outline: "",
+      solid: "text-typography-0",
+    },
+    action: {
+      primary: "text-primary-600",
+      secondary: "text-secondary-600",
+      positive: "text-success-600",
+      negative: "text-error-600",
+      google: "text-sky-600",
+    },
+  },
+  parentCompoundVariants: [
+    {
+      variant: "solid",
+      action: "primary",
+      class: "text-typography-0",
+    },
+    {
+      variant: "solid",
+      action: "secondary",
+      class: "text-typography-0",
+    },
+    {
+      variant: "solid",
+      action: "positive",
+      class: "text-typography-0",
+    },
+    {
+      variant: "solid",
+      action: "negative",
+      class: "text-typography-0",
+    },
+    {
+      variant: "solid",
+      action: "google",
+      class: "text-sky-600",
     },
   ],
 });
@@ -374,7 +419,33 @@ const ButtonText = React.forwardRef<
   );
 });
 
-const ButtonSpinner = UIButton.Spinner;
+type IButtonSpinnerProps = React.ComponentPropsWithoutRef<
+  typeof UIButton.Spinner
+> &
+  VariantProps<typeof buttonSpinnerStyle> & { className?: string };
+
+const ButtonSpinner = React.forwardRef<
+  React.ComponentRef<typeof UIButton.Spinner>,
+  IButtonSpinnerProps
+>(function ButtonSpinner({ className, variant, action, ...props }, ref) {
+  const { variant: parentVariant, action: parentAction } =
+    useStyleContext(SCOPE);
+  return (
+    <UIButton.Spinner
+      ref={ref}
+      {...props}
+      className={buttonSpinnerStyle({
+        parentVariants: {
+          variant: parentVariant,
+          action: parentAction,
+        },
+        variant,
+        action,
+        class: className,
+      })}
+    />
+  );
+});
 
 type IButtonIcon = React.ComponentPropsWithoutRef<typeof UIButton.Icon> &
   VariantProps<typeof buttonIconStyle> & {

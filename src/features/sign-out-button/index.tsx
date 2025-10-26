@@ -44,9 +44,7 @@ export function SignOutButton() {
       isDisabled={signOutMutation.isPending}
       onPress={() => signOutMutation.mutate()}
     >
-      {signOutMutation.isPending && (
-        <ButtonSpinner className="text-error-500" />
-      )}
+      {signOutMutation.isPending && <ButtonSpinner />}
       <ButtonText>ออกจากระบบ</ButtonText>
     </Button>
   );
