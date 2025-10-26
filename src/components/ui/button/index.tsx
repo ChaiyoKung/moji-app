@@ -208,7 +208,7 @@ const buttonTextStyle = tva({
       variant: "outline",
       action: "secondary",
       class:
-        "text-secondary-500 data-[hover=true]:text-secondary-600 data-[active=true]:text-secondary-700",
+        "text-secondary-500 data-[hover=true]:text-secondary-500 data-[active=true]:text-secondary-500",
     },
     {
       variant: "outline",
@@ -251,7 +251,7 @@ const buttonIconStyle = tva({
       primary:
         "text-primary-600 data-[hover=true]:text-primary-600 data-[active=true]:text-primary-700",
       secondary:
-        "text-secondary-500 data-[hover=true]:text-secondary-600 data-[active=true]:text-secondary-700",
+        "text-secondary-600 data-[hover=true]:text-secondary-600 data-[active=true]:text-secondary-700",
       positive:
         "text-success-600 data-[hover=true]:text-success-600 data-[active=true]:text-success-700",
       negative:
