@@ -14,7 +14,6 @@
     "test:watch": "jest --watchAll",
     "format": "prettier \"**/*.{js,jsx,ts,tsx}\" --write",
     "release": "release-it",
-    "expo": "expo",
     "doctor": "npx expo-doctor"
   },
   "dependencies": {
