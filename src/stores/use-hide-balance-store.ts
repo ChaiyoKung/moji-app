@@ -2,14 +2,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-interface HideBalanceStore {
+interface HideBalanceState {
   isBalanceHidden: boolean;
   isLoading: boolean;
   toggleHideBalance: () => void;
   setIsLoading: (isLoading: boolean) => void;
 }
 
-export const useHideBalanceStore = create<HideBalanceStore>()(
+export const useHideBalanceStore = create<HideBalanceState>()(
   persist(
     (set, get) => ({
       isBalanceHidden: true,
