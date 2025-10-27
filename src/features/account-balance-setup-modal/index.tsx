@@ -19,7 +19,7 @@ import {
   ButtonSpinner,
   ButtonText,
 } from "../../components/ui/button";
-import { useSession } from "../../components/session-provider";
+import { useSession } from "../session-provider";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createAccount } from "../../libs/api";
 import { useAppToast } from "../../hooks/use-app-toast";

@@ -1,5 +1,5 @@
 import { Button, ButtonSpinner, ButtonText } from "../../components/ui/button";
-import { useSession } from "../../components/session-provider";
+import { useSession } from "../session-provider";
 import { useMutation } from "@tanstack/react-query";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { logout } from "../../libs/api";

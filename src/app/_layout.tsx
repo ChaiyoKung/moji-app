@@ -11,7 +11,7 @@ import { Pressable } from "../components/ui/pressable";
 import { Icon } from "../components/ui/icon";
 import { Box } from "../components/ui/box";
 import { SplashScreenController } from "../components/splash-screen-controller";
-import { SessionProvider, useSession } from "../components/session-provider";
+import { SessionProvider, useSession } from "../features/session-provider";
 import {
   QueryCache,
   QueryClient,
