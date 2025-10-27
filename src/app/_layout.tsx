@@ -10,8 +10,7 @@ import { PressableProps } from "react-native";
 import { Pressable } from "../components/ui/pressable";
 import { Icon } from "../components/ui/icon";
 import { Box } from "../components/ui/box";
-import { SplashScreenController } from "../components/splash-screen-controller";
-import { SessionProvider, useSession } from "../components/session-provider";
+import { SplashScreenController } from "../features/splash-screen-controller";
 import {
   QueryCache,
   QueryClient,
@@ -22,6 +21,7 @@ import { ReactNode, useState } from "react";
 import { isAxiosError } from "axios";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useSessionStore } from "../hooks/use-session-store";
 
 interface BackButtonProps {
   onPress?: PressableProps["onPress"];
@@ -62,12 +62,10 @@ export default function RootLayout() {
       <StatusBar style="auto" />
       <KeyboardProvider>
         <GluestackUIProvider>
-          <SessionProvider>
-            <SplashScreenController />
-            <QueryProvider>
-              <RootNavigation />
-            </QueryProvider>
-          </SessionProvider>
+          <SplashScreenController />
+          <QueryProvider>
+            <RootNavigation />
+          </QueryProvider>
         </GluestackUIProvider>
       </KeyboardProvider>
     </GestureHandlerRootView>
@@ -75,7 +73,7 @@ export default function RootLayout() {
 }
 
 function QueryProvider({ children }: { children?: ReactNode }) {
-  const { signOut } = useSession();
+  const signOut = useSessionStore((state) => state.signOut);
   const [queryClient] = useState<QueryClient>(
     () =>
       new QueryClient({
@@ -111,7 +109,7 @@ function QueryProvider({ children }: { children?: ReactNode }) {
 }
 
 function RootNavigation() {
-  const { refreshToken } = useSession();
+  const refreshToken = useSessionStore((state) => state.refreshToken);
   const hasRefreshToken = Boolean(refreshToken);
 
   return (

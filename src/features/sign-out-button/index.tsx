@@ -1,20 +1,19 @@
 import { Button, ButtonSpinner, ButtonText } from "../../components/ui/button";
-import { useSession } from "../../components/session-provider";
 import { useMutation } from "@tanstack/react-query";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { logout } from "../../libs/api";
-import { getStorageItemAsync } from "../../hooks/use-storage-state";
 import { useAppToast } from "../../hooks/use-app-toast";
+import { useSessionStore } from "../../hooks/use-session-store";
 
 export function SignOutButton() {
-  const { signOut } = useSession();
+  const refreshToken = useSessionStore((state) => state.refreshToken);
+  const signOut = useSessionStore((state) => state.signOut);
   const toast = useAppToast();
 
   const signOutMutation = useMutation({
     mutationFn: GoogleSignin.signOut,
     onSuccess: async () => {
       try {
-        const refreshToken = await getStorageItemAsync("refreshToken");
         if (!refreshToken) {
           console.warn("No refresh token found, skipping backend logout");
           return;
