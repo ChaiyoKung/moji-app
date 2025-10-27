@@ -10,7 +10,7 @@ import { PressableProps } from "react-native";
 import { Pressable } from "../components/ui/pressable";
 import { Icon } from "../components/ui/icon";
 import { Box } from "../components/ui/box";
-import { SplashScreenController } from "../components/splash-screen-controller";
+import { SplashScreenController } from "../features/splash-screen-controller";
 import {
   QueryCache,
   QueryClient,
