@@ -1,8 +1,8 @@
 import { SplashScreen } from "expo-router";
-import { useSession } from "../../features/session-provider";
+import { useSessionStore } from "../../hooks/use-session-store";
 
 export function SplashScreenController() {
-  const { isLoading } = useSession();
+  const isLoading = useSessionStore((state) => state.isLoading);
 
   if (!isLoading) {
     SplashScreen.hideAsync();

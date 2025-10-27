@@ -19,10 +19,10 @@ import {
   ButtonSpinner,
   ButtonText,
 } from "../../components/ui/button";
-import { useSession } from "../session-provider";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createAccount } from "../../libs/api";
 import { useAppToast } from "../../hooks/use-app-toast";
+import { useSessionStore } from "../../hooks/use-session-store";
 
 export interface AccountBalanceSetupModalProps {
   isOpen: boolean;
@@ -33,7 +33,7 @@ export function AccountBalanceSetupModal({
   isOpen,
   onClose,
 }: AccountBalanceSetupModalProps) {
-  const { userId } = useSession();
+  const userId = useSessionStore((state) => state.userId);
   const toast = useAppToast();
   const queryClient = useQueryClient();
 

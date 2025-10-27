@@ -1,17 +1,14 @@
 import axios from "axios";
 import { env } from "../env";
-import {
-  getStorageItemAsync,
-  setStorageItemAsync,
-} from "../hooks/use-storage-state";
 import * as AxiosLogger from "axios-logger";
+import { sessionStore } from "../stores/session-store";
 
 export const api = axios.create({ baseURL: `${env.EXPO_PUBLIC_API_URL}/api` });
 
 api.interceptors.request.use(
   async (request) => {
     try {
-      const accessToken = await getStorageItemAsync("accessToken");
+      const accessToken = sessionStore.getState().accessToken;
       if (accessToken) {
         request.headers.Authorization = `Bearer ${accessToken}`;
       }
@@ -31,7 +28,7 @@ interface RefreshTokenResponse {
 }
 
 async function refreshAccessToken(): Promise<RefreshTokenResponse> {
-  const refreshToken = await getStorageItemAsync("refreshToken");
+  const refreshToken = sessionStore.getState().refreshToken;
   if (!refreshToken) {
     throw new Error("No refresh token found");
   }
@@ -41,8 +38,10 @@ async function refreshAccessToken(): Promise<RefreshTokenResponse> {
     { refreshToken }
   );
   const data = refreshTokenResponse.data;
-  await setStorageItemAsync("accessToken", data.accessToken);
-  await setStorageItemAsync("refreshToken", data.refreshToken);
+  sessionStore.setState({
+    accessToken: data.accessToken,
+    refreshToken: data.refreshToken,
+  });
   return data;
 }
 

@@ -1,5 +1,4 @@
 import { Button, ButtonSpinner, ButtonText } from "../../components/ui/button";
-import { useSession } from "../session-provider";
 import { useAppToast } from "../../hooks/use-app-toast";
 import { useMutation } from "@tanstack/react-query";
 import { signInWithGoogle } from "../../libs/api";
@@ -12,6 +11,7 @@ import {
 } from "@react-native-google-signin/google-signin";
 import { router } from "expo-router";
 import React from "react";
+import { useSessionStore } from "../../hooks/use-session-store";
 
 // Configure Google Signin once per app load
 GoogleSignin.configure({
@@ -21,7 +21,7 @@ GoogleSignin.configure({
 });
 
 export function GoogleSignInButton() {
-  const { signIn } = useSession();
+  const signIn = useSessionStore((state) => state.signIn);
   const toast = useAppToast();
 
   const signInGoogleMutation = useMutation({
