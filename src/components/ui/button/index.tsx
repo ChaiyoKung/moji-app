@@ -139,7 +139,7 @@ const buttonStyle = tva({
 });
 
 const buttonTextStyle = tva({
-  base: "font-semibold text-typography-0 web:select-none",
+  base: "font-body font-semibold text-typography-0 web:select-none",
   parentVariants: {
     action: {
       primary:
