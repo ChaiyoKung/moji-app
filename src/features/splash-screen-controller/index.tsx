@@ -1,4 +1,4 @@
-import { SplashScreen } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
 import { useSessionStore } from "../../hooks/use-session-store";
 
 // Keep the splash screen visible while we fetch resources
