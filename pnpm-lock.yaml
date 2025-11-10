@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@expo-google-fonts/prompt':
+        specifier: ^0.4.1
+        version: 0.4.1
       '@expo/html-elements':
         specifier: 0.4.2
         version: 0.4.2
@@ -83,6 +86,9 @@ importers:
       expo-crypto:
         specifier: ~15.0.7
         version: 15.0.7(expo@54.0.20)
+      expo-font:
+        specifier: ~14.0.9
+        version: 14.0.9(expo@54.0.20)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       expo-linking:
         specifier: ^8.0.8
         version: 8.0.8(expo@54.0.20)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
@@ -772,6 +778,9 @@ packages:
   '@eslint/plugin-kit@0.4.0':
     resolution: {integrity: sha512-sB5uyeq+dwCWyPi31B2gQlVlo+j5brPlWx4yZBrEaRo/nhdDE8Xke1gsGgtiBdaBTxuTkceLVuVt/pclrasb0A==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@expo-google-fonts/prompt@0.4.1':
+    resolution: {integrity: sha512-gkKa+ej6eJM1FtkhhxzYjvsKnkgdkKJX0fVRXIN45LPuUN8q44nbCWeWdlOQuyzQFw7rn6gDiazABt4RleEuxw==}
 
   '@expo/cli@54.0.13':
     resolution: {integrity: sha512-wUJVTByZzDN0q8UjXDlu6WD2BWoTJCKVVBGUBNmvViDX4FhnESwefmtXPoO54QUUKs6vY89WZryHllGArGfLLw==}
@@ -7272,6 +7281,8 @@ snapshots:
     dependencies:
       '@eslint/core': 0.16.0
       levn: 0.4.1
+
+  '@expo-google-fonts/prompt@0.4.1': {}
 
   '@expo/cli@54.0.13(expo-router@6.0.13)(expo@54.0.20)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))':
     dependencies:

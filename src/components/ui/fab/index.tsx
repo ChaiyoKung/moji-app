@@ -62,7 +62,7 @@ const fabStyle = tva({
 });
 
 const fabLabelStyle = tva({
-  base: "font-body tracking-md mx-2 text-left font-normal text-typography-50",
+  base: "tracking-md mx-2 text-left font-body font-normal text-typography-50",
   variants: {
     isTruncated: {
       true: "",
