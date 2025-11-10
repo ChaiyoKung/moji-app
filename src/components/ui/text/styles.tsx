@@ -28,11 +28,12 @@ export const textStyle = tva({
       md: "text-base",
       lg: "text-lg",
       xl: "text-xl",
-      "2xl": "text-2xl",
-      "3xl": "text-3xl",
-      "4xl": "text-4xl",
-      "5xl": "text-5xl",
-      "6xl": "text-6xl",
+      // HACK: Adjust padding to fix rendering issues for Thai vowels, tone marks, garun, and complex consonants in mobile apps
+      "2xl": "ios:pt-0.5 android:pt-0.5 text-2xl",
+      "3xl": "ios:pt-1.5 android:pt-1 text-3xl",
+      "4xl": "ios:pt-2.5 android:pt-1.5 text-4xl",
+      "5xl": "ios:pt-5 android:pt-2 text-5xl",
+      "6xl": "ios:pt-6 android:pt-2.5 text-6xl",
     },
     sub: {
       true: "text-xs",

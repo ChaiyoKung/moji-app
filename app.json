@@ -45,7 +45,144 @@
         }
       ],
       "expo-router",
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "node_modules/@expo-google-fonts/prompt/100Thin/Prompt_100Thin.ttf",
+            "node_modules/@expo-google-fonts/prompt/100Thin_Italic/Prompt_100Thin_Italic.ttf",
+            "node_modules/@expo-google-fonts/prompt/200ExtraLight/Prompt_200ExtraLight.ttf",
+            "node_modules/@expo-google-fonts/prompt/200ExtraLight_Italic/Prompt_200ExtraLight_Italic.ttf",
+            "node_modules/@expo-google-fonts/prompt/300Light/Prompt_300Light.ttf",
+            "node_modules/@expo-google-fonts/prompt/300Light_Italic/Prompt_300Light_Italic.ttf",
+            "node_modules/@expo-google-fonts/prompt/400Regular/Prompt_400Regular.ttf",
+            "node_modules/@expo-google-fonts/prompt/400Regular_Italic/Prompt_400Regular_Italic.ttf",
+            "node_modules/@expo-google-fonts/prompt/500Medium/Prompt_500Medium.ttf",
+            "node_modules/@expo-google-fonts/prompt/500Medium_Italic/Prompt_500Medium_Italic.ttf",
+            "node_modules/@expo-google-fonts/prompt/600SemiBold/Prompt_600SemiBold.ttf",
+            "node_modules/@expo-google-fonts/prompt/600SemiBold_Italic/Prompt_600SemiBold_Italic.ttf",
+            "node_modules/@expo-google-fonts/prompt/700Bold/Prompt_700Bold.ttf",
+            "node_modules/@expo-google-fonts/prompt/700Bold_Italic/Prompt_700Bold_Italic.ttf",
+            "node_modules/@expo-google-fonts/prompt/800ExtraBold/Prompt_800ExtraBold.ttf",
+            "node_modules/@expo-google-fonts/prompt/800ExtraBold_Italic/Prompt_800ExtraBold_Italic.ttf",
+            "node_modules/@expo-google-fonts/prompt/900Black/Prompt_900Black.ttf",
+            "node_modules/@expo-google-fonts/prompt/900Black_Italic/Prompt_900Black_Italic.ttf"
+          ],
+          "ios": {
+            "fonts": [
+              "node_modules/@expo-google-fonts/prompt/100Thin/Prompt_100Thin.ttf",
+              "node_modules/@expo-google-fonts/prompt/100Thin_Italic/Prompt_100Thin_Italic.ttf",
+              "node_modules/@expo-google-fonts/prompt/200ExtraLight/Prompt_200ExtraLight.ttf",
+              "node_modules/@expo-google-fonts/prompt/200ExtraLight_Italic/Prompt_200ExtraLight_Italic.ttf",
+              "node_modules/@expo-google-fonts/prompt/300Light/Prompt_300Light.ttf",
+              "node_modules/@expo-google-fonts/prompt/300Light_Italic/Prompt_300Light_Italic.ttf",
+              "node_modules/@expo-google-fonts/prompt/400Regular/Prompt_400Regular.ttf",
+              "node_modules/@expo-google-fonts/prompt/400Regular_Italic/Prompt_400Regular_Italic.ttf",
+              "node_modules/@expo-google-fonts/prompt/500Medium/Prompt_500Medium.ttf",
+              "node_modules/@expo-google-fonts/prompt/500Medium_Italic/Prompt_500Medium_Italic.ttf",
+              "node_modules/@expo-google-fonts/prompt/600SemiBold/Prompt_600SemiBold.ttf",
+              "node_modules/@expo-google-fonts/prompt/600SemiBold_Italic/Prompt_600SemiBold_Italic.ttf",
+              "node_modules/@expo-google-fonts/prompt/700Bold/Prompt_700Bold.ttf",
+              "node_modules/@expo-google-fonts/prompt/700Bold_Italic/Prompt_700Bold_Italic.ttf",
+              "node_modules/@expo-google-fonts/prompt/800ExtraBold/Prompt_800ExtraBold.ttf",
+              "node_modules/@expo-google-fonts/prompt/800ExtraBold_Italic/Prompt_800ExtraBold_Italic.ttf",
+              "node_modules/@expo-google-fonts/prompt/900Black/Prompt_900Black.ttf",
+              "node_modules/@expo-google-fonts/prompt/900Black_Italic/Prompt_900Black_Italic.ttf"
+            ]
+          },
+          "android": {
+            "fonts": [
+              {
+                "fontFamily": "Prompt",
+                "fontDefinitions": [
+                  {
+                    "path": "node_modules/@expo-google-fonts/prompt/100Thin/Prompt_100Thin.ttf",
+                    "weight": 100
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/prompt/100Thin_Italic/Prompt_100Thin_Italic.ttf",
+                    "weight": 100,
+                    "style": "italic"
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/prompt/200ExtraLight/Prompt_200ExtraLight.ttf",
+                    "weight": 200
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/prompt/200ExtraLight_Italic/Prompt_200ExtraLight_Italic.ttf",
+                    "weight": 200,
+                    "style": "italic"
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/prompt/300Light/Prompt_300Light.ttf",
+                    "weight": 300
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/prompt/300Light_Italic/Prompt_300Light_Italic.ttf",
+                    "weight": 300,
+                    "style": "italic"
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/prompt/400Regular/Prompt_400Regular.ttf",
+                    "weight": 400
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/prompt/400Regular_Italic/Prompt_400Regular_Italic.ttf",
+                    "weight": 400,
+                    "style": "italic"
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/prompt/500Medium/Prompt_500Medium.ttf",
+                    "weight": 500
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/prompt/500Medium_Italic/Prompt_500Medium_Italic.ttf",
+                    "weight": 500,
+                    "style": "italic"
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/prompt/600SemiBold/Prompt_600SemiBold.ttf",
+                    "weight": 600
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/prompt/600SemiBold_Italic/Prompt_600SemiBold_Italic.ttf",
+                    "weight": 600,
+                    "style": "italic"
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/prompt/700Bold/Prompt_700Bold.ttf",
+                    "weight": 700
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/prompt/700Bold_Italic/Prompt_700Bold_Italic.ttf",
+                    "weight": 700,
+                    "style": "italic"
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/prompt/800ExtraBold/Prompt_800ExtraBold.ttf",
+                    "weight": 800
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/prompt/800ExtraBold_Italic/Prompt_800ExtraBold_Italic.ttf",
+                    "weight": 800,
+                    "style": "italic"
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/prompt/900Black/Prompt_900Black.ttf",
+                    "weight": 900
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/prompt/900Black_Italic/Prompt_900Black_Italic.ttf",
+                    "weight": 900,
+                    "style": "italic"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
     ],
     "extra": {
       "eas": {

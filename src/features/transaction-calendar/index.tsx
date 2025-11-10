@@ -76,6 +76,14 @@ export function TransactionCalendar({
         todayTextColor: colors.blue[500],
         textDisabledColor: colors.zinc[300],
         textSectionTitleColor: colors.zinc[500],
+        textDayFontFamily: "Prompt",
+        textMonthFontFamily: "Prompt",
+        todayButtonFontFamily: "Prompt",
+        textDayHeaderFontFamily: "Prompt",
+        textDayFontWeight: "400",
+        textMonthFontWeight: "400",
+        todayButtonFontWeight: "400",
+        textDayHeaderFontWeight: "400",
       }}
     />
   );
