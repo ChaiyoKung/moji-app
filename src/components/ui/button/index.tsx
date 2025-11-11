@@ -241,11 +241,11 @@ const buttonIconStyle = tva({
         "text-typography-0 data-[hover=true]:text-typography-0 data-[active=true]:text-typography-0",
     },
     size: {
-      xs: "h-3.5 w-3.5",
-      sm: "h-4 w-4",
+      xs: "h-[14px] w-[14px]",
+      sm: "h-[16px] w-[16px]",
       md: "h-[18px] w-[18px]",
-      lg: "h-[18px] w-[18px]",
-      xl: "h-5 w-5",
+      lg: "h-[20px] w-[20px]",
+      xl: "h-[22px] w-[22px]",
     },
     action: {
       primary:
