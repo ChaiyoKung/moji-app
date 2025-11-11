@@ -5,8 +5,8 @@ import { VStack } from "../ui/vstack";
 import { Text } from "../ui/text";
 import { AmountText } from "../amount-text";
 import { TransactionWithCategory } from "../../libs/api";
-import { useToggle } from "../../hooks/use-toggle";
-import { ChevronDown, ChevronUp } from "lucide-react-native";
+import { useRouter } from "expo-router";
+import { ChevronRight } from "lucide-react-native";
 import { Icon } from "../ui/icon";
 
 export interface TransactionItemProps {
@@ -14,10 +14,17 @@ export interface TransactionItemProps {
 }
 
 export function TransactionItem({ data }: TransactionItemProps) {
-  const [isTruncated, toggleTruncate] = useToggle(true);
+  const router = useRouter();
+
+  const handlePress = () => {
+    router.push({
+      pathname: "/transactions/[id]",
+      params: { id: data._id },
+    });
+  };
 
   return (
-    <Pressable onPress={toggleTruncate}>
+    <Pressable onPress={handlePress}>
       <HStack
         key={data._id}
         space="md"
@@ -32,11 +39,7 @@ export function TransactionItem({ data }: TransactionItemProps) {
         <VStack className="flex-1">
           <Text size="lg">{data.categoryId.name}</Text>
           {data.note ? (
-            <Text
-              size="sm"
-              className="text-typography-500"
-              numberOfLines={isTruncated ? 1 : undefined}
-            >
+            <Text size="sm" className="text-typography-500" numberOfLines={1}>
               {data.note}
             </Text>
           ) : null}
@@ -48,11 +51,7 @@ export function TransactionItem({ data }: TransactionItemProps) {
           value={data.amount}
           showSign
         />
-        {isTruncated ? (
-          <Icon as={ChevronDown} size="xs" className="text-typography-500" />
-        ) : (
-          <Icon as={ChevronUp} size="xs" className="text-typography-500" />
-        )}
+        <Icon as={ChevronRight} size="xs" className="text-typography-500" />
       </HStack>
     </Pressable>
   );
