@@ -141,7 +141,7 @@ export default function Transaction() {
           </VStack>
 
           <VStack space="sm">
-            <Heading size="md" bold className="">
+            <Heading size="md" bold>
               จำนวนเงิน
             </Heading>
             <Input size="xl" className="rounded-2xl">
@@ -161,7 +161,7 @@ export default function Transaction() {
           </VStack>
 
           <VStack space="sm">
-            <Heading size="md" bold className="">
+            <Heading size="md" bold>
               บันทึกช่วยจำ
             </Heading>
             <Input size="xl" className="rounded-2xl">
