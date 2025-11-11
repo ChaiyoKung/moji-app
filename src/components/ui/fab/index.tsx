@@ -112,12 +112,12 @@ const fabIconStyle = tva({
   base: "fill-none text-typography-50",
   variants: {
     size: {
-      "2xs": "h-3 w-3",
-      xs: "h-3.5 w-3.5",
-      sm: "h-4 w-4",
+      "2xs": "h-[12px] w-[12px]",
+      xs: "h-[14px] w-[14px]",
+      sm: "h-[16px] w-[16px]",
       md: "h-[18px] w-[18px]",
-      lg: "h-5 w-5",
-      xl: "h-6 w-6",
+      lg: "h-[20px] w-[20px]",
+      xl: "h-[22px] w-[22px]",
     },
   },
 });
