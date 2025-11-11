@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { Heading } from "../../components/ui/heading";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native";
@@ -21,6 +21,8 @@ import { DateLabel } from "../../components/date-label";
 export default function TransactionDetails() {
   const { id } = useLocalSearchParams();
   if (typeof id !== "string") throw new Error("Invalid id parameter.");
+
+  const router = useRouter();
 
   const transactionQuery = useQuery({
     queryKey: ["transaction", id],
@@ -55,6 +57,13 @@ export default function TransactionDetails() {
   }
 
   const data = transactionQuery.data;
+
+  const handlePressEdit = () => {
+    router.push({
+      pathname: "/transactions/[id]/edit",
+      params: { id: data._id },
+    });
+  };
 
   return (
     <SafeAreaView edges={["bottom"]} className="flex-1 bg-background-100">
@@ -108,7 +117,11 @@ export default function TransactionDetails() {
               อัปเดตล่าสุด: {dayjs(data.updatedAt).format("D MMM YYYY, HH:mm")}
             </Text>
             <HStack space="md">
-              <Button action="secondary" className="flex-1">
+              <Button
+                action="secondary"
+                className="flex-1"
+                onPress={handlePressEdit}
+              >
                 <ButtonIcon as={EditIcon} />
                 <ButtonText>แก้ไข</ButtonText>
               </Button>
