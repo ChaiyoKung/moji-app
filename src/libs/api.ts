@@ -117,6 +117,13 @@ export type TransactionWithCategory = Transaction & {
   categoryId: Category;
 };
 
+export async function getTransactionById(id: string) {
+  const response = await api.get<TransactionWithCategory>(
+    `/transactions/${id}`
+  );
+  return response.data;
+}
+
 export async function getAllTransactions(params: {
   startDate?: string;
   endDate?: string;
