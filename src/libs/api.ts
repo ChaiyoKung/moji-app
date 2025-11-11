@@ -186,3 +186,17 @@ export async function deleteTransaction(id: string) {
   const response = await api.delete(`/transactions/${id}`);
   return response.data;
 }
+
+export interface UpdateTransactionDto {
+  categoryId: string;
+  amount: number;
+  note?: string;
+}
+
+export async function updateTransaction(
+  id: string,
+  data: UpdateTransactionDto
+) {
+  const response = await api.put<Transaction>(`/transactions/${id}`, data);
+  return response.data;
+}

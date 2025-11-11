@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { Heading } from "../../../components/ui/heading";
 import { VStack } from "../../../components/ui/vstack";
 import { Text } from "../../../components/ui/text";
@@ -6,20 +6,35 @@ import { HStack } from "../../../components/ui/hstack";
 import { Input, InputField } from "../../../components/ui/input";
 import { useState, useEffect } from "react";
 import { SaveIcon } from "lucide-react-native";
-import { Button, ButtonIcon, ButtonText } from "../../../components/ui/button";
+import {
+  Button,
+  ButtonIcon,
+  ButtonSpinner,
+  ButtonText,
+} from "../../../components/ui/button";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CategorySelector } from "../../../features/category-selector";
 import { AccountBalanceInline } from "../../../features/account-balance-inline";
 import { DateLabel } from "../../../components/date-label";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { Center } from "../../../components/ui/center";
 import { Spinner } from "../../../components/ui/spinner";
-import { getTransactionById } from "../../../libs/api";
+import {
+  getTransactionById,
+  updateTransaction,
+  UpdateTransactionDto,
+} from "../../../libs/api";
+import { useAppToast } from "../../../hooks/use-app-toast";
+import dayjs from "dayjs";
 
 export default function EditTransaction() {
   const { id } = useLocalSearchParams();
   if (typeof id !== "string") throw new Error("Invalid id parameter.");
+
+  const queryClient = useQueryClient();
+  const toast = useAppToast();
+  const router = useRouter();
 
   const [selectedCatagoryId, setSelectedCatagoryId] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
@@ -38,20 +53,62 @@ export default function EditTransaction() {
     }
   }, [transactionQuery.data]);
 
+  const updateTransactionMutation = useMutation({
+    mutationFn: (params: { id: string; data: UpdateTransactionDto }) => {
+      const { id, data } = params;
+      return updateTransaction(id, data);
+    },
+    onSuccess: () => {
+      console.log("Transaction updated successfully");
+      toast.success("บันทึกรายการสำเร็จ");
+
+      const date = transactionQuery.data?.date;
+      if (!date) {
+        console.error("Transaction date is undefined");
+        router.back();
+        return;
+      }
+
+      // Invalidate queries to refresh data
+      queryClient.invalidateQueries({ queryKey: ["accounts"] });
+      queryClient.invalidateQueries({
+        queryKey: ["transactions", dayjs(date).format("YYYY-MM-DD")],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["summary", dayjs(date).format("YYYY-MM-DD")],
+      });
+
+      const startOfMonth = dayjs(date).startOf("month").format("YYYY-MM-DD");
+      const endOfMonth = dayjs(date).endOf("month").format("YYYY-MM-DD");
+      queryClient.invalidateQueries({
+        queryKey: ["transactionIdsByDate", startOfMonth, endOfMonth],
+      });
+
+      queryClient.invalidateQueries({ queryKey: ["transaction", id] });
+
+      router.back();
+    },
+    onError: (error) => {
+      console.error("Error updating transaction:", error);
+      toast.error("เกิดข้อผิดพลาดในการบันทึกรายการ", "กรุณาลองใหม่อีกครั้ง");
+    },
+  });
+
   const handleSave = () => {
     const newData = {
       categoryId: selectedCatagoryId,
       amount: parseInt(amount),
       note: note.trim() || undefined,
     };
-    console.log("Saved data:", newData);
+    updateTransactionMutation.mutate({ id, data: newData });
   };
 
   const isButtonDisabled =
     !selectedCatagoryId ||
     !amount.trim() ||
     isNaN(parseInt(amount)) ||
-    parseInt(amount) <= 0;
+    parseInt(amount) <= 0 ||
+    updateTransactionMutation.isPending;
 
   if (transactionQuery.isLoading) {
     return (
@@ -147,7 +204,11 @@ export default function EditTransaction() {
         className="overflow-hidden rounded-t-2xl border-t border-outline-200 bg-background-0 p-4"
       >
         <Button size="xl" onPress={handleSave} isDisabled={isButtonDisabled}>
-          <ButtonIcon as={SaveIcon} />
+          {updateTransactionMutation.isPending ? (
+            <ButtonSpinner />
+          ) : (
+            <ButtonIcon as={SaveIcon} />
+          )}
           <ButtonText>บันทึก</ButtonText>
         </Button>
       </SafeAreaView>
