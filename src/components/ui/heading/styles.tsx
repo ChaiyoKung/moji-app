@@ -20,7 +20,7 @@ export const headingStyle = tva({
       true: "line-through",
     },
     sub: {
-      true: "text-xs",
+      true: "text-xs leading-normal",
     },
     italic: {
       true: "italic",
@@ -29,16 +29,15 @@ export const headingStyle = tva({
       true: "bg-yellow-500",
     },
     size: {
-      // HACK: Adjust padding to fix rendering issues for Thai vowels, tone marks, garun, and complex consonants in mobile apps
-      "5xl": "ios:pt-6 android:pt-2.5 text-6xl",
-      "4xl": "ios:pt-5 android:pt-2 text-5xl",
-      "3xl": "ios:pt-2.5 android:pt-1.5 text-4xl",
-      "2xl": "ios:pt-1.5 android:pt-1 text-3xl",
-      xl: "ios:pt-0.5 android:pt-0.5 text-2xl",
-      lg: "text-xl",
-      md: "text-lg",
-      sm: "text-base",
-      xs: "text-sm",
+      "5xl": "text-6xl leading-normal",
+      "4xl": "text-5xl leading-normal",
+      "3xl": "text-4xl leading-normal",
+      "2xl": "text-3xl leading-normal",
+      xl: "text-2xl leading-normal",
+      lg: "text-xl leading-normal",
+      md: "text-lg leading-normal",
+      sm: "text-base leading-normal",
+      xs: "text-sm leading-normal",
     },
   },
 });
