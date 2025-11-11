@@ -4,7 +4,7 @@ import { VStack } from "../../../components/ui/vstack";
 import { Text } from "../../../components/ui/text";
 import { HStack } from "../../../components/ui/hstack";
 import { Input, InputField } from "../../../components/ui/input";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { SaveIcon } from "lucide-react-native";
 import {
   Button,
@@ -22,36 +22,23 @@ import { Center } from "../../../components/ui/center";
 import { Spinner } from "../../../components/ui/spinner";
 import {
   getTransactionById,
+  TransactionWithCategory,
   updateTransaction,
   UpdateTransactionDto,
 } from "../../../libs/api";
 import { useAppToast } from "../../../hooks/use-app-toast";
 import dayjs from "dayjs";
 
-export default function EditTransaction() {
-  const { id } = useLocalSearchParams();
-  if (typeof id !== "string") throw new Error("Invalid id parameter.");
-
+function EditTransactionForm({ data }: { data: TransactionWithCategory }) {
   const queryClient = useQueryClient();
   const toast = useAppToast();
   const router = useRouter();
 
-  const [selectedCatagoryId, setSelectedCatagoryId] = useState<string>("");
-  const [amount, setAmount] = useState<string>("");
-  const [note, setNote] = useState<string>("");
-
-  const transactionQuery = useQuery({
-    queryKey: ["transaction", id],
-    queryFn: () => getTransactionById(id),
-  });
-
-  useEffect(() => {
-    if (transactionQuery.data) {
-      setSelectedCatagoryId(transactionQuery.data.categoryId._id);
-      setAmount(transactionQuery.data.amount.toString());
-      setNote(transactionQuery.data.note || "");
-    }
-  }, [transactionQuery.data]);
+  const [selectedCatagoryId, setSelectedCatagoryId] = useState<string>(
+    data.categoryId._id
+  );
+  const [amount, setAmount] = useState<string>(data.amount.toString());
+  const [note, setNote] = useState<string>(data.note || "");
 
   const updateTransactionMutation = useMutation({
     mutationFn: (params: { id: string; data: UpdateTransactionDto }) => {
@@ -62,12 +49,7 @@ export default function EditTransaction() {
       console.log("Transaction updated successfully");
       toast.success("บันทึกรายการสำเร็จ");
 
-      const date = transactionQuery.data?.date;
-      if (!date) {
-        console.error("Transaction date is undefined");
-        router.back();
-        return;
-      }
+      const { _id, date } = data;
 
       // Invalidate queries to refresh data
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
@@ -84,7 +66,7 @@ export default function EditTransaction() {
         queryKey: ["transactionIdsByDate", startOfMonth, endOfMonth],
       });
 
-      queryClient.invalidateQueries({ queryKey: ["transaction", id] });
+      queryClient.invalidateQueries({ queryKey: ["transaction", _id] });
 
       router.back();
     },
@@ -100,7 +82,7 @@ export default function EditTransaction() {
       amount: parseInt(amount),
       note: note.trim() || undefined,
     };
-    updateTransactionMutation.mutate({ id, data: newData });
+    updateTransactionMutation.mutate({ id: data._id, data: newData });
   };
 
   const isButtonDisabled =
@@ -110,35 +92,6 @@ export default function EditTransaction() {
     parseInt(amount) <= 0 ||
     updateTransactionMutation.isPending;
 
-  if (transactionQuery.isLoading) {
-    return (
-      <Center className="flex-1 bg-background-100 p-4">
-        <Spinner />
-        <Text className="mt-2 text-typography-500">กำลังโหลดข้อมูล...</Text>
-      </Center>
-    );
-  }
-
-  if (transactionQuery.isError) {
-    return (
-      <Center className="flex-1 bg-background-100 p-4">
-        <Text className="text-error-500">
-          เกิดข้อผิดพลาดในการโหลดข้อมูลรายการ
-        </Text>
-      </Center>
-    );
-  }
-
-  if (transactionQuery.data === undefined) {
-    return (
-      <Center className="flex-1 bg-background-100 p-4">
-        <Text className="text-typography-500">ไม่พบข้อมูลรายการ</Text>
-      </Center>
-    );
-  }
-
-  const data = transactionQuery.data;
-
   return (
     <>
       <KeyboardAwareScrollView className="flex-1 bg-background-100">
@@ -147,7 +100,7 @@ export default function EditTransaction() {
             <Heading size="3xl">
               {data.type === "income" ? "แก้ไขรายรับ" : "แก้ไขรายจ่าย"}
             </Heading>
-            <Text className="text-typography-black">ID: {id}</Text>
+            <Text className="text-typography-black">ID: {data._id}</Text>
             <DateLabel date={data.date} />
           </VStack>
 
@@ -214,4 +167,43 @@ export default function EditTransaction() {
       </SafeAreaView>
     </>
   );
+}
+
+export default function EditTransaction() {
+  const { id } = useLocalSearchParams();
+  if (typeof id !== "string") throw new Error("Invalid id parameter.");
+
+  const transactionQuery = useQuery({
+    queryKey: ["transaction", id],
+    queryFn: () => getTransactionById(id),
+  });
+
+  if (transactionQuery.isLoading) {
+    return (
+      <Center className="flex-1 bg-background-100 p-4">
+        <Spinner />
+        <Text className="mt-2 text-typography-500">กำลังโหลดข้อมูล...</Text>
+      </Center>
+    );
+  }
+
+  if (transactionQuery.isError) {
+    return (
+      <Center className="flex-1 bg-background-100 p-4">
+        <Text className="text-error-500">
+          เกิดข้อผิดพลาดในการโหลดข้อมูลรายการ
+        </Text>
+      </Center>
+    );
+  }
+
+  if (transactionQuery.data === undefined) {
+    return (
+      <Center className="flex-1 bg-background-100 p-4">
+        <Text className="text-typography-500">ไม่พบข้อมูลรายการ</Text>
+      </Center>
+    );
+  }
+
+  return <EditTransactionForm data={transactionQuery.data} />;
 }
