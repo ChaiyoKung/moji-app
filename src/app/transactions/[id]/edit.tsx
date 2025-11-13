@@ -47,7 +47,7 @@ function EditTransactionForm({ data }: { data: TransactionWithCategory }) {
     },
     onSuccess: () => {
       console.log("Transaction updated successfully");
-      toast.success("บันทึกรายการสำเร็จ");
+      toast.success("แก้ไขรายการสำเร็จ");
 
       const { _id, date } = data;
 
@@ -72,7 +72,7 @@ function EditTransactionForm({ data }: { data: TransactionWithCategory }) {
     },
     onError: (error) => {
       console.error("Error updating transaction:", error);
-      toast.error("เกิดข้อผิดพลาดในการบันทึกรายการ", "กรุณาลองใหม่อีกครั้ง");
+      toast.error("เกิดข้อผิดพลาดในการแก้ไขรายการ", "กรุณาลองใหม่อีกครั้ง");
     },
   });
 
