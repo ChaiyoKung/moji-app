@@ -9,7 +9,6 @@ import { getTransactionById } from "../../libs/api";
 import { Center } from "../../components/ui/center";
 import { Spinner } from "../../components/ui/spinner";
 import { CategoryChip } from "../../components/category-chip";
-import { AmountText } from "../../components/amount-text";
 import { HStack } from "../../components/ui/hstack";
 import { Box } from "../../components/ui/box";
 import dayjs from "dayjs";
@@ -93,7 +92,7 @@ export default function TransactionDetails() {
               จำนวนเงิน
             </Heading>
             <Box className="rounded-2xl border border-gray-300 px-4 py-2">
-              <AmountText size="4xl" bold value={data.amount} />
+              <Text size="xl">{data.amount}</Text>
             </Box>
           </VStack>
 
@@ -103,7 +102,7 @@ export default function TransactionDetails() {
                 บันทึกช่วยจำ
               </Heading>
               <Box className="rounded-2xl border border-gray-300 px-4 py-2">
-                <Text size="lg">{data.note}</Text>
+                <Text size="xl">{data.note}</Text>
               </Box>
             </VStack>
           ) : null}
