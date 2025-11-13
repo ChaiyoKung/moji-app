@@ -117,6 +117,13 @@ export type TransactionWithCategory = Transaction & {
   categoryId: Category;
 };
 
+export async function getTransactionById(id: string) {
+  const response = await api.get<TransactionWithCategory>(
+    `/transactions/${id}`
+  );
+  return response.data;
+}
+
 export async function getAllTransactions(params: {
   startDate?: string;
   endDate?: string;
@@ -177,5 +184,19 @@ export async function createAccount(data: CreateAccountDto) {
 
 export async function deleteTransaction(id: string) {
   const response = await api.delete(`/transactions/${id}`);
+  return response.data;
+}
+
+export interface UpdateTransactionDto {
+  categoryId: string;
+  amount: number;
+  note?: string;
+}
+
+export async function updateTransaction(
+  id: string,
+  data: UpdateTransactionDto
+) {
+  const response = await api.put<Transaction>(`/transactions/${id}`, data);
   return response.data;
 }

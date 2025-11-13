@@ -23,14 +23,26 @@ export interface AmountTextProps {
 
 export function AmountText({
   value,
-  type = "income",
+  type,
   size = "md",
   bold,
   showSign,
   hideValue,
 }: AmountTextProps) {
-  const sign = showSign ? (type === "income" ? "+" : "-") : "";
-  const color = type === "income" ? "text-success-500" : "text-error-500";
+  const sign =
+    showSign && type === "income"
+      ? "+"
+      : showSign && type === "expense"
+        ? "-"
+        : "";
+
+  const color =
+    type === "income"
+      ? "text-success-500"
+      : type === "expense"
+        ? "text-error-500"
+        : "text-typography-black";
+
   const formattedValue = hideValue ? "******" : formatBaht(value);
   const displayValue = sign + formattedValue;
 

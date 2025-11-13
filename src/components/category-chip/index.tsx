@@ -6,7 +6,7 @@ import colors from "tailwindcss/colors";
 
 export interface CategoryChipProps {
   data: Category;
-  selected: boolean;
+  selected?: boolean;
   onPress?: PressableProps["onPress"];
 }
 

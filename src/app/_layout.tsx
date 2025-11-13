@@ -151,6 +151,14 @@ function RootNavigation() {
       <Stack.Protected guard={hasRefreshToken}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="add-transaction" options={{ headerTitle: "" }} />
+        <Stack.Screen
+          name="transactions/[id]/index"
+          options={{ headerTitle: "" }}
+        />
+        <Stack.Screen
+          name="transactions/[id]/edit"
+          options={{ headerTitle: "" }}
+        />
       </Stack.Protected>
 
       <Stack.Protected guard={!hasRefreshToken}>
