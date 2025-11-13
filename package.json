@@ -19,6 +19,7 @@
   "dependencies": {
     "@expo-google-fonts/prompt": "^0.4.1",
     "@expo/html-elements": "0.4.2",
+    "@gluestack-ui/alert-dialog": "^0.1.38",
     "@gluestack-ui/avatar": "^0.1.18",
     "@gluestack-ui/button": "^1.0.14",
     "@gluestack-ui/divider": "^0.1.10",
@@ -33,7 +34,7 @@
     "@gluestack-ui/pressable": "^0.1.23",
     "@gluestack-ui/spinner": "^0.1.15",
     "@gluestack-ui/toast": "^1.0.9",
-    "@legendapp/motion": "^2.4.0",
+    "@legendapp/motion": "^2.5.3",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@react-native-google-signin/google-signin": "^14.0.1",
     "@tanstack/react-query": "^5.80.7",
