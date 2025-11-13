@@ -4,28 +4,59 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native";
 import { VStack } from "../../../components/ui/vstack";
 import { Text } from "../../../components/ui/text";
-import { useQuery } from "@tanstack/react-query";
-import { getTransactionById } from "../../../libs/api";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { deleteTransaction, getTransactionById } from "../../../libs/api";
 import { Center } from "../../../components/ui/center";
 import { Spinner } from "../../../components/ui/spinner";
 import { CategoryChip } from "../../../components/category-chip";
 import { HStack } from "../../../components/ui/hstack";
 import { Box } from "../../../components/ui/box";
 import dayjs from "dayjs";
-import { Button, ButtonIcon, ButtonText } from "../../../components/ui/button";
+import {
+  Button,
+  ButtonIcon,
+  ButtonSpinner,
+  ButtonText,
+} from "../../../components/ui/button";
 import { EditIcon, Trash2 } from "lucide-react-native";
 import { Divider } from "../../../components/ui/divider";
 import { DateLabel } from "../../../components/date-label";
+import { useState } from "react";
+import { DeleteAlertDialog } from "../../../components/delete-alert-dialog";
+import { useAppToast } from "../../../hooks/use-app-toast";
 
 export default function TransactionDetails() {
   const { id } = useLocalSearchParams();
   if (typeof id !== "string") throw new Error("Invalid id parameter.");
 
+  const queryClient = useQueryClient();
+  const toast = useAppToast();
   const router = useRouter();
+
+  const [showAlertDialog, setShowAlertDialog] = useState<boolean>(false);
+  const handleShowAlertDialog = () => setShowAlertDialog(true);
+  const handleCloseAlertDialog = () => setShowAlertDialog(false);
 
   const transactionQuery = useQuery({
     queryKey: ["transaction", id],
     queryFn: () => getTransactionById(id),
+  });
+
+  const deleteTransactionMutation = useMutation({
+    mutationFn: deleteTransaction,
+    onSuccess: () => {
+      // Invalidate all related queries
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["accounts"] });
+      queryClient.invalidateQueries({ queryKey: ["summary"] });
+      queryClient.invalidateQueries({ queryKey: ["transactionIdsByDate"] });
+      toast.success("ลบรายการเรียบร้อยแล้ว");
+      router.back();
+    },
+    onError: (error) => {
+      console.error("Failed to delete transaction:", error);
+      toast.error("ไม่สามารถลบรายการได้", "กรุณาลองใหม่อีกครั้ง");
+    },
   });
 
   if (transactionQuery.isLoading) {
@@ -64,74 +95,99 @@ export default function TransactionDetails() {
     });
   };
 
+  const handleDeleteTransaction = () => {
+    deleteTransactionMutation.mutateAsync(data._id);
+    handleCloseAlertDialog();
+  };
+
   return (
-    <SafeAreaView edges={["bottom"]} className="flex-1 bg-background-100">
-      <ScrollView>
-        <VStack space="md" className="p-4">
-          <VStack>
-            <Heading size="3xl">
-              {data.type === "income"
-                ? "รายละเอียดรายรับ"
-                : "รายละเอียดรายจ่าย"}
-            </Heading>
-            <Text className="text-typography-black">ID: {id}</Text>
-            <DateLabel date={data.date} />
-          </VStack>
+    <>
+      <SafeAreaView edges={["bottom"]} className="flex-1 bg-background-100">
+        <ScrollView>
+          <VStack space="md" className="p-4">
+            <VStack>
+              <Heading size="3xl">
+                {data.type === "income"
+                  ? "รายละเอียดรายรับ"
+                  : "รายละเอียดรายจ่าย"}
+              </Heading>
+              <Text className="text-typography-black">ID: {id}</Text>
+              <DateLabel date={data.date} />
+            </VStack>
 
-          <VStack space="sm">
-            <Heading size="md" bold>
-              ประเภท
-            </Heading>
-            <HStack>
-              <CategoryChip data={data.categoryId} selected />
-            </HStack>
-          </VStack>
-
-          <VStack space="sm">
-            <Heading size="md" bold>
-              จำนวนเงิน
-            </Heading>
-            <Box className="rounded-2xl border border-gray-300 px-4 py-2">
-              <Text size="xl">{data.amount}</Text>
-            </Box>
-          </VStack>
-
-          {data.note ? (
             <VStack space="sm">
               <Heading size="md" bold>
-                บันทึกช่วยจำ
+                ประเภท
+              </Heading>
+              <HStack>
+                <CategoryChip data={data.categoryId} selected />
+              </HStack>
+            </VStack>
+
+            <VStack space="sm">
+              <Heading size="md" bold>
+                จำนวนเงิน
               </Heading>
               <Box className="rounded-2xl border border-gray-300 px-4 py-2">
-                <Text size="xl">{data.note}</Text>
+                <Text size="xl">{data.amount}</Text>
               </Box>
             </VStack>
-          ) : null}
-        </VStack>
 
-        <Divider className="my-4" />
-
-        <VStack space="md" className="p-4">
-          <VStack space="sm">
-            <Text size="sm" className="text-typography-500">
-              อัปเดตล่าสุด: {dayjs(data.updatedAt).format("D MMM YYYY, HH:mm")}
-            </Text>
-            <HStack space="md">
-              <Button
-                action="secondary"
-                className="flex-1"
-                onPress={handlePressEdit}
-              >
-                <ButtonIcon as={EditIcon} />
-                <ButtonText>แก้ไข</ButtonText>
-              </Button>
-              <Button variant="outline" action="negative">
-                <ButtonIcon as={Trash2} />
-                <ButtonText>ลบ</ButtonText>
-              </Button>
-            </HStack>
+            {data.note ? (
+              <VStack space="sm">
+                <Heading size="md" bold>
+                  บันทึกช่วยจำ
+                </Heading>
+                <Box className="rounded-2xl border border-gray-300 px-4 py-2">
+                  <Text size="xl">{data.note}</Text>
+                </Box>
+              </VStack>
+            ) : null}
           </VStack>
-        </VStack>
-      </ScrollView>
-    </SafeAreaView>
+
+          <Divider className="my-4" />
+
+          <VStack space="md" className="p-4">
+            <VStack space="sm">
+              <Text size="sm" className="text-typography-500">
+                อัปเดตล่าสุด:{" "}
+                {dayjs(data.updatedAt).format("D MMM YYYY, HH:mm")}
+              </Text>
+              <HStack space="md">
+                <Button
+                  action="secondary"
+                  className="flex-1"
+                  onPress={handlePressEdit}
+                >
+                  <ButtonIcon as={EditIcon} />
+                  <ButtonText>แก้ไข</ButtonText>
+                </Button>
+                <Button
+                  variant="outline"
+                  action="negative"
+                  onPress={handleShowAlertDialog}
+                  isDisabled={deleteTransactionMutation.isPending}
+                >
+                  {deleteTransactionMutation.isPending ? (
+                    <ButtonSpinner />
+                  ) : (
+                    <ButtonIcon as={Trash2} />
+                  )}
+                  <ButtonText>ลบ</ButtonText>
+                </Button>
+              </HStack>
+            </VStack>
+          </VStack>
+        </ScrollView>
+      </SafeAreaView>
+
+      <DeleteAlertDialog
+        title="ยืนยันการลบรายการ"
+        description="การลบรายการนี้จะเป็นการลบถาวรและไม่สามารถกู้คืนได้ กรุณายืนยันว่าคุณต้องการดำเนินการต่อ"
+        isOpen={showAlertDialog}
+        onClose={handleCloseAlertDialog}
+        onDelete={handleDeleteTransaction}
+      />
+    </>
   );
 }
