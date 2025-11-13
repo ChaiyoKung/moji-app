@@ -5,7 +5,11 @@ import { ScrollView } from "react-native";
 import { VStack } from "../../../components/ui/vstack";
 import { Text } from "../../../components/ui/text";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteTransaction, getTransactionById } from "../../../libs/api";
+import {
+  deleteTransaction,
+  getTransactionById,
+  TransactionWithCategory,
+} from "../../../libs/api";
 import { Center } from "../../../components/ui/center";
 import { Spinner } from "../../../components/ui/spinner";
 import { CategoryChip } from "../../../components/category-chip";
@@ -25,10 +29,11 @@ import { useState } from "react";
 import { DeleteAlertDialog } from "../../../components/delete-alert-dialog";
 import { useAppToast } from "../../../hooks/use-app-toast";
 
-export default function TransactionDetails() {
-  const { id } = useLocalSearchParams();
-  if (typeof id !== "string") throw new Error("Invalid id parameter.");
-
+function TransactionDetailsContent({
+  data,
+}: {
+  data: TransactionWithCategory;
+}) {
   const queryClient = useQueryClient();
   const toast = useAppToast();
   const router = useRouter();
@@ -36,11 +41,6 @@ export default function TransactionDetails() {
   const [showAlertDialog, setShowAlertDialog] = useState<boolean>(false);
   const handleShowAlertDialog = () => setShowAlertDialog(true);
   const handleCloseAlertDialog = () => setShowAlertDialog(false);
-
-  const transactionQuery = useQuery({
-    queryKey: ["transaction", id],
-    queryFn: () => getTransactionById(id),
-  });
 
   const deleteTransactionMutation = useMutation({
     mutationFn: deleteTransaction,
@@ -58,35 +58,6 @@ export default function TransactionDetails() {
       toast.error("ไม่สามารถลบรายการได้", "กรุณาลองใหม่อีกครั้ง");
     },
   });
-
-  if (transactionQuery.isLoading) {
-    return (
-      <Center className="flex-1 bg-background-100 p-4">
-        <Spinner />
-        <Text className="mt-2 text-typography-500">กำลังโหลดข้อมูล...</Text>
-      </Center>
-    );
-  }
-
-  if (transactionQuery.isError) {
-    return (
-      <Center className="flex-1 bg-background-100 p-4">
-        <Text className="text-error-500">
-          เกิดข้อผิดพลาดในการโหลดข้อมูลรายการ
-        </Text>
-      </Center>
-    );
-  }
-
-  if (transactionQuery.data === undefined) {
-    return (
-      <Center className="flex-1 bg-background-100 p-4">
-        <Text className="text-typography-500">ไม่พบข้อมูลรายการ</Text>
-      </Center>
-    );
-  }
-
-  const data = transactionQuery.data;
 
   const handlePressEdit = () => {
     router.push({
@@ -111,7 +82,7 @@ export default function TransactionDetails() {
                   ? "รายละเอียดรายรับ"
                   : "รายละเอียดรายจ่าย"}
               </Heading>
-              <Text className="text-typography-black">ID: {id}</Text>
+              <Text className="text-typography-black">ID: {data._id}</Text>
               <DateLabel date={data.date} />
             </VStack>
 
@@ -190,4 +161,43 @@ export default function TransactionDetails() {
       />
     </>
   );
+}
+
+export default function TransactionDetails() {
+  const { id } = useLocalSearchParams();
+  if (typeof id !== "string") throw new Error("Invalid id parameter.");
+
+  const transactionQuery = useQuery({
+    queryKey: ["transaction", id],
+    queryFn: () => getTransactionById(id),
+  });
+
+  if (transactionQuery.isLoading) {
+    return (
+      <Center className="flex-1 bg-background-100 p-4">
+        <Spinner />
+        <Text className="mt-2 text-typography-500">กำลังโหลดข้อมูล...</Text>
+      </Center>
+    );
+  }
+
+  if (transactionQuery.isError) {
+    return (
+      <Center className="flex-1 bg-background-100 p-4">
+        <Text className="text-error-500">
+          เกิดข้อผิดพลาดในการโหลดข้อมูลรายการ
+        </Text>
+      </Center>
+    );
+  }
+
+  if (transactionQuery.data === undefined) {
+    return (
+      <Center className="flex-1 bg-background-100 p-4">
+        <Text className="text-typography-500">ไม่พบข้อมูลรายการ</Text>
+      </Center>
+    );
+  }
+
+  return <TransactionDetailsContent data={transactionQuery.data} />;
 }
