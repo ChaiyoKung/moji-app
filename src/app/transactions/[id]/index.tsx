@@ -1,21 +1,21 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { Heading } from "../../components/ui/heading";
+import { Heading } from "../../../components/ui/heading";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native";
-import { VStack } from "../../components/ui/vstack";
-import { Text } from "../../components/ui/text";
+import { VStack } from "../../../components/ui/vstack";
+import { Text } from "../../../components/ui/text";
 import { useQuery } from "@tanstack/react-query";
-import { getTransactionById } from "../../libs/api";
-import { Center } from "../../components/ui/center";
-import { Spinner } from "../../components/ui/spinner";
-import { CategoryChip } from "../../components/category-chip";
-import { HStack } from "../../components/ui/hstack";
-import { Box } from "../../components/ui/box";
+import { getTransactionById } from "../../../libs/api";
+import { Center } from "../../../components/ui/center";
+import { Spinner } from "../../../components/ui/spinner";
+import { CategoryChip } from "../../../components/category-chip";
+import { HStack } from "../../../components/ui/hstack";
+import { Box } from "../../../components/ui/box";
 import dayjs from "dayjs";
-import { Button, ButtonIcon, ButtonText } from "../../components/ui/button";
+import { Button, ButtonIcon, ButtonText } from "../../../components/ui/button";
 import { EditIcon, Trash2 } from "lucide-react-native";
-import { Divider } from "../../components/ui/divider";
-import { DateLabel } from "../../components/date-label";
+import { Divider } from "../../../components/ui/divider";
+import { DateLabel } from "../../../components/date-label";
 
 export default function TransactionDetails() {
   const { id } = useLocalSearchParams();
