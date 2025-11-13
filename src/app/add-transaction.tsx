@@ -58,6 +58,7 @@ export default function Transaction() {
   const [quantity, setQuantity] = useState<number>(minQuantity);
 
   const amountInputRef = useRef<TextInput>(null);
+  const noteInputRef = useRef<TextInput>(null);
 
   const createTransactionManyMutation = useMutation({
     mutationFn: createTransactionMany,
@@ -151,7 +152,9 @@ export default function Transaction() {
                 placeholder="0"
                 value={amount}
                 onChangeText={(text) => setAmount(text)}
+                onSubmitEditing={() => noteInputRef.current?.focus()}
                 keyboardType="numeric"
+                enterKeyHint="next"
               />
             </Input>
             <HStack space="xs" className="items-baseline">
@@ -166,6 +169,7 @@ export default function Transaction() {
             </Heading>
             <Input size="xl" className="rounded-2xl">
               <InputField
+                ref={noteInputRef as RefObject<TextInputProps>}
                 type="text"
                 placeholder="เพิ่มข้อความ..."
                 value={note}
