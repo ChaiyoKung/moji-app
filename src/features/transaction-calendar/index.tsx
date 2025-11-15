@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSettingStore } from "../../stores/use-setting-store";
 import { Calendar } from "react-native-calendars";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
@@ -28,6 +29,10 @@ export function TransactionCalendar({
   onSelectedDateChange,
   todayDate,
 }: TransactionCalendarProps) {
+  const isCalendarSwipeMonthsEnabled = useSettingStore(
+    (state) => state.isCalendarSwipeMonthsEnabled
+  );
+
   const [currentMonth, setCurrentMonth] = useState(
     dayjs(selectedDate).format("YYYY-MM")
   );
@@ -62,7 +67,7 @@ export function TransactionCalendar({
       }
       current={selectedDate}
       maxDate={todayDate}
-      enableSwipeMonths={true}
+      enableSwipeMonths={isCalendarSwipeMonthsEnabled}
       displayLoadingIndicator={transactionIdsByDateQuery.isLoading}
       markedDates={markedDates}
       markingType="multi-dot"

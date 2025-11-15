@@ -16,6 +16,13 @@ export default function Profile() {
   const isBalanceHidden = useSettingStore((state) => state.isBalanceHidden);
   const toggleHideBalance = useSettingStore((state) => state.toggleHideBalance);
 
+  const isCalendarSwipeMonthsEnabled = useSettingStore(
+    (state) => state.isCalendarSwipeMonthsEnabled
+  );
+  const toggleCalendarSwipeMonthsEnabled = useSettingStore(
+    (state) => state.toggleCalendarSwipeMonthsEnabled
+  );
+
   const isAutoFocusAmount = useSettingStore((state) => state.isAutoFocusAmount);
   const toggleAutoFocusAmount = useSettingStore(
     (state) => state.toggleAutoFocusAmount
@@ -37,6 +44,12 @@ export default function Profile() {
           <VStack space="md" className="flex-1">
             <SwitchRow value={isBalanceHidden} onToggle={toggleHideBalance}>
               <SwitchRowTitle>ซ่อนเงินคงเหลือ</SwitchRowTitle>
+            </SwitchRow>
+            <SwitchRow
+              value={isCalendarSwipeMonthsEnabled}
+              onToggle={toggleCalendarSwipeMonthsEnabled}
+            >
+              <SwitchRowTitle>เลื่อนเดือนในปฏิทินด้วยการปัด</SwitchRowTitle>
             </SwitchRow>
             <SwitchRow
               value={isAutoFocusAmount}

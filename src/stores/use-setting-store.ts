@@ -6,6 +6,9 @@ interface SettingState {
   isBalanceHidden: boolean;
   toggleHideBalance: () => void;
 
+  isCalendarSwipeMonthsEnabled: boolean;
+  toggleCalendarSwipeMonthsEnabled: () => void;
+
   isAutoFocusAmount: boolean;
   toggleAutoFocusAmount: () => void;
 
@@ -19,6 +22,13 @@ export const useSettingStore = create<SettingState>()(
       isBalanceHidden: false,
       toggleHideBalance: () => {
         set({ isBalanceHidden: !get().isBalanceHidden });
+      },
+
+      isCalendarSwipeMonthsEnabled: false,
+      toggleCalendarSwipeMonthsEnabled: () => {
+        set({
+          isCalendarSwipeMonthsEnabled: !get().isCalendarSwipeMonthsEnabled,
+        });
       },
 
       isAutoFocusAmount: false,
