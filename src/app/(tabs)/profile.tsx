@@ -4,42 +4,14 @@ import { SignOutButton } from "../../features/sign-out-button";
 import { ProfileDetails } from "../../features/profile-details";
 import { AppVersion } from "../../features/app-version";
 import { Center } from "../../components/ui/center";
-import { useSettingStore } from "../../stores/use-setting-store";
 import { ScrollView } from "react-native";
-import {
-  SwitchRow,
-  SwitchRowDescription,
-  SwitchRowTitle,
-} from "../../components/switch-row";
+import { HideBalanceSwitch } from "../../features/hide-balance-switch";
+import { CalendarSwipeMonthsSwitch } from "../../features/calendar-swipe-months-switch";
+import { TransactionSwipeSwitch } from "../../features/transaction-swipe-switch";
+import { AutoFocusAmountSwitch } from "../../features/auto-focus-amount-switch";
+import { AutoFocusNoteSwitch } from "../../features/auto-focus-note-switch";
 
 export default function Profile() {
-  const isBalanceHidden = useSettingStore((state) => state.isBalanceHidden);
-  const toggleHideBalance = useSettingStore((state) => state.toggleHideBalance);
-
-  const isCalendarSwipeMonthsEnabled = useSettingStore(
-    (state) => state.isCalendarSwipeMonthsEnabled
-  );
-  const toggleCalendarSwipeMonthsEnabled = useSettingStore(
-    (state) => state.toggleCalendarSwipeMonthsEnabled
-  );
-
-  const isTransactionSwipeEnabled = useSettingStore(
-    (state) => state.isTransactionSwipeEnabled
-  );
-  const toggleTransactionSwipeEnabled = useSettingStore(
-    (state) => state.toggleTransactionSwipeEnabled
-  );
-
-  const isAutoFocusAmount = useSettingStore((state) => state.isAutoFocusAmount);
-  const toggleAutoFocusAmount = useSettingStore(
-    (state) => state.toggleAutoFocusAmount
-  );
-
-  const isAutoFocusNote = useSettingStore((state) => state.isAutoFocusNote);
-  const toggleAutoFocusNote = useSettingStore(
-    (state) => state.toggleAutoFocusNote
-  );
-
   return (
     <SafeAreaView edges={["top"]} className="flex-1 bg-background-100">
       <ScrollView>
@@ -49,39 +21,11 @@ export default function Profile() {
           </VStack>
 
           <VStack space="md" className="flex-1">
-            <SwitchRow value={isBalanceHidden} onToggle={toggleHideBalance}>
-              <SwitchRowTitle>ซ่อนเงินคงเหลือ</SwitchRowTitle>
-            </SwitchRow>
-            <SwitchRow
-              value={isCalendarSwipeMonthsEnabled}
-              onToggle={toggleCalendarSwipeMonthsEnabled}
-            >
-              <SwitchRowTitle>เลื่อนเดือนในปฏิทินด้วยการปัด</SwitchRowTitle>
-            </SwitchRow>
-            <SwitchRow
-              value={isTransactionSwipeEnabled}
-              onToggle={toggleTransactionSwipeEnabled}
-            >
-              <SwitchRowTitle>ปัดซ้ายเพื่อลบรายการ</SwitchRowTitle>
-              <SwitchRowDescription>
-                ปัดรายการที่บันทึกไว้ไปทางซ้ายเพื่อแสดงปุ่มลบ
-              </SwitchRowDescription>
-            </SwitchRow>
-            <SwitchRow
-              value={isAutoFocusAmount}
-              onToggle={toggleAutoFocusAmount}
-            >
-              <SwitchRowTitle>โฟกัสจำนวนเงินอัตโนมัติ</SwitchRowTitle>
-              <SwitchRowDescription>
-                เมื่อเลือกประเภทแล้ว ระบบจะโฟกัสช่อง “จำนวนเงิน” อัตโนมัติ
-              </SwitchRowDescription>
-            </SwitchRow>
-            <SwitchRow value={isAutoFocusNote} onToggle={toggleAutoFocusNote}>
-              <SwitchRowTitle>โฟกัสบันทึกช่วยจำอัตโนมัติ</SwitchRowTitle>
-              <SwitchRowDescription>
-                เมื่อกรอกจำนวนเงินแล้ว ระบบจะโพกัสช่อง “บันทึกช่วยจำ” อัตโนมัติ
-              </SwitchRowDescription>
-            </SwitchRow>
+            <HideBalanceSwitch />
+            <CalendarSwipeMonthsSwitch />
+            <TransactionSwipeSwitch />
+            <AutoFocusAmountSwitch />
+            <AutoFocusNoteSwitch />
           </VStack>
 
           <VStack space="md">
