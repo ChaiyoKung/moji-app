@@ -9,11 +9,22 @@ import { Text } from "../../components/ui/text";
 import { Switch } from "../../components/ui/switch";
 import { useHideBalanceStore } from "../../stores/use-hide-balance-store";
 import colors from "tailwindcss/colors";
+import { useSettingStore } from "../../stores/use-setting-store";
 
 export default function Profile() {
   const isBalanceHidden = useHideBalanceStore((state) => state.isBalanceHidden);
   const toggleHideBalance = useHideBalanceStore(
     (state) => state.toggleHideBalance
+  );
+
+  const isAutoFocusAmount = useSettingStore((state) => state.isAutoFocusAmount);
+  const toggleAutoFocusAmount = useSettingStore(
+    (state) => state.toggleAutoFocusAmount
+  );
+
+  const isAutoFocusNote = useSettingStore((state) => state.isAutoFocusNote);
+  const toggleAutoFocusNote = useSettingStore(
+    (state) => state.toggleAutoFocusNote
   );
 
   return (
@@ -29,6 +40,32 @@ export default function Profile() {
             <Switch
               value={isBalanceHidden}
               onToggle={toggleHideBalance}
+              trackColor={{
+                false: colors.blue[300],
+                true: colors.blue[500],
+              }}
+              thumbColor={colors.blue[100]}
+              ios_backgroundColor={colors.blue[300]}
+            />
+          </HStack>
+          <HStack className="items-center rounded-2xl border border-gray-300 px-4 py-2">
+            <Text className="flex-1">โฟกัสจำนวนเงินอัตโนมัติ</Text>
+            <Switch
+              value={isAutoFocusAmount}
+              onToggle={toggleAutoFocusAmount}
+              trackColor={{
+                false: colors.blue[300],
+                true: colors.blue[500],
+              }}
+              thumbColor={colors.blue[100]}
+              ios_backgroundColor={colors.blue[300]}
+            />
+          </HStack>
+          <HStack className="items-center rounded-2xl border border-gray-300 px-4 py-2">
+            <Text className="flex-1">โฟกัสบันทึกช่วยจำอัตโนมัติ</Text>
+            <Switch
+              value={isAutoFocusNote}
+              onToggle={toggleAutoFocusNote}
               trackColor={{
                 false: colors.blue[300],
                 true: colors.blue[500],
