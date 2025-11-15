@@ -4,6 +4,10 @@ import { Switch } from "../ui/switch";
 import { Text } from "../ui/text";
 import { VStack } from "../ui/vstack";
 
+const switchRowStyle = tva({
+  base: "items-center rounded-2xl border border-gray-300 px-4 py-2",
+});
+
 const switchRowTitleStyle = tva({
   base: "",
 });
@@ -36,20 +40,20 @@ export function SwitchRowDescription({
   );
 }
 
-export interface SwitchRowProps extends React.ComponentProps<typeof Switch> {
+export interface SwitchRowProps
+  extends Omit<React.ComponentProps<typeof Switch>, "className">,
+    Pick<React.ComponentProps<typeof HStack>, "className"> {
   children?: React.ReactNode;
 }
 
 export function SwitchRow({
   action = "primary",
   children,
+  className,
   ...props
 }: SwitchRowProps) {
   return (
-    <HStack
-      space="sm"
-      className="items-center rounded-2xl border border-gray-300 px-4 py-2"
-    >
+    <HStack space="sm" className={switchRowStyle({ class: className })}>
       <VStack className="flex-1">{children}</VStack>
       <Switch {...props} />
     </HStack>
