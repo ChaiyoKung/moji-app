@@ -5,6 +5,7 @@ import { createSwitch } from "@gluestack-ui/switch";
 import { tva } from "@gluestack-ui/nativewind-utils/tva";
 import { withStyleContext } from "@gluestack-ui/nativewind-utils/withStyleContext";
 import type { VariantProps } from "@gluestack-ui/nativewind-utils";
+import colors from "tailwindcss/colors";
 
 const UISwitch = createSwitch({
   Root: withStyleContext(RNSwitch),
@@ -22,16 +23,58 @@ const switchStyle = tva({
   },
 });
 
+const switchColorPropsByAction = {
+  primary: {
+    trackColor: {
+      false: colors.blue[300],
+      true: colors.blue[500],
+    },
+    thumbColor: colors.blue[100],
+    ios_backgroundColor: colors.blue[300],
+  },
+  secondary: {
+    trackColor: {
+      false: colors.teal[300],
+      true: colors.teal[500],
+    },
+    thumbColor: colors.teal[100],
+    ios_backgroundColor: colors.teal[300],
+  },
+  positive: {
+    trackColor: {
+      false: colors.green[300],
+      true: colors.green[500],
+    },
+    thumbColor: colors.green[100],
+    ios_backgroundColor: colors.green[300],
+  },
+  negative: {
+    trackColor: {
+      false: colors.red[300],
+      true: colors.red[500],
+    },
+    thumbColor: colors.red[100],
+    ios_backgroundColor: colors.red[300],
+  },
+};
+
 type ISwitchProps = React.ComponentProps<typeof UISwitch> &
-  VariantProps<typeof switchStyle>;
+  VariantProps<typeof switchStyle> & {
+    action?: keyof typeof switchColorPropsByAction;
+  };
 const Switch = React.forwardRef<
   React.ComponentRef<typeof UISwitch>,
   ISwitchProps
->(function Switch({ className, size = "md", ...props }, ref) {
+>(function Switch(
+  { className, size = "md", action = "primary", ...props },
+  ref
+) {
+  const colorProps = switchColorPropsByAction[action];
+  const mergedProps = { ...colorProps, ...props };
   return (
     <UISwitch
       ref={ref}
-      {...props}
+      {...mergedProps}
       className={switchStyle({ size, class: className })}
     />
   );
