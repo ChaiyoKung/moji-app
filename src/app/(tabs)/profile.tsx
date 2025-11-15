@@ -23,6 +23,13 @@ export default function Profile() {
     (state) => state.toggleCalendarSwipeMonthsEnabled
   );
 
+  const isTransactionSwipeEnabled = useSettingStore(
+    (state) => state.isTransactionSwipeEnabled
+  );
+  const toggleTransactionSwipeEnabled = useSettingStore(
+    (state) => state.toggleTransactionSwipeEnabled
+  );
+
   const isAutoFocusAmount = useSettingStore((state) => state.isAutoFocusAmount);
   const toggleAutoFocusAmount = useSettingStore(
     (state) => state.toggleAutoFocusAmount
@@ -50,6 +57,15 @@ export default function Profile() {
               onToggle={toggleCalendarSwipeMonthsEnabled}
             >
               <SwitchRowTitle>เลื่อนเดือนในปฏิทินด้วยการปัด</SwitchRowTitle>
+            </SwitchRow>
+            <SwitchRow
+              value={isTransactionSwipeEnabled}
+              onToggle={toggleTransactionSwipeEnabled}
+            >
+              <SwitchRowTitle>ปัดซ้ายเพื่อลบรายการ</SwitchRowTitle>
+              <SwitchRowDescription>
+                ปัดรายการที่บันทึกไว้ไปทางซ้ายเพื่อแสดงปุ่มลบ
+              </SwitchRowDescription>
             </SwitchRow>
             <SwitchRow
               value={isAutoFocusAmount}

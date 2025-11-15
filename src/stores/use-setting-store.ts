@@ -9,6 +9,9 @@ interface SettingState {
   isCalendarSwipeMonthsEnabled: boolean;
   toggleCalendarSwipeMonthsEnabled: () => void;
 
+  isTransactionSwipeEnabled: boolean;
+  toggleTransactionSwipeEnabled: () => void;
+
   isAutoFocusAmount: boolean;
   toggleAutoFocusAmount: () => void;
 
@@ -28,6 +31,13 @@ export const useSettingStore = create<SettingState>()(
       toggleCalendarSwipeMonthsEnabled: () => {
         set({
           isCalendarSwipeMonthsEnabled: !get().isCalendarSwipeMonthsEnabled,
+        });
+      },
+
+      isTransactionSwipeEnabled: false,
+      toggleTransactionSwipeEnabled: () => {
+        set({
+          isTransactionSwipeEnabled: !get().isTransactionSwipeEnabled,
         });
       },
 
