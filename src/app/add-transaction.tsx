@@ -29,6 +29,7 @@ import { useAppToast } from "../hooks/use-app-toast";
 import { TextInput, TextInputProps } from "react-native";
 import { arrayFill } from "../utils/array";
 import { env } from "../env";
+import { useSettingStore } from "../stores/use-setting-store";
 
 const minQuantity: number = 1;
 const maxQuantity: number = env.EXPO_PUBLIC_TRANSACTION_INSERT_MAX_BATCH_SIZE;
@@ -59,6 +60,9 @@ export default function Transaction() {
 
   const amountInputRef = useRef<TextInput>(null);
   const noteInputRef = useRef<TextInput>(null);
+
+  const isAutoFocusAmount = useSettingStore((state) => state.isAutoFocusAmount);
+  const isAutoFocusNote = useSettingStore((state) => state.isAutoFocusNote);
 
   const createTransactionManyMutation = useMutation({
     mutationFn: createTransactionMany,
@@ -136,7 +140,7 @@ export default function Transaction() {
               value={selectedCatagoryId}
               onChange={(item) => {
                 setSelectedCatagoryId(item._id);
-                amountInputRef.current?.focus();
+                if (isAutoFocusAmount) amountInputRef.current?.focus();
               }}
             />
           </VStack>
@@ -152,9 +156,11 @@ export default function Transaction() {
                 placeholder="0"
                 value={amount}
                 onChangeText={(text) => setAmount(text)}
-                onSubmitEditing={() => noteInputRef.current?.focus()}
+                onSubmitEditing={() => {
+                  if (isAutoFocusNote) noteInputRef.current?.focus();
+                }}
                 keyboardType="numeric"
-                enterKeyHint="next"
+                enterKeyHint={isAutoFocusNote ? "next" : "done"}
               />
             </Input>
             <HStack space="xs" className="items-baseline">

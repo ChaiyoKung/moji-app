@@ -6,25 +6,22 @@ import { Text } from "../../components/ui/text";
 import { useQuery } from "@tanstack/react-query";
 import { getAllAccounts } from "../../libs/api";
 import { formatBaht } from "../../utils/format-baht";
-import { useHideBalanceStore } from "../../stores/use-hide-balance-store";
+import { useSettingStore } from "../../stores/use-setting-store";
 
 export function AccountBalanceInline() {
   const accountQuery = useQuery({
     queryKey: ["accounts"],
     queryFn: getAllAccounts,
   });
-  const isLoading = useHideBalanceStore((state) => state.isLoading);
-  const isBalanceHidden = useHideBalanceStore((state) => state.isBalanceHidden);
-  const toggleHideBalance = useHideBalanceStore(
-    (state) => state.toggleHideBalance
-  );
+  const isBalanceHidden = useSettingStore((state) => state.isBalanceHidden);
+  const toggleHideBalance = useSettingStore((state) => state.toggleHideBalance);
 
   return (
     <Pressable
       className="flex-row items-center gap-1"
       onPress={toggleHideBalance}
     >
-      {accountQuery.isLoading || isLoading ? (
+      {accountQuery.isLoading ? (
         <Spinner />
       ) : accountQuery.error ? (
         <Text className="text-error-500">เกิดข้อผิดพลาดในการโหลดยอดเงิน</Text>

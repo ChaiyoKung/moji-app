@@ -9,6 +9,7 @@ import colors from "tailwindcss/colors";
 import { TransactionItem } from "../../components/transaction-item";
 import { deleteTransaction, TransactionWithCategory } from "../../libs/api";
 import { useAppToast } from "../../hooks/use-app-toast";
+import { useSettingStore } from "../../stores/use-setting-store";
 
 export interface SwipeableTransactionItemProps {
   data: TransactionWithCategory;
@@ -36,6 +37,10 @@ export function SwipeableTransactionItem({
     },
   });
 
+  const isTransactionSwipeEnabled = useSettingStore(
+    (state) => state.isTransactionSwipeEnabled
+  );
+
   return (
     <Swipeable
       renderRightActions={() => (
@@ -51,6 +56,7 @@ export function SwipeableTransactionItem({
           )}
         </Pressable>
       )}
+      enabled={isTransactionSwipeEnabled}
       containerStyle={{
         backgroundColor: colors.red[500],
         borderRadius: 16,
