@@ -8,14 +8,17 @@ import { Center } from "../../components/ui/center";
 export default function Profile() {
   return (
     <SafeAreaView edges={["top"]} className="flex-1 bg-background-100">
-      <VStack space="md" className="flex-1 p-4">
+      <VStack space="4xl" className="flex-1 p-4">
         <VStack space="md" className="flex-1">
           <ProfileDetails />
         </VStack>
-        <SignOutButton />
-        <Center>
-          <AppVersion />
-        </Center>
+
+        <VStack space="md">
+          <SignOutButton />
+          <Center>
+            <AppVersion />
+          </Center>
+        </VStack>
       </VStack>
     </SafeAreaView>
   );
