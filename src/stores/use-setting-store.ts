@@ -3,6 +3,9 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 interface SettingState {
+  isBalanceHidden: boolean;
+  toggleHideBalance: () => void;
+
   isAutoFocusAmount: boolean;
   toggleAutoFocusAmount: () => void;
 
@@ -13,6 +16,11 @@ interface SettingState {
 export const useSettingStore = create<SettingState>()(
   persist(
     (set, get) => ({
+      isBalanceHidden: false,
+      toggleHideBalance: () => {
+        set({ isBalanceHidden: !get().isBalanceHidden });
+      },
+
       isAutoFocusAmount: false,
       toggleAutoFocusAmount: () => {
         set({ isAutoFocusAmount: !get().isAutoFocusAmount });

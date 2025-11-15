@@ -7,15 +7,12 @@ import { Center } from "../../components/ui/center";
 import { HStack } from "../../components/ui/hstack";
 import { Text } from "../../components/ui/text";
 import { Switch } from "../../components/ui/switch";
-import { useHideBalanceStore } from "../../stores/use-hide-balance-store";
 import colors from "tailwindcss/colors";
 import { useSettingStore } from "../../stores/use-setting-store";
 
 export default function Profile() {
-  const isBalanceHidden = useHideBalanceStore((state) => state.isBalanceHidden);
-  const toggleHideBalance = useHideBalanceStore(
-    (state) => state.toggleHideBalance
-  );
+  const isBalanceHidden = useSettingStore((state) => state.isBalanceHidden);
+  const toggleHideBalance = useSettingStore((state) => state.toggleHideBalance);
 
   const isAutoFocusAmount = useSettingStore((state) => state.isAutoFocusAmount);
   const toggleAutoFocusAmount = useSettingStore(
