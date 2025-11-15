@@ -4,7 +4,6 @@ import { SignOutButton } from "../../features/sign-out-button";
 import { ProfileDetails } from "../../features/profile-details";
 import { AppVersion } from "../../features/app-version";
 import { Center } from "../../components/ui/center";
-import colors from "tailwindcss/colors";
 import { useSettingStore } from "../../stores/use-setting-store";
 import { ScrollView } from "react-native";
 import {
@@ -36,43 +35,19 @@ export default function Profile() {
           </VStack>
 
           <VStack space="md" className="flex-1">
-            <SwitchRow
-              value={isBalanceHidden}
-              onToggle={toggleHideBalance}
-              trackColor={{
-                false: colors.blue[300],
-                true: colors.blue[500],
-              }}
-              thumbColor={colors.blue[100]}
-              ios_backgroundColor={colors.blue[300]}
-            >
+            <SwitchRow value={isBalanceHidden} onToggle={toggleHideBalance}>
               <SwitchRowTitle>ซ่อนเงินคงเหลือ</SwitchRowTitle>
             </SwitchRow>
             <SwitchRow
               value={isAutoFocusAmount}
               onToggle={toggleAutoFocusAmount}
-              trackColor={{
-                false: colors.blue[300],
-                true: colors.blue[500],
-              }}
-              thumbColor={colors.blue[100]}
-              ios_backgroundColor={colors.blue[300]}
             >
               <SwitchRowTitle>โฟกัสจำนวนเงินอัตโนมัติ</SwitchRowTitle>
               <SwitchRowDescription>
                 เมื่อเลือกประเภทแล้ว ระบบจะโฟกัสช่อง “จำนวนเงิน” อัตโนมัติ
               </SwitchRowDescription>
             </SwitchRow>
-            <SwitchRow
-              value={isAutoFocusNote}
-              onToggle={toggleAutoFocusNote}
-              trackColor={{
-                false: colors.blue[300],
-                true: colors.blue[500],
-              }}
-              thumbColor={colors.blue[100]}
-              ios_backgroundColor={colors.blue[300]}
-            >
+            <SwitchRow value={isAutoFocusNote} onToggle={toggleAutoFocusNote}>
               <SwitchRowTitle>โฟกัสบันทึกช่วยจำอัตโนมัติ</SwitchRowTitle>
               <SwitchRowDescription>
                 เมื่อกรอกจำนวนเงินแล้ว ระบบจะโพกัสช่อง “บันทึกช่วยจำ” อัตโนมัติ
