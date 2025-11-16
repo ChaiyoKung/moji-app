@@ -5,11 +5,11 @@ import {
   PrimitiveIcon,
   IPrimitiveIcon,
   Svg,
-} from "@gluestack-ui/icon";
+} from "@gluestack-ui/core/icon/creator";
 import { Path } from "react-native-svg";
-import { tva } from "@gluestack-ui/nativewind-utils/tva";
+import { tva } from "@gluestack-ui/utils/nativewind-utils";
 import { cssInterop } from "nativewind";
-import { VariantProps } from "@gluestack-ui/nativewind-utils";
+import { VariantProps } from "@gluestack-ui/utils/nativewind-utils";
 
 export const UIIcon = createIcon({
   Root: PrimitiveIcon,

@@ -1,10 +1,10 @@
 "use client";
 import React from "react";
 import { Switch as RNSwitch } from "react-native";
-import { createSwitch } from "@gluestack-ui/switch";
-import { tva } from "@gluestack-ui/nativewind-utils/tva";
-import { withStyleContext } from "@gluestack-ui/nativewind-utils/withStyleContext";
-import type { VariantProps } from "@gluestack-ui/nativewind-utils";
+import { createSwitch } from "@gluestack-ui/core/switch/creator";
+import { tva } from "@gluestack-ui/utils/nativewind-utils";
+import { withStyleContext } from "@gluestack-ui/utils/nativewind-utils";
+import type { VariantProps } from "@gluestack-ui/utils/nativewind-utils";
 import colors from "tailwindcss/colors";
 
 const UISwitch = createSwitch({
@@ -12,7 +12,7 @@ const UISwitch = createSwitch({
 });
 
 const switchStyle = tva({
-  base: "disabled:cursor-not-allowed web:cursor-pointer data-[invalid=true]:rounded-xl data-[invalid=true]:border-2 data-[invalid=true]:border-error-700 data-[focus=true]:outline-0 data-[focus=true]:ring-2 data-[focus=true]:ring-indicator-primary data-[disabled=true]:opacity-40",
+  base: "disabled:cursor-not-allowed data-[invalid=true]:rounded-xl data-[invalid=true]:border-2 data-[invalid=true]:border-error-700 data-[disabled=true]:opacity-40 data-[focus=true]:outline-0 data-[focus=true]:ring-2 data-[focus=true]:ring-indicator-primary web:cursor-pointer",
 
   variants: {
     size: {

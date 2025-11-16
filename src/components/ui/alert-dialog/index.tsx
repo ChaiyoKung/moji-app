@@ -1,14 +1,14 @@
 "use client";
 import React from "react";
-import { createAlertDialog } from "@gluestack-ui/alert-dialog";
-import { tva } from "@gluestack-ui/nativewind-utils/tva";
+import { createAlertDialog } from "@gluestack-ui/core/alert-dialog/creator";
+import { tva } from "@gluestack-ui/utils/nativewind-utils";
 import {
   withStyleContext,
   useStyleContext,
-} from "@gluestack-ui/nativewind-utils/withStyleContext";
+} from "@gluestack-ui/utils/nativewind-utils";
 
 import { cssInterop } from "nativewind";
-import type { VariantProps } from "@gluestack-ui/nativewind-utils";
+import type { VariantProps } from "@gluestack-ui/utils/nativewind-utils";
 import {
   Motion,
   AnimatePresence,
@@ -74,7 +74,7 @@ const alertDialogContentStyle = tva({
 });
 
 const alertDialogCloseButtonStyle = tva({
-  base: "group/alert-dialog-close-button z-10 rounded-sm p-2 outline-0 web:cursor-pointer data-[focus-visible=true]:bg-background-100",
+  base: "group/alert-dialog-close-button z-10 rounded-sm p-2 outline-0 data-[focus-visible=true]:bg-background-100 web:cursor-pointer",
 });
 
 const alertDialogHeaderStyle = tva({
