@@ -2,8 +2,8 @@
 import React from "react";
 import { createFab } from "@gluestack-ui/core/fab/creator";
 import { Pressable, Text } from "react-native";
-import { tva } from "@gluestack-ui/utils/nativewind-utils";
 import {
+  tva,
   withStyleContext,
   useStyleContext,
 } from "@gluestack-ui/utils/nativewind-utils";

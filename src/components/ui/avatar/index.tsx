@@ -4,8 +4,8 @@ import { createAvatar } from "@gluestack-ui/core/avatar/creator";
 
 import { View, Text, Image, Platform } from "react-native";
 
-import { tva } from "@gluestack-ui/utils/nativewind-utils";
 import {
+  tva,
   withStyleContext,
   useStyleContext,
 } from "@gluestack-ui/utils/nativewind-utils";
