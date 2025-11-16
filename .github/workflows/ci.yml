@@ -3,12 +3,12 @@ on:
   push:
 
 env:
-  NODE_VERSION: 22
+  NODE_VERSION: 24
   PNPM_VERSION: 10
 
 jobs:
   lint:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - name: Install pnpm
@@ -26,7 +26,7 @@ jobs:
         run: pnpm lint
 
   test:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - name: Install pnpm
