@@ -1,14 +1,14 @@
 import { CalendarDaysIcon } from "lucide-react-native";
 import { Button, ButtonIcon, ButtonText } from "../ui/button";
-import { InterfaceButtonProps } from "@gluestack-ui/button/lib/types";
 
-export interface TodayButtonProps {
-  onPress?: InterfaceButtonProps["onPress"];
-}
+export type TodayButtonProps = Omit<
+  React.ComponentProps<typeof Button>,
+  "variant" | "action"
+>;
 
-export function TodayButton({ onPress }: TodayButtonProps) {
+export function TodayButton(props: TodayButtonProps) {
   return (
-    <Button variant="outline" action="secondary" onPress={onPress}>
+    <Button variant="outline" action="secondary" {...props}>
       <ButtonIcon as={CalendarDaysIcon} />
       <ButtonText>กลับมาวันนี้</ButtonText>
     </Button>
