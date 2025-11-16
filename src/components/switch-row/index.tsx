@@ -1,4 +1,4 @@
-import { tva } from "@gluestack-ui/nativewind-utils/tva";
+import { tva } from "@gluestack-ui/utils/nativewind-utils";
 import { HStack } from "../ui/hstack";
 import { Switch } from "../ui/switch";
 import { Text } from "../ui/text";

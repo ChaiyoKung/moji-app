@@ -1,15 +1,15 @@
 "use client";
 import React from "react";
-import { createAvatar } from "@gluestack-ui/avatar";
+import { createAvatar } from "@gluestack-ui/core/avatar/creator";
 
 import { View, Text, Image, Platform } from "react-native";
 
-import { tva } from "@gluestack-ui/nativewind-utils/tva";
 import {
+  tva,
   withStyleContext,
   useStyleContext,
-} from "@gluestack-ui/nativewind-utils/withStyleContext";
-import type { VariantProps } from "@gluestack-ui/nativewind-utils";
+} from "@gluestack-ui/utils/nativewind-utils";
+import type { VariantProps } from "@gluestack-ui/utils/nativewind-utils";
 
 const SCOPE = "AVATAR";
 
