@@ -46,12 +46,12 @@ describe("getMarkedDates", () => {
     expect(result["2025-07-02"].dots[0].color).toBe(colors.blue[100]);
   });
 
-  it("should use white for selected date with >5 items", () => {
+  it("should use blue[50] for selected date with >5 items", () => {
     const result = getMarkedDates(
       [{ _id: "2025-07-03", ids: ["a", "b", "c", "d", "e", "f"] }],
       "2025-07-03"
     );
-    expect(result["2025-07-03"].dots[0].color).toBe(colors.white);
+    expect(result["2025-07-03"].dots[0].color).toBe(colors.blue[50]);
   });
 
   it("should use blue[300] for non-selected date with <=2 items", () => {
