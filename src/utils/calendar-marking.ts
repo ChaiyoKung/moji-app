@@ -2,20 +2,31 @@ import colors from "tailwindcss/colors";
 
 /**
  * Get dot color based on transaction count and selection state
+ * @param color - Tailwind color object
  * @param count - Number of transactions
  * @param isSelected - Whether the date is selected
  */
-function getDotColor(count: number, isSelected: boolean): string {
+function getDotColor(
+  color: {
+    50: string;
+    100: string;
+    300: string;
+    500: string;
+    700: string;
+  },
+  count: number,
+  isSelected: boolean
+): string {
   if (isSelected) {
     // For selected days: more items = lighter blue/white
-    if (count <= 2) return colors.blue[300];
-    if (count <= 5) return colors.blue[100];
-    return colors.blue[50];
+    if (count <= 2) return color[300];
+    if (count <= 5) return color[100];
+    return color[50];
   } else {
     // For non-selected days: more items = darker blue
-    if (count <= 2) return colors.blue[300];
-    if (count <= 5) return colors.blue[500];
-    return colors.blue[700];
+    if (count <= 2) return color[300];
+    if (count <= 5) return color[500];
+    return color[700];
   }
 }
 
@@ -40,7 +51,7 @@ export function getMarkedDates(
       dots: [
         {
           key: `dot-${date}`,
-          color: getDotColor(count, isSelected),
+          color: getDotColor(colors.blue, count, isSelected),
         },
       ],
     };
