@@ -38,7 +38,7 @@ function EditTransactionForm({ data }: { data: TransactionWithCategory }) {
   const [selectedCatagoryId, setSelectedCatagoryId] = useState<string>(
     data.categoryId._id
   );
-  const [amount, setAmount] = useState<string>(data.amount.toString());
+  const [amount, setAmount] = useState<string>((data.amount ?? "").toString());
   const [note, setNote] = useState<string>(data.note || "");
 
   const updateTransactionMutation = useMutation({
@@ -121,7 +121,7 @@ function EditTransactionForm({ data }: { data: TransactionWithCategory }) {
   ): UpdateTransactionDto => {
     return {
       categoryId: selectedCatagoryId,
-      amount: parseInt(amount),
+      amount: !isNaN(parseInt(amount)) ? parseInt(amount) : undefined,
       note: note.trim() || undefined,
       status,
     };
@@ -137,6 +137,8 @@ function EditTransactionForm({ data }: { data: TransactionWithCategory }) {
     updateTransactionDraftMutation.mutate({ id: data._id, data: newData });
   };
 
+  const isTransactionDraftFormValid = selectedCatagoryId !== "";
+
   const isTransactionFormValid =
     selectedCatagoryId !== "" &&
     amount.trim() !== "" &&
@@ -147,6 +149,8 @@ function EditTransactionForm({ data }: { data: TransactionWithCategory }) {
     updateTransactionMutation.isPending ||
     updateTransactionDraftMutation.isPending;
 
+  const isDraftButtonDisabled =
+    !isTransactionDraftFormValid || isTransactionPending;
   const isButtonDisabled = !isTransactionFormValid || isTransactionPending;
 
   return (
@@ -225,7 +229,7 @@ function EditTransactionForm({ data }: { data: TransactionWithCategory }) {
             action="secondary"
             size={"sm"}
             onPress={handleSaveDraft}
-            isDisabled={isButtonDisabled}
+            isDisabled={isDraftButtonDisabled}
           >
             {updateTransactionDraftMutation.isPending ? (
               <ButtonSpinner />
