@@ -77,21 +77,76 @@ function EditTransactionForm({ data }: { data: TransactionWithCategory }) {
     },
   });
 
+  const updateTransactionDraftMutation = useMutation({
+    mutationFn: (params: { id: string; data: UpdateTransactionDto }) => {
+      const { id, data } = params;
+      return updateTransaction(id, data);
+    },
+    onSuccess: () => {
+      console.log("Transaction draft updated successfully");
+      toast.success("แก้ไขรายการแบบร่างสำเร็จ");
+
+      const { _id, date } = data;
+
+      // Invalidate queries to refresh data
+      queryClient.invalidateQueries({ queryKey: ["accounts"] });
+      queryClient.invalidateQueries({
+        queryKey: ["transactions", dayjs(date).format("YYYY-MM-DD")],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["summary", dayjs(date).format("YYYY-MM-DD")],
+      });
+
+      const startOfMonth = dayjs(date).startOf("month").format("YYYY-MM-DD");
+      const endOfMonth = dayjs(date).endOf("month").format("YYYY-MM-DD");
+      queryClient.invalidateQueries({
+        queryKey: ["transactionIdsByDate", startOfMonth, endOfMonth],
+      });
+
+      queryClient.invalidateQueries({ queryKey: ["transaction", _id] });
+
+      router.back();
+    },
+    onError: (error) => {
+      console.error("Error updating transaction draft:", error);
+      toast.error(
+        "เกิดข้อผิดพลาดในการแก้ไขรายการแบบร่าง",
+        "กรุณาลองใหม่อีกครั้ง"
+      );
+    },
+  });
+
   const handleSave = () => {
     const newData = {
       categoryId: selectedCatagoryId,
       amount: parseInt(amount),
       note: note.trim() || undefined,
+      status: "confirmed" as const,
     };
     updateTransactionMutation.mutate({ id: data._id, data: newData });
   };
 
-  const isButtonDisabled =
-    !selectedCatagoryId ||
-    !amount.trim() ||
-    isNaN(parseInt(amount)) ||
-    parseInt(amount) <= 0 ||
-    updateTransactionMutation.isPending;
+  const handleSaveDraft = () => {
+    const newData = {
+      categoryId: selectedCatagoryId,
+      amount: parseInt(amount),
+      note: note.trim() || undefined,
+      status: "draft" as const,
+    };
+    updateTransactionDraftMutation.mutate({ id: data._id, data: newData });
+  };
+
+  const isTransactionFormValid =
+    selectedCatagoryId !== "" &&
+    amount.trim() !== "" &&
+    !isNaN(parseInt(amount)) &&
+    parseInt(amount) > 0;
+
+  const isTransactionPending =
+    updateTransactionMutation.isPending ||
+    updateTransactionDraftMutation.isPending;
+
+  const isButtonDisabled = !isTransactionFormValid || isTransactionPending;
 
   return (
     <>
@@ -163,14 +218,30 @@ function EditTransactionForm({ data }: { data: TransactionWithCategory }) {
         edges={["bottom"]}
         className="overflow-hidden rounded-t-2xl border-t border-outline-200 bg-background-0 p-4"
       >
-        <Button size="xl" onPress={handleSave} isDisabled={isButtonDisabled}>
-          {updateTransactionMutation.isPending ? (
-            <ButtonSpinner />
-          ) : (
-            <ButtonIcon as={SaveIcon} />
-          )}
-          <ButtonText>บันทึก</ButtonText>
-        </Button>
+        <VStack space="md">
+          <Button
+            variant="outline"
+            action="secondary"
+            size={"sm"}
+            onPress={handleSaveDraft}
+            isDisabled={isButtonDisabled}
+          >
+            {updateTransactionDraftMutation.isPending ? (
+              <ButtonSpinner />
+            ) : (
+              <ButtonIcon as={SaveIcon} />
+            )}
+            <ButtonText>บันทึกแบบ Draft</ButtonText>
+          </Button>
+          <Button size="xl" onPress={handleSave} isDisabled={isButtonDisabled}>
+            {updateTransactionMutation.isPending ? (
+              <ButtonSpinner />
+            ) : (
+              <ButtonIcon as={SaveIcon} />
+            )}
+            <ButtonText>บันทึก</ButtonText>
+          </Button>
+        </VStack>
       </SafeAreaView>
     </>
   );
