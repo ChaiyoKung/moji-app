@@ -18,12 +18,12 @@ export function getDotColor(
   isSelected: boolean
 ): string {
   if (isSelected) {
-    // For selected days: more items = lighter blue/white
+    // For selected days: more items = lighter color
     if (count <= 2) return color[300];
     if (count <= 5) return color[100];
     return color[50];
   } else {
-    // For non-selected days: more items = darker blue
+    // For non-selected days: more items = darker color
     if (count <= 2) return color[300];
     if (count <= 5) return color[500];
     return color[700];
