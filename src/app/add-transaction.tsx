@@ -169,7 +169,8 @@ export default function Transaction() {
   const isDraftButtonDisabled =
     !isTransactionDraftFormValid || isTransactionPending;
 
-  const isSaveButtonDisabled = !isTransactionFormValid || isTransactionPending;
+  const isShowSaveButton = isTransactionFormValid;
+  const isSaveButtonDisabled = isTransactionPending;
 
   return (
     <>
@@ -245,7 +246,7 @@ export default function Transaction() {
           <Button
             variant="outline"
             action="secondary"
-            size={"sm"}
+            size={isShowSaveButton ? "sm" : "xl"}
             onPress={handleSaveDraft}
             isDisabled={isDraftButtonDisabled}
           >
@@ -256,37 +257,39 @@ export default function Transaction() {
             )}
             <ButtonText>บันทึกแบบ Draft</ButtonText>
           </Button>
-          <ButtonGroup flexDirection="row" className="gap-[1px]">
-            <Button
-              size="xl"
-              className="aspect-square rounded-r-none p-0"
-              onPress={handleDecreaseQuantity}
-              isDisabled={isSaveButtonDisabled || quantity <= minQuantity}
-            >
-              <ButtonIcon as={MinusIcon} />
-            </Button>
-            <Button
-              size="xl"
-              className="flex-1 rounded-none"
-              onPress={handleSave}
-              isDisabled={isSaveButtonDisabled}
-            >
-              {createTransactionManyMutation.isPending ? (
-                <ButtonSpinner />
-              ) : (
-                <ButtonIcon as={SaveIcon} />
-              )}
-              <ButtonText>บันทึก {quantity} รายการ</ButtonText>
-            </Button>
-            <Button
-              size="xl"
-              className="aspect-square rounded-l-none p-0"
-              onPress={handleIncreaseQuantity}
-              isDisabled={isSaveButtonDisabled || quantity >= maxQuantity}
-            >
-              <ButtonIcon as={PlusIcon} />
-            </Button>
-          </ButtonGroup>
+          {isShowSaveButton && (
+            <ButtonGroup flexDirection="row" className="gap-[1px]">
+              <Button
+                size="xl"
+                className="aspect-square rounded-r-none p-0"
+                onPress={handleDecreaseQuantity}
+                isDisabled={isSaveButtonDisabled || quantity <= minQuantity}
+              >
+                <ButtonIcon as={MinusIcon} />
+              </Button>
+              <Button
+                size="xl"
+                className="flex-1 rounded-none"
+                onPress={handleSave}
+                isDisabled={isSaveButtonDisabled}
+              >
+                {createTransactionManyMutation.isPending ? (
+                  <ButtonSpinner />
+                ) : (
+                  <ButtonIcon as={SaveIcon} />
+                )}
+                <ButtonText>บันทึก {quantity} รายการ</ButtonText>
+              </Button>
+              <Button
+                size="xl"
+                className="aspect-square rounded-l-none p-0"
+                onPress={handleIncreaseQuantity}
+                isDisabled={isSaveButtonDisabled || quantity >= maxQuantity}
+              >
+                <ButtonIcon as={PlusIcon} />
+              </Button>
+            </ButtonGroup>
+          )}
         </VStack>
       </SafeAreaView>
     </>

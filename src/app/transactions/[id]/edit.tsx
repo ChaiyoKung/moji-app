@@ -152,7 +152,8 @@ function EditTransactionForm({ data }: { data: TransactionWithCategory }) {
   const isDraftButtonDisabled =
     !isTransactionDraftFormValid || isTransactionPending;
 
-  const isSaveButtonDisabled = !isTransactionFormValid || isTransactionPending;
+  const isShowSaveButton = isTransactionFormValid;
+  const isSaveButtonDisabled = isTransactionPending;
 
   return (
     <>
@@ -228,7 +229,7 @@ function EditTransactionForm({ data }: { data: TransactionWithCategory }) {
           <Button
             variant="outline"
             action="secondary"
-            size={"sm"}
+            size={isShowSaveButton ? "sm" : "xl"}
             onPress={handleSaveDraft}
             isDisabled={isDraftButtonDisabled}
           >
@@ -239,18 +240,20 @@ function EditTransactionForm({ data }: { data: TransactionWithCategory }) {
             )}
             <ButtonText>บันทึกแบบ Draft</ButtonText>
           </Button>
-          <Button
-            size="xl"
-            onPress={handleSave}
-            isDisabled={isSaveButtonDisabled}
-          >
-            {updateTransactionMutation.isPending ? (
-              <ButtonSpinner />
-            ) : (
-              <ButtonIcon as={SaveIcon} />
-            )}
-            <ButtonText>บันทึก</ButtonText>
-          </Button>
+          {isShowSaveButton && (
+            <Button
+              size="xl"
+              onPress={handleSave}
+              isDisabled={isSaveButtonDisabled}
+            >
+              {updateTransactionMutation.isPending ? (
+                <ButtonSpinner />
+              ) : (
+                <ButtonIcon as={SaveIcon} />
+              )}
+              <ButtonText>บันทึก</ButtonText>
+            </Button>
+          )}
         </VStack>
       </SafeAreaView>
     </>
