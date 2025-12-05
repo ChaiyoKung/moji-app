@@ -1,5 +1,105 @@
 import colors from "tailwindcss/colors";
-import { getMarkedDates } from "./calendar-marking";
+import { getDotColor, getMarkedDates } from "./calendar-marking";
+
+describe("getDotColor", () => {
+  const mockColor = {
+    50: "#eff6ff",
+    100: "#dbeafe",
+    300: "#93c5fd",
+    500: "#3b82f6",
+    700: "#1d4ed8",
+  };
+
+  describe("when date is selected (isSelected = true)", () => {
+    it("should return color[300] for count <= 2 (count = 0)", () => {
+      expect(getDotColor(mockColor, 0, true)).toBe(mockColor[300]);
+    });
+
+    it("should return color[300] for count <= 2 (count = 1)", () => {
+      expect(getDotColor(mockColor, 1, true)).toBe(mockColor[300]);
+    });
+
+    it("should return color[300] for count <= 2 (count = 2)", () => {
+      expect(getDotColor(mockColor, 2, true)).toBe(mockColor[300]);
+    });
+
+    it("should return color[100] for count 3-5 (count = 3)", () => {
+      expect(getDotColor(mockColor, 3, true)).toBe(mockColor[100]);
+    });
+
+    it("should return color[100] for count 3-5 (count = 4)", () => {
+      expect(getDotColor(mockColor, 4, true)).toBe(mockColor[100]);
+    });
+
+    it("should return color[100] for count 3-5 (count = 5)", () => {
+      expect(getDotColor(mockColor, 5, true)).toBe(mockColor[100]);
+    });
+
+    it("should return color[50] for count > 5 (count = 6)", () => {
+      expect(getDotColor(mockColor, 6, true)).toBe(mockColor[50]);
+    });
+
+    it("should return color[50] for count > 5 (count = 10)", () => {
+      expect(getDotColor(mockColor, 10, true)).toBe(mockColor[50]);
+    });
+
+    it("should return color[50] for count > 5 (count = 100)", () => {
+      expect(getDotColor(mockColor, 100, true)).toBe(mockColor[50]);
+    });
+  });
+
+  describe("when date is not selected (isSelected = false)", () => {
+    it("should return color[300] for count <= 2 (count = 0)", () => {
+      expect(getDotColor(mockColor, 0, false)).toBe(mockColor[300]);
+    });
+
+    it("should return color[300] for count <= 2 (count = 1)", () => {
+      expect(getDotColor(mockColor, 1, false)).toBe(mockColor[300]);
+    });
+
+    it("should return color[300] for count <= 2 (count = 2)", () => {
+      expect(getDotColor(mockColor, 2, false)).toBe(mockColor[300]);
+    });
+
+    it("should return color[500] for count 3-5 (count = 3)", () => {
+      expect(getDotColor(mockColor, 3, false)).toBe(mockColor[500]);
+    });
+
+    it("should return color[500] for count 3-5 (count = 4)", () => {
+      expect(getDotColor(mockColor, 4, false)).toBe(mockColor[500]);
+    });
+
+    it("should return color[500] for count 3-5 (count = 5)", () => {
+      expect(getDotColor(mockColor, 5, false)).toBe(mockColor[500]);
+    });
+
+    it("should return color[700] for count > 5 (count = 6)", () => {
+      expect(getDotColor(mockColor, 6, false)).toBe(mockColor[700]);
+    });
+
+    it("should return color[700] for count > 5 (count = 10)", () => {
+      expect(getDotColor(mockColor, 10, false)).toBe(mockColor[700]);
+    });
+
+    it("should return color[700] for count > 5 (count = 100)", () => {
+      expect(getDotColor(mockColor, 100, false)).toBe(mockColor[700]);
+    });
+  });
+
+  describe("integration with Tailwind colors", () => {
+    it("should work with actual Tailwind blue colors for selected dates", () => {
+      expect(getDotColor(colors.blue, 2, true)).toBe(colors.blue[300]);
+      expect(getDotColor(colors.blue, 4, true)).toBe(colors.blue[100]);
+      expect(getDotColor(colors.blue, 8, true)).toBe(colors.blue[50]);
+    });
+
+    it("should work with actual Tailwind blue colors for non-selected dates", () => {
+      expect(getDotColor(colors.blue, 2, false)).toBe(colors.blue[300]);
+      expect(getDotColor(colors.blue, 4, false)).toBe(colors.blue[500]);
+      expect(getDotColor(colors.blue, 8, false)).toBe(colors.blue[700]);
+    });
+  });
+});
 
 describe("getMarkedDates", () => {
   it("should return correct markedDates for given transactionDates and selectedDate", () => {

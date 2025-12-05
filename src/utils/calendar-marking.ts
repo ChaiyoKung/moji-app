@@ -6,7 +6,7 @@ import colors from "tailwindcss/colors";
  * @param count - Number of transactions
  * @param isSelected - Whether the date is selected
  */
-function getDotColor(
+export function getDotColor(
   color: {
     50: string;
     100: string;
