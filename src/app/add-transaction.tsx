@@ -166,9 +166,10 @@ export default function Transaction() {
     createTransactionManyMutation.isPending ||
     createTransactionDraftMutation.isPending;
 
-  const isButtonDraftDisabled =
+  const isDraftButtonDisabled =
     !isTransactionDraftFormValid || isTransactionPending;
-  const isButtonDisabled = !isTransactionFormValid || isTransactionPending;
+
+  const isSaveButtonDisabled = !isTransactionFormValid || isTransactionPending;
 
   return (
     <>
@@ -246,7 +247,7 @@ export default function Transaction() {
             action="secondary"
             size={"sm"}
             onPress={handleSaveDraft}
-            isDisabled={isButtonDraftDisabled}
+            isDisabled={isDraftButtonDisabled}
           >
             {createTransactionDraftMutation.isPending ? (
               <ButtonSpinner />
@@ -260,7 +261,7 @@ export default function Transaction() {
               size="xl"
               className="aspect-square rounded-r-none p-0"
               onPress={handleDecreaseQuantity}
-              isDisabled={isButtonDisabled || quantity <= minQuantity}
+              isDisabled={isSaveButtonDisabled || quantity <= minQuantity}
             >
               <ButtonIcon as={MinusIcon} />
             </Button>
@@ -268,7 +269,7 @@ export default function Transaction() {
               size="xl"
               className="flex-1 rounded-none"
               onPress={handleSave}
-              isDisabled={isButtonDisabled}
+              isDisabled={isSaveButtonDisabled}
             >
               {createTransactionManyMutation.isPending ? (
                 <ButtonSpinner />
@@ -281,7 +282,7 @@ export default function Transaction() {
               size="xl"
               className="aspect-square rounded-l-none p-0"
               onPress={handleIncreaseQuantity}
-              isDisabled={isButtonDisabled || quantity >= maxQuantity}
+              isDisabled={isSaveButtonDisabled || quantity >= maxQuantity}
             >
               <ButtonIcon as={PlusIcon} />
             </Button>

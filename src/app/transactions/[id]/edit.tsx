@@ -151,7 +151,8 @@ function EditTransactionForm({ data }: { data: TransactionWithCategory }) {
 
   const isDraftButtonDisabled =
     !isTransactionDraftFormValid || isTransactionPending;
-  const isButtonDisabled = !isTransactionFormValid || isTransactionPending;
+
+  const isSaveButtonDisabled = !isTransactionFormValid || isTransactionPending;
 
   return (
     <>
@@ -238,7 +239,11 @@ function EditTransactionForm({ data }: { data: TransactionWithCategory }) {
             )}
             <ButtonText>บันทึกแบบ Draft</ButtonText>
           </Button>
-          <Button size="xl" onPress={handleSave} isDisabled={isButtonDisabled}>
+          <Button
+            size="xl"
+            onPress={handleSave}
+            isDisabled={isSaveButtonDisabled}
+          >
             {updateTransactionMutation.isPending ? (
               <ButtonSpinner />
             ) : (
