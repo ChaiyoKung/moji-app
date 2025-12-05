@@ -28,6 +28,7 @@ import { DateLabel } from "../../../components/date-label";
 import { useState } from "react";
 import { DeleteAlertDialog } from "../../../components/delete-alert-dialog";
 import { useAppToast } from "../../../hooks/use-app-toast";
+import { Badge, BadgeText } from "../../../components/ui/badge";
 
 function TransactionDetailsContent({
   data,
@@ -76,6 +77,12 @@ function TransactionDetailsContent({
       <SafeAreaView edges={["bottom"]} className="flex-1 bg-background-100">
         <ScrollView>
           <VStack space="md" className="p-4">
+            {data.status === "draft" && (
+              <Badge variant="outline" action="warning" size="lg">
+                <BadgeText>Draft</BadgeText>
+              </Badge>
+            )}
+
             <VStack>
               <Heading size="3xl">
                 {data.type === "income"
