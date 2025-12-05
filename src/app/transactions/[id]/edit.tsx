@@ -28,6 +28,7 @@ import {
 } from "../../../libs/api";
 import { useAppToast } from "../../../hooks/use-app-toast";
 import dayjs from "dayjs";
+import { Badge, BadgeText } from "../../../components/ui/badge";
 
 function EditTransactionForm({ data }: { data: TransactionWithCategory }) {
   const queryClient = useQueryClient();
@@ -37,7 +38,7 @@ function EditTransactionForm({ data }: { data: TransactionWithCategory }) {
   const [selectedCatagoryId, setSelectedCatagoryId] = useState<string>(
     data.categoryId._id
   );
-  const [amount, setAmount] = useState<string>(data.amount.toString());
+  const [amount, setAmount] = useState<string>((data.amount ?? "").toString());
   const [note, setNote] = useState<string>(data.note || "");
 
   const updateTransactionMutation = useMutation({
@@ -76,26 +77,95 @@ function EditTransactionForm({ data }: { data: TransactionWithCategory }) {
     },
   });
 
-  const handleSave = () => {
-    const newData = {
+  const updateTransactionDraftMutation = useMutation({
+    mutationFn: (params: { id: string; data: UpdateTransactionDto }) => {
+      const { id, data } = params;
+      return updateTransaction(id, data);
+    },
+    onSuccess: () => {
+      console.log("Transaction draft updated successfully");
+      toast.success("แก้ไขรายการแบบร่างสำเร็จ");
+
+      const { _id, date } = data;
+
+      // Invalidate queries to refresh data
+      queryClient.invalidateQueries({ queryKey: ["accounts"] });
+      queryClient.invalidateQueries({
+        queryKey: ["transactions", dayjs(date).format("YYYY-MM-DD")],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["summary", dayjs(date).format("YYYY-MM-DD")],
+      });
+
+      const startOfMonth = dayjs(date).startOf("month").format("YYYY-MM-DD");
+      const endOfMonth = dayjs(date).endOf("month").format("YYYY-MM-DD");
+      queryClient.invalidateQueries({
+        queryKey: ["transactionIdsByDate", startOfMonth, endOfMonth],
+      });
+
+      queryClient.invalidateQueries({ queryKey: ["transaction", _id] });
+
+      router.back();
+    },
+    onError: (error) => {
+      console.error("Error updating transaction draft:", error);
+      toast.error(
+        "เกิดข้อผิดพลาดในการแก้ไขรายการแบบร่าง",
+        "กรุณาลองใหม่อีกครั้ง"
+      );
+    },
+  });
+
+  const buildTransaction = (
+    status: UpdateTransactionDto["status"]
+  ): UpdateTransactionDto => {
+    return {
       categoryId: selectedCatagoryId,
-      amount: parseInt(amount),
+      amount: !isNaN(parseInt(amount)) ? parseInt(amount) : undefined,
       note: note.trim() || undefined,
+      status,
     };
+  };
+
+  const handleSave = () => {
+    const newData = buildTransaction("confirmed");
     updateTransactionMutation.mutate({ id: data._id, data: newData });
   };
 
-  const isButtonDisabled =
-    !selectedCatagoryId ||
-    !amount.trim() ||
-    isNaN(parseInt(amount)) ||
-    parseInt(amount) <= 0 ||
-    updateTransactionMutation.isPending;
+  const handleSaveDraft = () => {
+    const newData = buildTransaction("draft");
+    updateTransactionDraftMutation.mutate({ id: data._id, data: newData });
+  };
+
+  const isTransactionDraftFormValid = selectedCatagoryId !== "";
+
+  const isTransactionFormValid =
+    selectedCatagoryId !== "" &&
+    amount.trim() !== "" &&
+    !isNaN(parseInt(amount)) &&
+    parseInt(amount) > 0;
+
+  const isTransactionPending =
+    updateTransactionMutation.isPending ||
+    updateTransactionDraftMutation.isPending;
+
+  const isShowDraftButton = data.status === "draft";
+  const isDraftButtonDisabled =
+    !isTransactionDraftFormValid || isTransactionPending;
+
+  const isShowSaveButton = isTransactionFormValid;
+  const isSaveButtonDisabled = isTransactionPending;
 
   return (
     <>
       <KeyboardAwareScrollView className="flex-1 bg-background-100">
         <VStack space="md" className="p-4">
+          {data.status === "draft" && (
+            <Badge variant="outline" action="warning" size="lg">
+              <BadgeText>Draft</BadgeText>
+            </Badge>
+          )}
+
           <VStack>
             <Heading size="3xl">
               {data.type === "income" ? "แก้ไขรายรับ" : "แก้ไขรายจ่าย"}
@@ -156,14 +226,38 @@ function EditTransactionForm({ data }: { data: TransactionWithCategory }) {
         edges={["bottom"]}
         className="overflow-hidden rounded-t-2xl border-t border-outline-200 bg-background-0 p-4"
       >
-        <Button size="xl" onPress={handleSave} isDisabled={isButtonDisabled}>
-          {updateTransactionMutation.isPending ? (
-            <ButtonSpinner />
-          ) : (
-            <ButtonIcon as={SaveIcon} />
+        <VStack space="md">
+          {isShowDraftButton && (
+            <Button
+              variant="outline"
+              action="secondary"
+              size={isShowSaveButton ? "sm" : "xl"}
+              onPress={handleSaveDraft}
+              isDisabled={isDraftButtonDisabled}
+            >
+              {updateTransactionDraftMutation.isPending ? (
+                <ButtonSpinner />
+              ) : (
+                <ButtonIcon as={SaveIcon} />
+              )}
+              <ButtonText>บันทึกแบบ Draft</ButtonText>
+            </Button>
           )}
-          <ButtonText>บันทึก</ButtonText>
-        </Button>
+          {isShowSaveButton && (
+            <Button
+              size="xl"
+              onPress={handleSave}
+              isDisabled={isSaveButtonDisabled}
+            >
+              {updateTransactionMutation.isPending ? (
+                <ButtonSpinner />
+              ) : (
+                <ButtonIcon as={SaveIcon} />
+              )}
+              <ButtonText>บันทึก</ButtonText>
+            </Button>
+          )}
+        </VStack>
       </SafeAreaView>
     </>
   );

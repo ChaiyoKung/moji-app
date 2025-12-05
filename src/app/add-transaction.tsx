@@ -21,6 +21,7 @@ import {
   getAllAccounts,
   createTransactionMany,
   CreateTransactionDto,
+  createTransaction,
 } from "../libs/api";
 import dayjs from "dayjs";
 import { DateLabel } from "../components/date-label";
@@ -89,6 +90,34 @@ export default function Transaction() {
     },
   });
 
+  const createTransactionDraftMutation = useMutation({
+    mutationFn: createTransaction,
+    onSuccess: () => {
+      console.log("Transaction draft created successfully");
+      toast.success("บันทึกรายการแบบร่างสำเร็จ");
+
+      // Invalidate queries to refresh data
+      queryClient.invalidateQueries({ queryKey: ["accounts"] });
+      queryClient.invalidateQueries({ queryKey: ["transactions", date] });
+      queryClient.invalidateQueries({ queryKey: ["summary", date] });
+
+      const startOfMonth = dayjs(date).startOf("month").format("YYYY-MM-DD");
+      const endOfMonth = dayjs(date).endOf("month").format("YYYY-MM-DD");
+      queryClient.invalidateQueries({
+        queryKey: ["transactionIdsByDate", startOfMonth, endOfMonth],
+      });
+
+      router.back();
+    },
+    onError: (error) => {
+      console.error("Error creating transaction draft:", error);
+      toast.error(
+        "เกิดข้อผิดพลาดในการบันทึกรายการแบบร่าง",
+        "กรุณาลองใหม่อีกครั้ง"
+      );
+    },
+  });
+
   const handleIncreaseQuantity = () => {
     setQuantity((prev) => Math.min(maxQuantity, prev + 1));
   };
@@ -97,28 +126,51 @@ export default function Transaction() {
     setQuantity((prev) => Math.max(minQuantity, prev - 1));
   };
 
-  const handleSave = () => {
-    const transaction: CreateTransactionDto = {
+  const buildTransaction = (
+    status: CreateTransactionDto["status"]
+  ): CreateTransactionDto => {
+    return {
       userId: accountQuery.data?.[0]?.userId || "",
       accountId: accountQuery.data?.[0]?._id || "",
       categoryId: selectedCatagoryId,
       type: type,
-      amount: parseInt(amount),
+      amount: !isNaN(parseInt(amount)) ? parseInt(amount) : undefined,
       currency: "THB", // Assuming THB for Thai Baht
       note: note.trim() || undefined,
       date: date,
       timezone: dayjs.tz.guess(),
+      status,
     };
+  };
+
+  const handleSave = () => {
+    const transaction = buildTransaction("confirmed");
     const transactions = arrayFill(quantity, transaction);
     createTransactionManyMutation.mutate(transactions);
   };
 
-  const isButtonDisabled =
-    !selectedCatagoryId ||
-    !amount.trim() ||
-    isNaN(parseInt(amount)) ||
-    parseInt(amount) <= 0 ||
-    createTransactionManyMutation.isPending;
+  const handleSaveDraft = () => {
+    const transaction = buildTransaction("draft");
+    createTransactionDraftMutation.mutate(transaction);
+  };
+
+  const isTransactionDraftFormValid = selectedCatagoryId !== "";
+
+  const isTransactionFormValid =
+    selectedCatagoryId !== "" &&
+    amount.trim() !== "" &&
+    !isNaN(parseInt(amount)) &&
+    parseInt(amount) > 0;
+
+  const isTransactionPending =
+    createTransactionManyMutation.isPending ||
+    createTransactionDraftMutation.isPending;
+
+  const isDraftButtonDisabled =
+    !isTransactionDraftFormValid || isTransactionPending;
+
+  const isShowSaveButton = isTransactionFormValid;
+  const isSaveButtonDisabled = isTransactionPending;
 
   return (
     <>
@@ -190,37 +242,55 @@ export default function Transaction() {
         edges={["bottom"]}
         className="overflow-hidden rounded-t-2xl border-t border-outline-200 bg-background-0 p-4"
       >
-        <ButtonGroup flexDirection="row" className="gap-[1px]">
+        <VStack space="md">
           <Button
-            size="xl"
-            className="aspect-square rounded-r-none p-0"
-            onPress={handleDecreaseQuantity}
-            isDisabled={isButtonDisabled || quantity <= minQuantity}
+            variant="outline"
+            action="secondary"
+            size={isShowSaveButton ? "sm" : "xl"}
+            onPress={handleSaveDraft}
+            isDisabled={isDraftButtonDisabled}
           >
-            <ButtonIcon as={MinusIcon} />
-          </Button>
-          <Button
-            size="xl"
-            className="flex-1 rounded-none"
-            onPress={handleSave}
-            isDisabled={isButtonDisabled}
-          >
-            {createTransactionManyMutation.isPending ? (
+            {createTransactionDraftMutation.isPending ? (
               <ButtonSpinner />
             ) : (
               <ButtonIcon as={SaveIcon} />
             )}
-            <ButtonText>บันทึก {quantity} รายการ</ButtonText>
+            <ButtonText>บันทึกแบบ Draft</ButtonText>
           </Button>
-          <Button
-            size="xl"
-            className="aspect-square rounded-l-none p-0"
-            onPress={handleIncreaseQuantity}
-            isDisabled={isButtonDisabled || quantity >= maxQuantity}
-          >
-            <ButtonIcon as={PlusIcon} />
-          </Button>
-        </ButtonGroup>
+          {isShowSaveButton && (
+            <ButtonGroup flexDirection="row" className="gap-[1px]">
+              <Button
+                size="xl"
+                className="aspect-square rounded-r-none p-0"
+                onPress={handleDecreaseQuantity}
+                isDisabled={isSaveButtonDisabled || quantity <= minQuantity}
+              >
+                <ButtonIcon as={MinusIcon} />
+              </Button>
+              <Button
+                size="xl"
+                className="flex-1 rounded-none"
+                onPress={handleSave}
+                isDisabled={isSaveButtonDisabled}
+              >
+                {createTransactionManyMutation.isPending ? (
+                  <ButtonSpinner />
+                ) : (
+                  <ButtonIcon as={SaveIcon} />
+                )}
+                <ButtonText>บันทึก {quantity} รายการ</ButtonText>
+              </Button>
+              <Button
+                size="xl"
+                className="aspect-square rounded-l-none p-0"
+                onPress={handleIncreaseQuantity}
+                isDisabled={isSaveButtonDisabled || quantity >= maxQuantity}
+              >
+                <ButtonIcon as={PlusIcon} />
+              </Button>
+            </ButtonGroup>
+          )}
+        </VStack>
       </SafeAreaView>
     </>
   );

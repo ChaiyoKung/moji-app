@@ -82,11 +82,12 @@ export interface CreateTransactionDto {
   accountId: string;
   categoryId: string;
   type: "income" | "expense";
-  amount: number;
+  amount?: number;
   currency: string;
   note?: string;
   date: string;
   timezone: string;
+  status?: "draft" | "confirmed";
 }
 
 export interface Transaction {
@@ -95,12 +96,13 @@ export interface Transaction {
   accountId: string;
   categoryId: string;
   type: "income" | "expense";
-  amount: number;
+  amount?: number;
   currency: string;
   note?: string;
   date: Date;
   createdAt: Date;
   updatedAt: Date;
+  status?: "draft" | "confirmed";
 }
 
 export async function createTransaction(data: CreateTransactionDto) {
@@ -189,8 +191,9 @@ export async function deleteTransaction(id: string) {
 
 export interface UpdateTransactionDto {
   categoryId: string;
-  amount: number;
+  amount?: number;
   note?: string;
+  status?: "draft" | "confirmed";
 }
 
 export async function updateTransaction(
