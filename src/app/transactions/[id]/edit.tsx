@@ -28,6 +28,7 @@ import {
 } from "../../../libs/api";
 import { useAppToast } from "../../../hooks/use-app-toast";
 import dayjs from "dayjs";
+import { Badge, BadgeText } from "../../../components/ui/badge";
 
 function EditTransactionForm({ data }: { data: TransactionWithCategory }) {
   const queryClient = useQueryClient();
@@ -96,6 +97,12 @@ function EditTransactionForm({ data }: { data: TransactionWithCategory }) {
     <>
       <KeyboardAwareScrollView className="flex-1 bg-background-100">
         <VStack space="md" className="p-4">
+          {data.status === "draft" && (
+            <Badge variant="outline" action="warning" size="lg">
+              <BadgeText>Draft</BadgeText>
+            </Badge>
+          )}
+
           <VStack>
             <Heading size="3xl">
               {data.type === "income" ? "แก้ไขรายรับ" : "แก้ไขรายจ่าย"}
