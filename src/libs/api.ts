@@ -87,6 +87,7 @@ export interface CreateTransactionDto {
   note?: string;
   date: string;
   timezone: string;
+  status?: "draft" | "confirmed";
 }
 
 export interface Transaction {
@@ -101,6 +102,7 @@ export interface Transaction {
   date: Date;
   createdAt: Date;
   updatedAt: Date;
+  status?: "draft" | "confirmed";
 }
 
 export async function createTransaction(data: CreateTransactionDto) {
@@ -191,6 +193,7 @@ export interface UpdateTransactionDto {
   categoryId: string;
   amount: number;
   note?: string;
+  status?: "draft" | "confirmed";
 }
 
 export async function updateTransaction(
