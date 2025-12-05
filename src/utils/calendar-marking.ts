@@ -10,7 +10,7 @@ function getDotColor(count: number, isSelected: boolean): string {
     // For selected days: more items = lighter blue/white
     if (count <= 2) return colors.blue[300];
     if (count <= 5) return colors.blue[100];
-    return colors.white;
+    return colors.blue[50];
   } else {
     // For non-selected days: more items = darker blue
     if (count <= 2) return colors.blue[300];
