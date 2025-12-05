@@ -134,7 +134,7 @@ export default function Transaction() {
       accountId: accountQuery.data?.[0]?._id || "",
       categoryId: selectedCatagoryId,
       type: type,
-      amount: parseInt(amount),
+      amount: !isNaN(parseInt(amount)) ? parseInt(amount) : undefined,
       currency: "THB", // Assuming THB for Thai Baht
       note: note.trim() || undefined,
       date: date,
@@ -154,6 +154,8 @@ export default function Transaction() {
     createTransactionDraftMutation.mutate(transaction);
   };
 
+  const isTransactionDraftFormValid = selectedCatagoryId !== "";
+
   const isTransactionFormValid =
     selectedCatagoryId !== "" &&
     amount.trim() !== "" &&
@@ -164,6 +166,8 @@ export default function Transaction() {
     createTransactionManyMutation.isPending ||
     createTransactionDraftMutation.isPending;
 
+  const isButtonDraftDisabled =
+    !isTransactionDraftFormValid || isTransactionPending;
   const isButtonDisabled = !isTransactionFormValid || isTransactionPending;
 
   return (
@@ -242,7 +246,7 @@ export default function Transaction() {
             action="secondary"
             size={"sm"}
             onPress={handleSaveDraft}
-            isDisabled={isButtonDisabled}
+            isDisabled={isButtonDraftDisabled}
           >
             {createTransactionDraftMutation.isPending ? (
               <ButtonSpinner />

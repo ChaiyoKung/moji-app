@@ -54,13 +54,15 @@ export function TransactionItem({ data }: TransactionItemProps) {
             </Text>
           ) : null}
         </VStack>
-        <AmountText
-          size="4xl"
-          bold
-          type={data.type}
-          value={data.amount}
-          showSign
-        />
+        {data.amount !== undefined && (
+          <AmountText
+            size="4xl"
+            bold
+            type={data.type}
+            value={data.amount}
+            showSign
+          />
+        )}
         <Icon as={ChevronRight} size="xs" className="text-typography-500" />
       </HStack>
     </Pressable>
