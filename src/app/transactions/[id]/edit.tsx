@@ -116,23 +116,24 @@ function EditTransactionForm({ data }: { data: TransactionWithCategory }) {
     },
   });
 
-  const handleSave = () => {
-    const newData = {
+  const buildTransaction = (
+    status: UpdateTransactionDto["status"]
+  ): UpdateTransactionDto => {
+    return {
       categoryId: selectedCatagoryId,
       amount: parseInt(amount),
       note: note.trim() || undefined,
-      status: "confirmed" as const,
+      status,
     };
+  };
+
+  const handleSave = () => {
+    const newData = buildTransaction("confirmed");
     updateTransactionMutation.mutate({ id: data._id, data: newData });
   };
 
   const handleSaveDraft = () => {
-    const newData = {
-      categoryId: selectedCatagoryId,
-      amount: parseInt(amount),
-      note: note.trim() || undefined,
-      status: "draft" as const,
-    };
+    const newData = buildTransaction("draft");
     updateTransactionDraftMutation.mutate({ id: data._id, data: newData });
   };
 
