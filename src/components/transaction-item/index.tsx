@@ -9,6 +9,17 @@ import { useRouter } from "expo-router";
 import { ChevronRight } from "lucide-react-native";
 import { Icon } from "../ui/icon";
 import { Badge, BadgeText } from "../ui/badge";
+import { tva } from "@gluestack-ui/utils/nativewind-utils";
+
+const containerStyle = tva({
+  base: "items-center rounded-2xl border border-outline-200 bg-background-0 p-4",
+  variants: {
+    status: {
+      confirmed: "",
+      draft: "border-warning-200",
+    },
+  },
+});
 
 export interface TransactionItemProps {
   data: TransactionWithCategory;
@@ -29,7 +40,7 @@ export function TransactionItem({ data }: TransactionItemProps) {
       <HStack
         key={data._id}
         space="md"
-        className="items-center rounded-2xl border border-outline-200 bg-background-0 p-4"
+        className={containerStyle({ status: data.status })}
       >
         <Center
           className="h-12 w-12 rounded-full"
