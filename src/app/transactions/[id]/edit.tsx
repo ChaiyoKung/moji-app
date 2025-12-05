@@ -149,6 +149,7 @@ function EditTransactionForm({ data }: { data: TransactionWithCategory }) {
     updateTransactionMutation.isPending ||
     updateTransactionDraftMutation.isPending;
 
+  const isShowDraftButton = data.status === "draft";
   const isDraftButtonDisabled =
     !isTransactionDraftFormValid || isTransactionPending;
 
@@ -226,20 +227,22 @@ function EditTransactionForm({ data }: { data: TransactionWithCategory }) {
         className="overflow-hidden rounded-t-2xl border-t border-outline-200 bg-background-0 p-4"
       >
         <VStack space="md">
-          <Button
-            variant="outline"
-            action="secondary"
-            size={isShowSaveButton ? "sm" : "xl"}
-            onPress={handleSaveDraft}
-            isDisabled={isDraftButtonDisabled}
-          >
-            {updateTransactionDraftMutation.isPending ? (
-              <ButtonSpinner />
-            ) : (
-              <ButtonIcon as={SaveIcon} />
-            )}
-            <ButtonText>บันทึกแบบ Draft</ButtonText>
-          </Button>
+          {isShowDraftButton && (
+            <Button
+              variant="outline"
+              action="secondary"
+              size={isShowSaveButton ? "sm" : "xl"}
+              onPress={handleSaveDraft}
+              isDisabled={isDraftButtonDisabled}
+            >
+              {updateTransactionDraftMutation.isPending ? (
+                <ButtonSpinner />
+              ) : (
+                <ButtonIcon as={SaveIcon} />
+              )}
+              <ButtonText>บันทึกแบบ Draft</ButtonText>
+            </Button>
+          )}
           {isShowSaveButton && (
             <Button
               size="xl"
