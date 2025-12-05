@@ -6,7 +6,6 @@ import {
   ToastDescription,
 } from "../components/ui/toast";
 import { randomUUID } from "expo-crypto";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 export type ToastType = "success" | "error" | "warning" | "info" | "muted";
 
@@ -32,19 +31,17 @@ export function useAppToast() {
       render: ({ id }) => {
         const uniqueToastId = "toast-" + id;
         return (
-          <SafeAreaView edges={["top"]}>
-            <Toast
-              nativeID={uniqueToastId}
-              action={type}
-              variant="outline"
-              className="rounded-2xl"
-            >
-              <ToastTitle>{options.title}</ToastTitle>
-              {options.description ? (
-                <ToastDescription>{options.description}</ToastDescription>
-              ) : null}
-            </Toast>
-          </SafeAreaView>
+          <Toast
+            nativeID={uniqueToastId}
+            action={type}
+            variant="outline"
+            className="rounded-2xl"
+          >
+            <ToastTitle>{options.title}</ToastTitle>
+            {options.description ? (
+              <ToastDescription>{options.description}</ToastDescription>
+            ) : null}
+          </Toast>
         );
       },
     });
