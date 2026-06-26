@@ -1,6 +1,6 @@
-import type { Category, DraftTransaction, FailedItem } from "../../libs/api";
+import type { Category, Transaction, FailedItem } from "../../libs/api";
 
-export type { Category, DraftTransaction, FailedItem };
+export type { Category, Transaction, FailedItem };
 
 export interface UserMessage {
   id: string;
@@ -19,7 +19,7 @@ export interface LoadingMessage {
 export interface ResultMessage {
   id: string;
   role: "result";
-  created: DraftTransaction[];
+  created: Transaction[];
   failed: FailedItem[];
   timestamp: number;
 }

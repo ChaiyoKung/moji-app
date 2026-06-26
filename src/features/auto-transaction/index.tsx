@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useRef } from "react";
+import { useState, useCallback, useMemo, useRef } from "react";
 import {
   FlatList,
   KeyboardAvoidingView,
@@ -9,7 +9,6 @@ import {
   ListRenderItem,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { Pressable } from "../../components/ui/pressable";
 import { HStack } from "../../components/ui/hstack";
@@ -24,30 +23,38 @@ import {
   autoExtractTransactions,
 } from "../../libs/api";
 import type { Category, ChatMessage, ResultMessage } from "./types";
+import { TransactionItem } from "../../components/transaction-item";
+import type { TransactionWithCategory } from "../../libs/api";
 import { LoadingBubble } from "./components/LoadingBubble";
 import { ErrorBubble } from "./components/ErrorBubble";
 import { FailureBubble } from "./components/FailureBubble";
-import { DraftTransactionCard } from "./components/DraftTransactionCard";
 import { useImagePicker } from "./hooks/useImagePicker";
 
-function ResultMessageView({
-  message,
-  categories,
-}: {
+export interface ResultMessageViewProps {
   message: ResultMessage;
   categories: Category[];
-}) {
-  const router = useRouter();
+}
+
+function ResultMessageView({ message, categories }: ResultMessageViewProps) {
+  if (message.created.length === 0 && message.failed.length === 0) {
+    return (
+      <View className="mb-2 self-start">
+        <View className="rounded-2xl rounded-tl-sm bg-background-100 px-3 py-2">
+          <Text className="text-typography-500">ไม่พบรายการที่ประมวลผลได้</Text>
+        </View>
+      </View>
+    );
+  }
+
   return (
     <VStack space="xs" className="mb-2 w-full max-w-xs self-start">
-      {message.created.map((tx) => (
-        <DraftTransactionCard
-          key={tx._id}
-          transaction={tx}
-          category={categories.find((c) => c._id === tx.categoryId)}
-          onPress={(id) => router.push(`/transactions/${id}/edit`)}
-        />
-      ))}
+      {message.created.map((tx) => {
+        const data: TransactionWithCategory = {
+          ...tx,
+          categoryId: categories.find((c) => c._id === tx.categoryId)!,
+        };
+        return <TransactionItem key={tx._id} data={data} />;
+      })}
       {message.failed.map((item, idx) => (
         <FailureBubble key={idx} item={item} />
       ))}
@@ -164,7 +171,7 @@ export function AutoTransactionScreen() {
         id: `${msgId}-error`,
         role: "error",
         message:
-          err instanceof Error ? err.message : "An unexpected error occurred.",
+          err instanceof Error ? err.message : "เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ",
         timestamp: Date.now(),
       };
       setMessages((prev) =>
@@ -200,20 +207,13 @@ export function AutoTransactionScreen() {
   );
 
   return (
-    <SafeAreaView edges={["top"]} className="flex-1 bg-background-0">
+    <SafeAreaView edges={["top"]} className="flex-1 bg-background-100">
       <KeyboardAvoidingView
         className="flex-1"
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
       >
         <VStack className="flex-1">
-          {/* Header */}
-          <View className="border-b border-outline-200 px-4 py-3">
-            <Text size="lg" bold>
-              Auto Transaction
-            </Text>
-          </View>
-
           {/* Message Feed */}
           <FlatList
             ref={flatListRef}
@@ -264,7 +264,7 @@ export function AutoTransactionScreen() {
                 <TextInput
                   value={text}
                   onChangeText={setText}
-                  placeholder="Describe your transaction..."
+                  placeholder="อธิบายรายการของคุณ..."
                   placeholderTextColor="#9CA3AF"
                   multiline
                   style={{ maxHeight: 100, fontSize: 14, color: "#111827" }}

@@ -1,9 +1,8 @@
-import React from "react";
 import { View } from "react-native";
 import { Text } from "../../../components/ui/text";
 import type { FailedItem } from "../types";
 
-interface FailureBubbleProps {
+export interface FailureBubbleProps {
   item: FailedItem;
 }
 

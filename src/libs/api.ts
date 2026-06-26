@@ -206,29 +206,13 @@ export async function updateTransaction(
   return response.data;
 }
 
-export interface DraftTransaction {
-  _id: string;
-  userId: string;
-  accountId: string;
-  categoryId: string;
-  type: "income" | "expense";
-  amount?: number;
-  currency: string;
-  note?: string;
-  date: string;
-  status: "draft";
-  aiModel: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
 export interface FailedItem {
   item: number;
   reason: string;
 }
 
 export interface AutoExtractionResponse {
-  created: DraftTransaction[];
+  created: Transaction[];
   failed: FailedItem[];
 }
 
