@@ -25,7 +25,7 @@ import {
 import type { Category, ChatMessage, ResultMessage, FailedItem } from "./types";
 import { TransactionItem } from "../../components/transaction-item";
 import type { TransactionWithCategory } from "../../libs/api";
-import { useImagePicker } from "./hooks/useImagePicker";
+import { useImagePicker } from "../../hooks/use-image-picker";
 
 function LoadingBubble() {
   return (
