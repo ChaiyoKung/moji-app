@@ -11,3 +11,7 @@
 
 - [x] task-5: Install `react-native-image-crop-picker` + wire up attachment button + crop flow
 - [x] task-6: Add `autoExtractTransactions` API function + connect send action to real backend
+
+## Phase C — Bug Fixes (E2E)
+
+- [x] task-7: Fix keyboard covering input bar — replace RN KeyboardAvoidingView with react-native-keyboard-controller's version

@@ -1,13 +1,6 @@
 import { useState, useCallback, useMemo, useRef } from "react";
-import {
-  FlatList,
-  KeyboardAvoidingView,
-  Platform,
-  TextInput,
-  View,
-  Image,
-  ListRenderItem,
-} from "react-native";
+import { FlatList, TextInput, View, Image, ListRenderItem } from "react-native";
+import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useQuery } from "@tanstack/react-query";
 import { Pressable } from "../../components/ui/pressable";
@@ -239,11 +232,7 @@ export function AutoTransactionScreen() {
 
   return (
     <SafeAreaView edges={["top"]} className="flex-1 bg-background-100">
-      <KeyboardAvoidingView
-        className="flex-1"
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
-      >
+      <KeyboardAvoidingView className="flex-1" behavior="padding">
         <VStack className="flex-1">
           {/* Message Feed */}
           <FlatList
