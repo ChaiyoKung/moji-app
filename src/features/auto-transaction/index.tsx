@@ -22,13 +22,44 @@ import {
   getAllGategoriesByType,
   autoExtractTransactions,
 } from "../../libs/api";
-import type { Category, ChatMessage, ResultMessage } from "./types";
+import type { Category, ChatMessage, ResultMessage, FailedItem } from "./types";
 import { TransactionItem } from "../../components/transaction-item";
 import type { TransactionWithCategory } from "../../libs/api";
-import { LoadingBubble } from "./components/LoadingBubble";
-import { ErrorBubble } from "./components/ErrorBubble";
-import { FailureBubble } from "./components/FailureBubble";
 import { useImagePicker } from "./hooks/useImagePicker";
+
+function LoadingBubble() {
+  return (
+    <View className="mb-2 self-start">
+      <View className="rounded-2xl rounded-tl-sm bg-background-100 px-4 py-3">
+        <Spinner size="small" />
+      </View>
+    </View>
+  );
+}
+
+function ErrorBubble({ message }: { message: string }) {
+  return (
+    <View className="mb-2 self-start">
+      <View className="rounded-2xl rounded-tl-sm border border-error-200 bg-background-error px-4 py-3">
+        <Text size="sm" className="text-error-600">
+          {message}
+        </Text>
+      </View>
+    </View>
+  );
+}
+
+function FailureBubble({ item }: { item: FailedItem }) {
+  return (
+    <View className="mb-1 self-start">
+      <View className="rounded-2xl rounded-tl-sm border border-warning-200 bg-background-warning px-4 py-2">
+        <Text size="sm" className="text-warning-600">
+          {`Item ${item.item}: ${item.reason}`}
+        </Text>
+      </View>
+    </View>
+  );
+}
 
 export interface ResultMessageViewProps {
   message: ResultMessage;
