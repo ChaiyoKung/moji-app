@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useMemo, useRef } from "react";
 import {
   FlatList,
   KeyboardAvoidingView,
@@ -9,6 +9,8 @@ import {
   ListRenderItem,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
+import { useQuery } from "@tanstack/react-query";
 import { Pressable } from "../../components/ui/pressable";
 import { HStack } from "../../components/ui/hstack";
 import { VStack } from "../../components/ui/vstack";
@@ -16,26 +18,34 @@ import { Text } from "../../components/ui/text";
 import { Icon } from "../../components/ui/icon";
 import { Spinner } from "../../components/ui/spinner";
 import { PaperclipIcon, SendHorizonalIcon, XIcon } from "lucide-react-native";
-import type { ChatMessage, ResultMessage } from "./types";
+import {
+  getAllAccounts,
+  getAllGategoriesByType,
+  autoExtractTransactions,
+} from "../../libs/api";
+import type { Category, ChatMessage, ResultMessage } from "./types";
 import { LoadingBubble } from "./components/LoadingBubble";
 import { ErrorBubble } from "./components/ErrorBubble";
 import { FailureBubble } from "./components/FailureBubble";
 import { DraftTransactionCard } from "./components/DraftTransactionCard";
+import { useImagePicker } from "./hooks/useImagePicker";
 
-const MOCK_MESSAGES: ChatMessage[] = [
-  { id: "1", role: "user", text: "Coffee 80 baht", timestamp: Date.now() },
-  { id: "2", role: "loading", timestamp: Date.now() },
-];
-
-function ResultMessageView({ message }: { message: ResultMessage }) {
+function ResultMessageView({
+  message,
+  categories,
+}: {
+  message: ResultMessage;
+  categories: Category[];
+}) {
+  const router = useRouter();
   return (
     <VStack space="xs" className="mb-2 w-full max-w-xs self-start">
       {message.created.map((tx) => (
         <DraftTransactionCard
           key={tx._id}
           transaction={tx}
-          category={undefined}
-          onPress={(id) => console.log("pressed draft:", id)}
+          category={categories.find((c) => c._id === tx.categoryId)}
+          onPress={(id) => router.push(`/transactions/${id}/edit`)}
         />
       ))}
       {message.failed.map((item, idx) => (
@@ -67,52 +77,127 @@ function UserBubble({ text, imageUri }: { text?: string; imageUri?: string }) {
 }
 
 export function AutoTransactionScreen() {
-  const [messages, setMessages] = useState<ChatMessage[]>(MOCK_MESSAGES);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [text, setText] = useState("");
   const [imageUri, setImageUri] = useState<string | undefined>(undefined);
+  const [imageMime, setImageMime] = useState<string | undefined>(undefined);
   const [isSending, setIsSending] = useState(false);
   const flatListRef = useRef<FlatList<ChatMessage>>(null);
+
+  const { data: accounts } = useQuery({
+    queryKey: ["accounts"],
+    queryFn: getAllAccounts,
+  });
+
+  const { data: incomeCategories } = useQuery({
+    queryKey: ["categories", "income"],
+    queryFn: () => getAllGategoriesByType("income"),
+  });
+
+  const { data: expenseCategories } = useQuery({
+    queryKey: ["categories", "expense"],
+    queryFn: () => getAllGategoriesByType("expense"),
+  });
+
+  const categories: Category[] = useMemo(
+    () => [...(incomeCategories ?? []), ...(expenseCategories ?? [])],
+    [incomeCategories, expenseCategories]
+  );
 
   const sendEnabled =
     !isSending && (text.trim().length > 0 || imageUri !== undefined);
 
-  const handleSend = useCallback(() => {
+  const handleSend = useCallback(async () => {
     if (!sendEnabled) return;
+
+    const account = accounts?.[0];
+    if (!account) return;
+
+    const msgId = Date.now().toString();
+    const loadingId = `${msgId}-loading`;
+
     const userMsg: ChatMessage = {
-      id: Date.now().toString(),
+      id: msgId,
       role: "user",
       text: text || undefined,
       imageUri,
       timestamp: Date.now(),
     };
-    setMessages((prev) => [...prev, userMsg]);
+
+    const loadingMsg: ChatMessage = {
+      id: loadingId,
+      role: "loading",
+      timestamp: Date.now(),
+    };
+
+    setMessages((prev) => [...prev, userMsg, loadingMsg]);
+    const capturedText = text;
+    const capturedImageUri = imageUri;
+    const capturedImageMime = imageMime;
     setText("");
     setImageUri(undefined);
+    setImageMime(undefined);
     setIsSending(true);
-    // Placeholder: real API wired in task-5
-    setTimeout(() => setIsSending(false), 0);
-    console.log("send:", { text, imageUri });
-  }, [sendEnabled, text, imageUri]);
 
-  const handleAttach = useCallback(() => {
-    console.log("attach image tapped");
-  }, []);
+    try {
+      const result = await autoExtractTransactions({
+        accountId: account._id,
+        currency: account.currency,
+        text: capturedText || undefined,
+        imageUri: capturedImageUri,
+        imageMime: capturedImageMime,
+      });
 
-  const renderItem: ListRenderItem<ChatMessage> = useCallback(({ item }) => {
-    if (item.role === "user") {
-      return <UserBubble text={item.text} imageUri={item.imageUri} />;
+      const resultMsg: ChatMessage = {
+        id: `${msgId}-result`,
+        role: "result",
+        created: result.created,
+        failed: result.failed,
+        timestamp: Date.now(),
+      };
+
+      setMessages((prev) =>
+        prev.map((m) => (m.id === loadingId ? resultMsg : m))
+      );
+    } catch (err: unknown) {
+      const errorMsg: ChatMessage = {
+        id: `${msgId}-error`,
+        role: "error",
+        message:
+          err instanceof Error ? err.message : "An unexpected error occurred.",
+        timestamp: Date.now(),
+      };
+      setMessages((prev) =>
+        prev.map((m) => (m.id === loadingId ? errorMsg : m))
+      );
+    } finally {
+      setIsSending(false);
     }
-    if (item.role === "loading") {
-      return <LoadingBubble />;
-    }
-    if (item.role === "result") {
-      return <ResultMessageView message={item} />;
-    }
-    if (item.role === "error") {
-      return <ErrorBubble message={item.message} />;
-    }
-    return null;
-  }, []);
+  }, [sendEnabled, text, imageUri, imageMime, accounts]);
+
+  const handleAttach = useImagePicker((picked) => {
+    setImageUri(picked.uri);
+    setImageMime(picked.mime);
+  });
+
+  const renderItem: ListRenderItem<ChatMessage> = useCallback(
+    ({ item }) => {
+      if (item.role === "user") {
+        return <UserBubble text={item.text} imageUri={item.imageUri} />;
+      }
+      if (item.role === "loading") {
+        return <LoadingBubble />;
+      }
+      if (item.role === "result") {
+        return <ResultMessageView message={item} categories={categories} />;
+      }
+      if (item.role === "error") {
+        return <ErrorBubble message={item.message} />;
+      }
+      return null;
+    },
+    [categories]
+  );
 
   return (
     <SafeAreaView edges={["top"]} className="flex-1 bg-background-0">

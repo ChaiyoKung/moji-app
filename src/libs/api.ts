@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { api } from "./axios";
 
 export interface Category {
@@ -201,5 +202,61 @@ export async function updateTransaction(
   data: UpdateTransactionDto
 ) {
   const response = await api.put<Transaction>(`/transactions/${id}`, data);
+  return response.data;
+}
+
+export interface DraftTransaction {
+  _id: string;
+  userId: string;
+  accountId: string;
+  categoryId: string;
+  type: "income" | "expense";
+  amount?: number;
+  currency: string;
+  note?: string;
+  date: string;
+  status: "draft";
+  aiModel: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface FailedItem {
+  item: number;
+  reason: string;
+}
+
+export interface AutoExtractionResponse {
+  created: DraftTransaction[];
+  failed: FailedItem[];
+}
+
+export async function autoExtractTransactions(params: {
+  accountId: string;
+  currency: string;
+  text?: string;
+  imageUri?: string;
+  imageMime?: string;
+}): Promise<AutoExtractionResponse> {
+  const formData = new FormData();
+  formData.append("accountId", params.accountId);
+  formData.append("currency", params.currency);
+  formData.append("timezone", dayjs.tz.guess());
+  if (params.text) {
+    formData.append("text", params.text);
+  }
+  if (params.imageUri) {
+    // React Native FormData file upload hack
+    formData.append("image", {
+      uri: params.imageUri,
+      name: "receipt.jpg",
+      type: params.imageMime ?? "image/jpeg",
+    } as unknown as Blob);
+  }
+  const response = await api.post<AutoExtractionResponse>(
+    "/transactions/auto",
+    formData,
+    { headers: { "Content-Type": "multipart/form-data" } }
+  );
   return response.data;
 }
