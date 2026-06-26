@@ -15,3 +15,4 @@
 ## Phase C — Bug Fixes (E2E)
 
 - [x] task-7: Fix keyboard covering input bar — replace RN KeyboardAvoidingView with react-native-keyboard-controller's version
+- [x] task-8: Move auto-transaction tab to 2nd position and rename label from "Auto" to "AI"
