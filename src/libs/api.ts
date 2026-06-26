@@ -104,6 +104,7 @@ export interface Transaction {
   createdAt: Date;
   updatedAt: Date;
   status?: "draft" | "confirmed";
+  aiModel?: string;
 }
 
 export async function createTransaction(data: CreateTransactionDto) {
@@ -116,7 +117,7 @@ export async function createTransactionMany(list: CreateTransactionDto[]) {
   return response.data;
 }
 
-export type TransactionWithCategory = Transaction & {
+export type TransactionWithCategory = Omit<Transaction, "categoryId"> & {
   categoryId: Category;
 };
 
