@@ -1,5 +1,5 @@
-import { useState, useCallback, useMemo, useRef } from "react";
-import { FlatList, TextInput, View, Image, ListRenderItem } from "react-native";
+import { useState } from "react";
+import { FlatList, TextInput, View, Image } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useQuery } from "@tanstack/react-query";
@@ -113,35 +113,34 @@ export function AutoTransactionScreen() {
   const [imageUri, setImageUri] = useState<string | undefined>(undefined);
   const [imageMime, setImageMime] = useState<string | undefined>(undefined);
   const [isSending, setIsSending] = useState(false);
-  const flatListRef = useRef<FlatList<ChatMessage>>(null);
 
-  const { data: accounts } = useQuery({
+  const accountsQuery = useQuery({
     queryKey: ["accounts"],
     queryFn: getAllAccounts,
   });
 
-  const { data: incomeCategories } = useQuery({
+  const incomeCategoriesQuery = useQuery({
     queryKey: ["categories", "income"],
     queryFn: () => getAllGategoriesByType("income"),
   });
 
-  const { data: expenseCategories } = useQuery({
+  const expenseCategoriesQuery = useQuery({
     queryKey: ["categories", "expense"],
     queryFn: () => getAllGategoriesByType("expense"),
   });
 
-  const categories: Category[] = useMemo(
-    () => [...(incomeCategories ?? []), ...(expenseCategories ?? [])],
-    [incomeCategories, expenseCategories]
-  );
+  const categories: Category[] = [
+    ...(incomeCategoriesQuery.data ?? []),
+    ...(expenseCategoriesQuery.data ?? []),
+  ];
 
   const sendEnabled =
     !isSending && (text.trim().length > 0 || imageUri !== undefined);
 
-  const handleSend = useCallback(async () => {
+  async function handleSend() {
     if (!sendEnabled) return;
 
-    const account = accounts?.[0];
+    const account = accountsQuery.data?.[0];
     if (!account) return;
 
     const msgId = Date.now().toString();
@@ -204,39 +203,34 @@ export function AutoTransactionScreen() {
     } finally {
       setIsSending(false);
     }
-  }, [sendEnabled, text, imageUri, imageMime, accounts]);
+  }
 
   const handleAttach = useImagePicker((picked) => {
     setImageUri(picked.uri);
     setImageMime(picked.mime);
   });
 
-  const renderItem: ListRenderItem<ChatMessage> = useCallback(
-    ({ item }) => {
-      if (item.role === "user") {
-        return <UserBubble text={item.text} imageUri={item.imageUri} />;
-      }
-      if (item.role === "loading") {
-        return <LoadingBubble />;
-      }
-      if (item.role === "result") {
-        return <ResultMessageView message={item} categories={categories} />;
-      }
-      if (item.role === "error") {
-        return <ErrorBubble message={item.message} />;
-      }
-      return null;
-    },
-    [categories]
-  );
+  function renderItem({ item }: { item: ChatMessage }) {
+    if (item.role === "user") {
+      return <UserBubble text={item.text} imageUri={item.imageUri} />;
+    }
+    if (item.role === "loading") {
+      return <LoadingBubble />;
+    }
+    if (item.role === "result") {
+      return <ResultMessageView message={item} categories={categories} />;
+    }
+    if (item.role === "error") {
+      return <ErrorBubble message={item.message} />;
+    }
+    return null;
+  }
 
   return (
     <SafeAreaView edges={["top"]} className="flex-1 bg-background-100">
       <KeyboardAvoidingView className="flex-1" behavior="padding">
         <VStack className="flex-1">
-          {/* Message Feed */}
           <FlatList
-            ref={flatListRef}
             data={[...messages].reverse()}
             keyExtractor={(item) => item.id}
             renderItem={renderItem}
@@ -245,9 +239,7 @@ export function AutoTransactionScreen() {
             keyboardShouldPersistTaps="handled"
           />
 
-          {/* Input Action Bar */}
           <View className="border-t border-outline-200 bg-background-0">
-            {/* Image thumbnail preview */}
             {imageUri ? (
               <View className="px-4 pt-3">
                 <View className="relative self-start">
@@ -267,7 +259,6 @@ export function AutoTransactionScreen() {
             ) : null}
 
             <HStack space="sm" className="items-end px-4 py-3">
-              {/* Attachment button */}
               <Pressable
                 onPress={handleAttach}
                 className="mb-0.5 h-10 w-10 items-center justify-center rounded-full border border-outline-200"
@@ -279,7 +270,6 @@ export function AutoTransactionScreen() {
                 />
               </Pressable>
 
-              {/* Text input */}
               <View className="flex-1 rounded-2xl border border-outline-300 bg-background-50 px-3 py-2">
                 <TextInput
                   value={text}
@@ -291,7 +281,6 @@ export function AutoTransactionScreen() {
                 />
               </View>
 
-              {/* Send button */}
               <Pressable
                 onPress={handleSend}
                 disabled={!sendEnabled}
