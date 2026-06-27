@@ -15,10 +15,46 @@ import {
   getAllGategoriesByType,
   autoExtractTransactions,
 } from "../../libs/api";
-import type { Category, ChatMessage, ResultMessage, FailedItem } from "./types";
+import type {
+  Category,
+  Transaction,
+  FailedItem,
+  TransactionWithCategory,
+} from "../../libs/api";
 import { TransactionItem } from "../../components/transaction-item";
-import type { TransactionWithCategory } from "../../libs/api";
 import { useImagePicker } from "../../hooks/use-image-picker";
+import colors from "tailwindcss/colors";
+
+interface UserMessage {
+  id: string;
+  role: "user";
+  text?: string;
+  imageUri?: string;
+  timestamp: number;
+}
+
+interface LoadingMessage {
+  id: string;
+  role: "loading";
+  timestamp: number;
+}
+
+interface ResultMessage {
+  id: string;
+  role: "result";
+  created: Transaction[];
+  failed: FailedItem[];
+  timestamp: number;
+}
+
+interface ErrorMessage {
+  id: string;
+  role: "error";
+  message: string;
+  timestamp: number;
+}
+
+type ChatMessage = UserMessage | LoadingMessage | ResultMessage | ErrorMessage;
 
 function LoadingBubble() {
   return (
@@ -282,9 +318,9 @@ export function AutoTransactionScreen() {
                   value={text}
                   onChangeText={setText}
                   placeholder="อธิบายรายการของคุณ..."
-                  placeholderTextColor="#9CA3AF"
+                  placeholderTextColor={colors.gray[400]}
                   multiline
-                  style={{ maxHeight: 100, fontSize: 14, color: "#111827" }}
+                  style={{ maxHeight: 100, fontSize: 14 }}
                 />
               </View>
 

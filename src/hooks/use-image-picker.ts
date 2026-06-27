@@ -1,4 +1,3 @@
-import { useCallback } from "react";
 import { ActionSheetIOS, Alert, Platform } from "react-native";
 import ImagePicker from "react-native-image-crop-picker";
 
@@ -48,7 +47,7 @@ async function openLibrary(): Promise<PickedImage | null> {
 }
 
 export function useImagePicker(onPick: (image: PickedImage) => void) {
-  const pickImage = useCallback(() => {
+  const pickImage = () => {
     const options = ["Take Photo", "Choose from Library", "Cancel"];
     const cancelIndex = 2;
 
@@ -84,7 +83,7 @@ export function useImagePicker(onPick: (image: PickedImage) => void) {
         { text: "Cancel", style: "cancel" },
       ]);
     }
-  }, [onPick]);
+  };
 
   return pickImage;
 }
