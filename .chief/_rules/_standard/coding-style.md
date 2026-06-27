@@ -13,11 +13,14 @@
 - Never nest component definitions inside another component function.
 - Sub-components in the same file are fine — define them above the main component.
 - Always define props as `export interface MyComponentProps { ... }` (not inline type).
+- Use `function foo() {}` declarations for handlers and helpers inside components — not `const foo = () => {}` arrow functions.
+- Do NOT add JSX inline comments (`{/* Section Name */}`) inside JSX trees.
 
 ## Hooks
 
 - `useRouter()` must always be called at the **top level** of a component, never conditionally.
-- Prefer `useCallback` only when the function is used as a dependency or passed as a prop.
+- Do NOT use `useCallback` or `useMemo` — use plain functions and values instead.
+- Do NOT keep `useRef` that is declared but never read or called.
 - TanStack Query: always use `{ queryKey: [...], queryFn: ... }` object syntax.
 - Query variable naming: `const thingQuery = useQuery(...)`, access `.data`, `.isLoading`, `.isError`.
 
@@ -42,5 +45,5 @@
 ## TypeScript
 
 - Avoid `any`. When required by RN FormData hacks, use `as unknown as Blob` and add a comment.
-- Prefer `unknown` in catch blocks: `catch (err: unknown)`.
-- Type narrowing: `err instanceof Error ? err.message : "ข้อผิดพลาดที่ไม่ทราบสาเหตุ"`.
+- Prefer `unknown` in catch blocks: `catch (error: unknown)`.
+- Type narrowing: `error instanceof Error ? error.message : "เกิดข้อผิดพลาด กรุณาลองใหม่ภายหลัง"`.
