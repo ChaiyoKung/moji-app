@@ -52,6 +52,11 @@ export default function TransactionDetails() {
 
 Exempt: screens where query data is supplementary (form enhancement) or each feature component handles its own loading state.
 
+## State
+
+- **`useState` must always have an explicit type parameter**: `useState<string>("")`, `useState<boolean>(false)`, `useState<MyType | undefined>(undefined)`.
+- Never rely on TypeScript inference for `useState` — always annotate even for primitives.
+
 ## Hooks
 
 - Do NOT use `useCallback` or `useMemo` — use plain functions and values instead.

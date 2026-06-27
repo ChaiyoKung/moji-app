@@ -155,10 +155,10 @@ function UserBubble({ text, imageUri }: UserBubbleProps) {
 
 export function AutoTransactionScreen() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [text, setText] = useState("");
+  const [text, setText] = useState<string>("");
   const [imageUri, setImageUri] = useState<string | undefined>(undefined);
   const [imageMime, setImageMime] = useState<string | undefined>(undefined);
-  const [isSending, setIsSending] = useState(false);
+  const [isSending, setIsSending] = useState<boolean>(false);
 
   const accountsQuery = useQuery({
     queryKey: ["accounts"],
