@@ -13,7 +13,7 @@
 - Never nest component definitions inside another component function.
 - Sub-components in the same file are fine — define them above the main component.
 - Always define props as `export interface MyComponentProps { ... }` (not inline type).
-- Use `function foo() {}` declarations for handlers and helpers inside components — not `const foo = () => {}` arrow functions.
+- Use `const handleFoo = () => {}` arrow functions for handlers and helpers inside components — not `function foo() {}` declarations.
 - Do NOT add JSX inline comments (`{/* Section Name */}`) inside JSX trees.
 
 ## Hooks

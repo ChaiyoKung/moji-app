@@ -54,7 +54,7 @@ function FailureBubble({ item }: { item: FailedItem }) {
   );
 }
 
-export interface ResultMessageViewProps {
+interface ResultMessageViewProps {
   message: ResultMessage;
   categories: Category[];
 }
@@ -86,7 +86,12 @@ function ResultMessageView({ message, categories }: ResultMessageViewProps) {
   );
 }
 
-function UserBubble({ text, imageUri }: { text?: string; imageUri?: string }) {
+interface UserBubbleProps {
+  text?: string;
+  imageUri?: string;
+}
+
+function UserBubble({ text, imageUri }: UserBubbleProps) {
   return (
     <View className="mb-2 max-w-xs self-end">
       {imageUri ? (
@@ -137,7 +142,7 @@ export function AutoTransactionScreen() {
   const sendEnabled =
     !isSending && (text.trim().length > 0 || imageUri !== undefined);
 
-  async function handleSend() {
+  const handleSend = async () => {
     if (!sendEnabled) return;
 
     const account = accountsQuery.data?.[0];
@@ -189,12 +194,14 @@ export function AutoTransactionScreen() {
       setMessages((prev) =>
         prev.map((m) => (m.id === loadingId ? resultMsg : m))
       );
-    } catch (err: unknown) {
+    } catch (error: unknown) {
       const errorMsg: ChatMessage = {
         id: `${msgId}-error`,
         role: "error",
         message:
-          err instanceof Error ? err.message : "เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ",
+          error instanceof Error
+            ? error.message
+            : "เกิดข้อผิดพลาด กรุณาลองใหม่ภายหลัง",
         timestamp: Date.now(),
       };
       setMessages((prev) =>
@@ -203,14 +210,14 @@ export function AutoTransactionScreen() {
     } finally {
       setIsSending(false);
     }
-  }
+  };
 
   const handleAttach = useImagePicker((picked) => {
     setImageUri(picked.uri);
     setImageMime(picked.mime);
   });
 
-  function renderItem({ item }: { item: ChatMessage }) {
+  const renderItem = ({ item }: { item: ChatMessage }) => {
     if (item.role === "user") {
       return <UserBubble text={item.text} imageUri={item.imageUri} />;
     }
@@ -224,7 +231,7 @@ export function AutoTransactionScreen() {
       return <ErrorBubble message={item.message} />;
     }
     return null;
-  }
+  };
 
   return (
     <SafeAreaView edges={["top"]} className="flex-1 bg-background-100">
