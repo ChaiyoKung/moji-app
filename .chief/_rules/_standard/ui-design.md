@@ -48,6 +48,9 @@
 - System bubble (loading, error, failure): `bg-background-100`, aligned left (`self-start`), `rounded-2xl rounded-tl-sm`.
 - Error bubble: add `border border-error-200 bg-background-error` with `text-error-600`.
 - Warning/failure bubble: `border border-warning-200 bg-background-warning` with `text-warning-600`.
+- **Do NOT add `size="sm"` to `Text` inside chat bubbles.** Chat messages must use the default text size for readability. Use Tailwind color classes (e.g. `text-typography-600`) to style — never shrink the font.
+- **Do NOT double-wrap bubbles.** Each bubble is a single `Box` with all classes merged onto it (layout + visual). No outer wrapper `Box` just for margin/alignment.
+- **Bubble spacing via parent `VStack space`, not individual `mb-N`**. When rendering a list of bubbles, wrap them in `<VStack space="xs">` (or rely on `FlatList` padding) — never put `mb-2`/`mb-1` on each bubble element.
 
 ## Input Bar
 

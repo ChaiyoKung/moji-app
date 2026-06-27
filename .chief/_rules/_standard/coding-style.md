@@ -57,6 +57,11 @@ Exempt: screens where query data is supplementary (form enhancement) or each fea
 - **`useState` must always have an explicit type parameter**: `useState<string>("")`, `useState<boolean>(false)`, `useState<MyType | undefined>(undefined)`.
 - Never rely on TypeScript inference for `useState` — always annotate even for primitives.
 
+## Lists & FlatList
+
+- **Inverted chat/log lists — prepend new items, do not reverse the array.**
+  Use `FlatList` with `inverted` prop. Add new items to the front: `setMessages(prev => [newItem, ...prev])`. Never do `[...messages].reverse()` on a normal (non-inverted) list — it creates a new array on every render.
+
 ## Hooks
 
 - Do NOT use `useCallback` or `useMemo` — use plain functions and values instead.

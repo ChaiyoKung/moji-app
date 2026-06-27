@@ -18,12 +18,7 @@ import {
   getAllGategoriesByType,
   autoExtractTransactions,
 } from "../../libs/api";
-import type {
-  Category,
-  Transaction,
-  FailedItem,
-  TransactionWithCategory,
-} from "../../libs/api";
+import type { Category, Transaction, FailedItem } from "../../libs/api";
 import { TransactionItem } from "../../components/transaction-item";
 import { useImagePicker } from "../../hooks/use-image-picker";
 import colors from "tailwindcss/colors";
@@ -61,34 +56,29 @@ type ChatMessage = UserMessage | LoadingMessage | ResultMessage | ErrorMessage;
 
 function LoadingBubble() {
   return (
-    <Box className="mb-2 self-start">
-      <Box className="rounded-2xl rounded-tl-sm bg-background-100 px-4 py-3">
+    <Box className="self-start rounded-2xl rounded-tl-sm border border-outline-200 bg-background-100 px-4 py-3">
+      <HStack space="sm" className="items-center">
         <Spinner size="small" />
-      </Box>
+        <Text className="text-typography-600">กำลังประมวลผล...</Text>
+      </HStack>
     </Box>
   );
 }
 
 function ErrorBubble({ message }: { message: string }) {
   return (
-    <Box className="mb-2 self-start">
-      <Box className="rounded-2xl rounded-tl-sm border border-error-200 bg-background-error px-4 py-3">
-        <Text size="sm" className="text-error-600">
-          {message}
-        </Text>
-      </Box>
+    <Box className="self-start rounded-2xl rounded-tl-sm border border-error-200 bg-background-error px-4 py-3">
+      <Text className="text-error-600">{message}</Text>
     </Box>
   );
 }
 
 function FailureBubble({ item }: { item: FailedItem }) {
   return (
-    <Box className="mb-1 self-start">
-      <Box className="rounded-2xl rounded-tl-sm border border-warning-200 bg-background-warning px-4 py-2">
-        <Text size="sm" className="text-warning-600">
-          {`Item ${item.item}: ${item.reason}`}
-        </Text>
-      </Box>
+    <Box className="self-start rounded-2xl rounded-tl-sm border border-warning-200 bg-background-warning px-4 py-2">
+      <Text className="text-warning-600">
+        {`รายการที่ ${item.item} ไม่สามารถประมวลผลได้ กรุณาเพิ่มบันทึกด้วยตนเอง (${item.reason})`}
+      </Text>
     </Box>
   );
 }
@@ -101,25 +91,26 @@ interface ResultMessageViewProps {
 function ResultMessageView({ message, categories }: ResultMessageViewProps) {
   if (message.created.length === 0 && message.failed.length === 0) {
     return (
-      <Box className="mb-2 self-start">
-        <Box className="rounded-2xl rounded-tl-sm bg-background-100 px-3 py-2">
-          <Text className="text-typography-500">ไม่พบรายการที่ประมวลผลได้</Text>
-        </Box>
+      <Box className="self-start rounded-2xl rounded-tl-sm border border-outline-200 bg-background-100 px-4 py-3">
+        <Text className="text-typography-600">ไม่พบรายการที่ประมวลผลได้</Text>
       </Box>
     );
   }
 
   return (
-    <VStack space="xs" className="mb-2 w-full max-w-xs self-start">
-      {message.created.map((tx) => {
-        const data: TransactionWithCategory = {
-          ...tx,
-          categoryId: categories.find((c) => c._id === tx.categoryId)!,
-        };
-        return <TransactionItem key={tx._id} data={data} />;
+    <VStack space="xs" className="w-full max-w-xs">
+      {message.created.map((item) => {
+        const category = categories.find((c) => c._id === item.categoryId);
+        if (!category) return null;
+        return (
+          <TransactionItem
+            key={item._id}
+            data={{ ...item, categoryId: category }}
+          />
+        );
       })}
-      {message.failed.map((item, idx) => (
-        <FailureBubble key={idx} item={item} />
+      {message.failed.map((item, index) => (
+        <FailureBubble key={index} item={item} />
       ))}
     </VStack>
   );
@@ -132,24 +123,22 @@ interface UserBubbleProps {
 
 function UserBubble({ text, imageUri }: UserBubbleProps) {
   return (
-    <Box className="mb-2 max-w-xs self-end">
+    <VStack space="xs" className="max-w-xs self-end">
       {imageUri ? (
         <Image
           size="none"
           source={{ uri: imageUri }}
           alt="user uploaded image"
-          className="mb-1 h-40 w-40 self-end rounded-2xl"
+          className="h-40 w-40 self-end rounded-2xl"
           resizeMode="cover"
         />
       ) : null}
       {text ? (
         <Box className="rounded-2xl rounded-tr-sm bg-primary-500 px-4 py-3">
-          <Text size="sm" className="text-typography-0">
-            {text}
-          </Text>
+          <Text className="text-typography-0">{text}</Text>
         </Box>
       ) : null}
-    </Box>
+    </VStack>
   );
 }
 
@@ -206,7 +195,7 @@ export function AutoTransactionScreen() {
       timestamp: Date.now(),
     };
 
-    setMessages((prev) => [...prev, userMsg, loadingMsg]);
+    setMessages((prev) => [loadingMsg, userMsg, ...prev]);
     const capturedText = text;
     const capturedImageUri = imageUri;
     const capturedImageMime = imageMime;
@@ -277,81 +266,78 @@ export function AutoTransactionScreen() {
   return (
     <SafeAreaView edges={["top"]} className="flex-1 bg-background-100">
       <KeyboardAvoidingView className="flex-1" behavior="padding">
-        <VStack className="flex-1">
-          <FlatList
-            data={[...messages].reverse()}
-            keyExtractor={(item) => item.id}
-            renderItem={renderItem}
-            inverted
-            contentContainerStyle={{ padding: 16, flexGrow: 1 }}
-            keyboardShouldPersistTaps="handled"
-          />
+        <FlatList
+          data={messages}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+          inverted
+          className="px-4"
+        />
 
-          <Box className="border-t border-outline-200 bg-background-0">
-            {imageUri ? (
-              <Box className="px-4 pt-3">
-                <Box className="relative self-start">
-                  <Image
-                    size="none"
-                    source={{ uri: imageUri }}
-                    alt="attached image preview"
-                    className="h-20 w-20 rounded-xl"
-                    resizeMode="cover"
-                  />
-                  <Pressable
-                    onPress={() => setImageUri(undefined)}
-                    className="absolute -right-2 -top-2 h-5 w-5 items-center justify-center rounded-full bg-typography-700"
-                  >
-                    <Icon as={XIcon} size="xs" className="text-typography-0" />
-                  </Pressable>
-                </Box>
+        <Box className="border-t border-outline-200 bg-background-0">
+          {imageUri ? (
+            <Box className="px-4 pt-3">
+              <Box className="relative self-start">
+                <Image
+                  size="none"
+                  source={{ uri: imageUri }}
+                  alt="attached image preview"
+                  className="h-20 w-20 rounded-xl"
+                  resizeMode="cover"
+                />
+                <Pressable
+                  onPress={() => setImageUri(undefined)}
+                  className="absolute -right-2 -top-2 h-5 w-5 items-center justify-center rounded-full bg-typography-700"
+                >
+                  <Icon as={XIcon} size="xs" className="text-typography-0" />
+                </Pressable>
               </Box>
-            ) : null}
+            </Box>
+          ) : null}
 
-            <HStack space="sm" className="items-end px-4 py-3">
-              <Pressable
-                onPress={handleAttach}
-                className="mb-0.5 h-10 w-10 items-center justify-center rounded-full border border-outline-200"
-              >
+          <HStack space="sm" className="items-end px-4 py-3">
+            <Pressable
+              onPress={handleAttach}
+              className="mb-0.5 h-10 w-10 items-center justify-center rounded-full border border-outline-200"
+            >
+              <Icon
+                as={PaperclipIcon}
+                size="md"
+                className="text-typography-500"
+              />
+            </Pressable>
+
+            <Input
+              className="flex-1 rounded-2xl border-outline-300 bg-background-50 px-3 py-2"
+              variant="outline"
+            >
+              <InputField
+                value={text}
+                onChangeText={setText}
+                placeholder="อธิบายรายการของคุณ..."
+                placeholderTextColor={colors.gray[400]}
+                multiline
+                style={{ maxHeight: 100, fontSize: 14 }}
+              />
+            </Input>
+
+            <Pressable
+              onPress={handleSend}
+              disabled={!sendEnabled}
+              className="mb-0.5 h-10 w-10 items-center justify-center rounded-full bg-primary-500 data-[disabled=true]:opacity-40"
+            >
+              {isSending ? (
+                <Spinner className="text-typography-0" size="small" />
+              ) : (
                 <Icon
-                  as={PaperclipIcon}
+                  as={SendHorizonalIcon}
                   size="md"
-                  className="text-typography-500"
+                  className="text-typography-0"
                 />
-              </Pressable>
-
-              <Input
-                className="flex-1 rounded-2xl border-outline-300 bg-background-50 px-3 py-2"
-                variant="outline"
-              >
-                <InputField
-                  value={text}
-                  onChangeText={setText}
-                  placeholder="อธิบายรายการของคุณ..."
-                  placeholderTextColor={colors.gray[400]}
-                  multiline
-                  style={{ maxHeight: 100, fontSize: 14 }}
-                />
-              </Input>
-
-              <Pressable
-                onPress={handleSend}
-                disabled={!sendEnabled}
-                className="mb-0.5 h-10 w-10 items-center justify-center rounded-full bg-primary-500 data-[disabled=true]:opacity-40"
-              >
-                {isSending ? (
-                  <Spinner className="text-typography-0" size="small" />
-                ) : (
-                  <Icon
-                    as={SendHorizonalIcon}
-                    size="md"
-                    className="text-typography-0"
-                  />
-                )}
-              </Pressable>
-            </HStack>
-          </Box>
-        </VStack>
+              )}
+            </Pressable>
+          </HStack>
+        </Box>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
