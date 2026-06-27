@@ -6,6 +6,9 @@
 - All screens: `<SafeAreaView edges={["top"]} className="flex-1 bg-background-100">`.
 - Content in `<ScrollView>` uses `<VStack space="md" className="p-4">` inside.
 - Bottom-pinned content (FABs, input bars) uses `pb-[5.75rem]` padding to clear the tab bar.
+- Screens with a sticky bottom action bar use a Fragment wrapper: `<KeyboardAwareScrollView>` for scrollable content + `<SafeAreaView edges={["bottom"]}>` for the pinned bar.
+- Multiple `SafeAreaView` per screen is acceptable when scroll content needs different edge handling (e.g. `edges={["top"]}` on outer + `edges={["bottom"]}` on sticky bar).
+- Forms use `<KeyboardAwareScrollView>` from `react-native-keyboard-controller` as the scroll container.
 
 ## Cards
 

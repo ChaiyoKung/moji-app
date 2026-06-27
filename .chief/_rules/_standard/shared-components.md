@@ -43,3 +43,9 @@ Search `src/components/` before building a new primitive. Key shared components:
 - Monetary formatting: `formatBaht` from `src/utils/format-baht.ts` — already used by `AmountText`.
 - Date formatting for display: `DateLabel` component or `dayjs().format("D MMMM YYYY")`.
 - Router navigation: `useRouter()` from `expo-router` — no custom navigation helpers.
+
+## Feature Folder Structure
+
+- Every feature/component folder contains exactly **one file**: `index.tsx`. No sub-files, no barrel exports from subfolders.
+- All logic, sub-components, and helpers live in `index.tsx`.
+- Sub-components used only within the feature are defined above the main export in the same file.
