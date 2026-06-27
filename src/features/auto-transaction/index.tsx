@@ -137,6 +137,7 @@ function UserBubble({ text, imageUri }: UserBubbleProps) {
         <Image
           size="none"
           source={{ uri: imageUri }}
+          alt="user uploaded image"
           className="mb-1 h-40 w-40 self-end rounded-2xl"
           resizeMode="cover"
         />
@@ -293,6 +294,7 @@ export function AutoTransactionScreen() {
                   <Image
                     size="none"
                     source={{ uri: imageUri }}
+                    alt="attached image preview"
                     className="h-20 w-20 rounded-xl"
                     resizeMode="cover"
                   />

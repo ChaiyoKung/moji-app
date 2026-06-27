@@ -17,7 +17,7 @@
 ## Rules
 
 - Use `Box` (not `View`) for any layout container that only applies className styling.
-- Use `Image` from `src/components/ui/image/` (not `react-native`). Pass `size="none"` for arbitrary sizing via className.
+- Use `Image` from `src/components/ui/image/` (not `react-native`). Pass `size="none"` for arbitrary sizing via className. **Always include an `alt` prop** with a short descriptive string (e.g. `alt="user uploaded image"`).
 - Use `InputField` from `src/components/ui/input/` (not `TextInput` directly). Wrap with `Input` when you need the border/variant styling; use bare `InputField` when you control the container styling yourself.
 - Use `Text` from `src/components/ui/text/` — never `<Text>` from `react-native`.
 - Use `Pressable` from `src/components/ui/pressable/` — never `TouchableOpacity` or `react-native`'s `Pressable`.
@@ -37,7 +37,7 @@ import { Image } from "../../components/ui/image";
 import { Input, InputField } from "../../components/ui/input";
 
 <Box className="flex-1 bg-background-0">
-  <Image size="none" source={{ uri }} className="h-40 w-40 rounded-2xl" resizeMode="cover" />
+  <Image size="none" source={{ uri }} alt="description of image" className="h-40 w-40 rounded-2xl" resizeMode="cover" />
   <InputField value={text} onChangeText={setText} multiline style={{ maxHeight: 100 }} />
 </Box>
 
