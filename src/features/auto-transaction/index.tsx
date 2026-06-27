@@ -1,8 +1,11 @@
 import { useState } from "react";
-import { FlatList, TextInput, View, Image } from "react-native";
+import { FlatList } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useQuery } from "@tanstack/react-query";
+import { Box } from "../../components/ui/box";
+import { Image } from "../../components/ui/image";
+import { Input, InputField } from "../../components/ui/input";
 import { Pressable } from "../../components/ui/pressable";
 import { HStack } from "../../components/ui/hstack";
 import { VStack } from "../../components/ui/vstack";
@@ -58,35 +61,35 @@ type ChatMessage = UserMessage | LoadingMessage | ResultMessage | ErrorMessage;
 
 function LoadingBubble() {
   return (
-    <View className="mb-2 self-start">
-      <View className="rounded-2xl rounded-tl-sm bg-background-100 px-4 py-3">
+    <Box className="mb-2 self-start">
+      <Box className="rounded-2xl rounded-tl-sm bg-background-100 px-4 py-3">
         <Spinner size="small" />
-      </View>
-    </View>
+      </Box>
+    </Box>
   );
 }
 
 function ErrorBubble({ message }: { message: string }) {
   return (
-    <View className="mb-2 self-start">
-      <View className="rounded-2xl rounded-tl-sm border border-error-200 bg-background-error px-4 py-3">
+    <Box className="mb-2 self-start">
+      <Box className="rounded-2xl rounded-tl-sm border border-error-200 bg-background-error px-4 py-3">
         <Text size="sm" className="text-error-600">
           {message}
         </Text>
-      </View>
-    </View>
+      </Box>
+    </Box>
   );
 }
 
 function FailureBubble({ item }: { item: FailedItem }) {
   return (
-    <View className="mb-1 self-start">
-      <View className="rounded-2xl rounded-tl-sm border border-warning-200 bg-background-warning px-4 py-2">
+    <Box className="mb-1 self-start">
+      <Box className="rounded-2xl rounded-tl-sm border border-warning-200 bg-background-warning px-4 py-2">
         <Text size="sm" className="text-warning-600">
           {`Item ${item.item}: ${item.reason}`}
         </Text>
-      </View>
-    </View>
+      </Box>
+    </Box>
   );
 }
 
@@ -98,11 +101,11 @@ interface ResultMessageViewProps {
 function ResultMessageView({ message, categories }: ResultMessageViewProps) {
   if (message.created.length === 0 && message.failed.length === 0) {
     return (
-      <View className="mb-2 self-start">
-        <View className="rounded-2xl rounded-tl-sm bg-background-100 px-3 py-2">
+      <Box className="mb-2 self-start">
+        <Box className="rounded-2xl rounded-tl-sm bg-background-100 px-3 py-2">
           <Text className="text-typography-500">ไม่พบรายการที่ประมวลผลได้</Text>
-        </View>
-      </View>
+        </Box>
+      </Box>
     );
   }
 
@@ -129,22 +132,23 @@ interface UserBubbleProps {
 
 function UserBubble({ text, imageUri }: UserBubbleProps) {
   return (
-    <View className="mb-2 max-w-xs self-end">
+    <Box className="mb-2 max-w-xs self-end">
       {imageUri ? (
         <Image
+          size="none"
           source={{ uri: imageUri }}
           className="mb-1 h-40 w-40 self-end rounded-2xl"
           resizeMode="cover"
         />
       ) : null}
       {text ? (
-        <View className="rounded-2xl rounded-tr-sm bg-primary-500 px-4 py-3">
+        <Box className="rounded-2xl rounded-tr-sm bg-primary-500 px-4 py-3">
           <Text size="sm" className="text-typography-0">
             {text}
           </Text>
-        </View>
+        </Box>
       ) : null}
-    </View>
+    </Box>
   );
 }
 
@@ -282,11 +286,12 @@ export function AutoTransactionScreen() {
             keyboardShouldPersistTaps="handled"
           />
 
-          <View className="border-t border-outline-200 bg-background-0">
+          <Box className="border-t border-outline-200 bg-background-0">
             {imageUri ? (
-              <View className="px-4 pt-3">
-                <View className="relative self-start">
+              <Box className="px-4 pt-3">
+                <Box className="relative self-start">
                   <Image
+                    size="none"
                     source={{ uri: imageUri }}
                     className="h-20 w-20 rounded-xl"
                     resizeMode="cover"
@@ -297,8 +302,8 @@ export function AutoTransactionScreen() {
                   >
                     <Icon as={XIcon} size="xs" className="text-typography-0" />
                   </Pressable>
-                </View>
-              </View>
+                </Box>
+              </Box>
             ) : null}
 
             <HStack space="sm" className="items-end px-4 py-3">
@@ -313,8 +318,11 @@ export function AutoTransactionScreen() {
                 />
               </Pressable>
 
-              <View className="flex-1 rounded-2xl border border-outline-300 bg-background-50 px-3 py-2">
-                <TextInput
+              <Input
+                className="flex-1 rounded-2xl border-outline-300 bg-background-50 px-3 py-2"
+                variant="outline"
+              >
+                <InputField
                   value={text}
                   onChangeText={setText}
                   placeholder="อธิบายรายการของคุณ..."
@@ -322,7 +330,7 @@ export function AutoTransactionScreen() {
                   multiline
                   style={{ maxHeight: 100, fontSize: 14 }}
                 />
-              </View>
+              </Input>
 
               <Pressable
                 onPress={handleSend}
@@ -340,7 +348,7 @@ export function AutoTransactionScreen() {
                 )}
               </Pressable>
             </HStack>
-          </View>
+          </Box>
         </VStack>
       </KeyboardAvoidingView>
     </SafeAreaView>
