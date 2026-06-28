@@ -51,13 +51,9 @@ export function TransactionItem({ data, showDate }: TransactionItemProps) {
           <Text size="2xl">{data.categoryId.icon}</Text>
         </Center>
         <VStack className="flex-1">
-          <HStack space="xs" className="items-center">
+          <HStack space="xs" className="mb-1 items-center">
             {data.status === "draft" && (
-              <Badge
-                variant="outline"
-                action="warning"
-                className="mb-1 self-start"
-              >
+              <Badge variant="outline" action="warning" className="self-start">
                 <BadgeText>Draft</BadgeText>
               </Badge>
             )}
