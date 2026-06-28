@@ -81,13 +81,41 @@ interface ChatBubbleTextProps {
 }
 ```
 
+## `ChatBubbleSpinner` Styling
+
+`chatBubbleSpinnerStyle` uses `parentVariants` to inherit spinner color from context — same color map as `ChatBubbleText`:
+
+```ts
+const chatBubbleSpinnerStyle = tva({
+  base: "",
+  parentVariants: {
+    color: {
+      primary: "text-typography-0",
+      error:   "text-error-600",
+      warn:    "text-warning-600",
+      default: "text-typography-600",
+    },
+  },
+});
+```
+
+## `ChatBubbleSpinner` Props Interface
+
+```ts
+interface ChatBubbleSpinnerProps {
+  size?: React.ComponentProps<typeof Spinner>["size"];  // optional, passed to Spinner
+}
+```
+
+`ChatBubbleSpinner` reads `color` from `useStyleContext(SCOPE)`, computes className via tva, and passes it to `<Spinner>`.
+
 ## Usage in AutoTransactionScreen
 
-Callers do NOT pass `color`/`variant` to `ChatBubbleText` — inferred from parent `ChatBubble`:
+Callers do NOT pass `color`/`variant` to sub-components — all inferred from parent `ChatBubble`:
 
 | Old component | New equivalent |
 |---|---|
 | `<UserBubble text={...}>` | `<ChatBubble align="right" color="primary"><ChatBubbleText>{text}</ChatBubbleText></ChatBubble>` |
-| `<LoadingBubble>` | `<ChatBubble align="left" color="default"><HStack>...<ChatBubbleText>...</ChatBubbleText></HStack></ChatBubble>` |
+| `<LoadingBubble>` | `<ChatBubble align="left" color="default"><HStack>...<ChatBubbleSpinner /><ChatBubbleText>...</ChatBubbleText></HStack></ChatBubble>` |
 | `<ErrorBubble message={...}>` | `<ChatBubble align="left" color="error" variant="outline"><ChatBubbleText>{message}</ChatBubbleText></ChatBubble>` |
 | `<FailureBubble item={...}>` | `<ChatBubble align="left" color="warn" variant="outline"><ChatBubbleText>{...}</ChatBubbleText></ChatBubble>` |

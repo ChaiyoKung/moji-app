@@ -12,7 +12,11 @@ import { VStack } from "../../components/ui/vstack";
 import { Icon } from "../../components/ui/icon";
 import { Spinner } from "../../components/ui/spinner";
 import { PaperclipIcon, SendHorizonalIcon, XIcon } from "lucide-react-native";
-import { ChatBubble, ChatBubbleText } from "../../components/chat-bubble";
+import {
+  ChatBubble,
+  ChatBubbleSpinner,
+  ChatBubbleText,
+} from "../../components/chat-bubble";
 import {
   getAllAccounts,
   getAllGategoriesByType,
@@ -58,7 +62,7 @@ function LoadingBubble() {
   return (
     <ChatBubble align="left" color="default">
       <HStack space="sm" className="items-center">
-        <Spinner size="small" />
+        <ChatBubbleSpinner size="small" />
         <ChatBubbleText>กำลังประมวลผล...</ChatBubbleText>
       </HStack>
     </ChatBubble>

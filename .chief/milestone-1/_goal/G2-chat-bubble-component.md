@@ -20,8 +20,9 @@ Extract the four inline bubble components from `AutoTransactionScreen` into a si
    - `warn + outline` → `bg-background-warning border border-warning-200` (replaces `FailureBubble` shell)
 6. **`ChatBubbleText` with context inference** — `ChatBubble` provides `color` and `variant` as style context (via `withStyleContext`). `ChatBubbleText` reads this context via `useStyleContext` and applies the correct text color automatically — callers do NOT need to repeat `color`/`variant` on `ChatBubbleText`. Explicit override props are still accepted.
 7. **`ChatBubbleText` tva** — text color variants implemented with `tva` using `parentVariants` (matching `ButtonText` pattern), not a plain record.
-8. **Refactor complete** — `LoadingBubble`, `ErrorBubble`, `FailureBubble`, and `UserBubble` (the box part only) in `AutoTransactionScreen` are replaced with `ChatBubble` + `ChatBubbleText`. Callers pass no `color`/`variant` to `ChatBubbleText`.
-9. **No regressions** — `pnpm format && pnpm lint && pnpm test` passes.
+8. **`ChatBubbleSpinner` with context inference** — `ChatBubbleSpinner` reads `color` from `ChatBubble` context via `useStyleContext` and applies spinner color via `parentVariants` tva (same color map as `ChatBubbleText`). Accepts optional `size` override prop.
+9. **Refactor complete** — `LoadingBubble`, `ErrorBubble`, `FailureBubble`, and `UserBubble` (the box part only) in `AutoTransactionScreen` are replaced with `ChatBubble` + `ChatBubbleText` + `ChatBubbleSpinner` where applicable. Callers pass no `color`/`variant` to sub-components.
+10. **No regressions** — `pnpm format && pnpm lint && pnpm test` passes.
 
 ## Out of Scope
 - Adding `ChatBubble` to any screen other than `AutoTransactionScreen`.

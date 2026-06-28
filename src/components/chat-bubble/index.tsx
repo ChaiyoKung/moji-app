@@ -6,6 +6,7 @@ import {
   useStyleContext,
 } from "@gluestack-ui/utils/nativewind-utils";
 import { Text } from "../ui/text";
+import { Spinner } from "../ui/spinner";
 
 const SCOPE = "CHAT_BUBBLE";
 const Root = withStyleContext(View, SCOPE);
@@ -126,6 +127,35 @@ export function ChatBubbleText({
     >
       {children}
     </Text>
+  );
+}
+
+const chatBubbleSpinnerStyle = tva({
+  base: "",
+  parentVariants: {
+    color: {
+      primary: "text-typography-0",
+      error: "text-error-600",
+      warn: "text-warning-600",
+      default: "text-typography-600",
+    },
+  },
+});
+
+export interface ChatBubbleSpinnerProps {
+  size?: React.ComponentProps<typeof Spinner>["size"];
+}
+
+export function ChatBubbleSpinner({ size }: ChatBubbleSpinnerProps) {
+  const { color: parentColor } = useStyleContext(SCOPE);
+
+  return (
+    <Spinner
+      size={size}
+      className={chatBubbleSpinnerStyle({
+        parentVariants: { color: parentColor },
+      })}
+    />
   );
 }
 
