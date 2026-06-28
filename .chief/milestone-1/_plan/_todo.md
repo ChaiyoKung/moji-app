@@ -25,3 +25,7 @@
 - [x] task-12: Update `AutoTransactionScreen` callers — remove explicit `color`/`variant` props from all `ChatBubbleText` usages
 - [x] task-13: Add `ChatBubbleSpinner` to `src/components/chat-bubble/index.tsx` — `parentVariants` tva + `useStyleContext`, same color map as `ChatBubbleText`, optional `size` prop
 - [x] task-14: Update `LoadingBubble` in `AutoTransactionScreen` — replace `<Spinner size="small" />` with `<ChatBubbleSpinner size="small" />`; remove `Spinner` import if no longer used
+
+## Phase E — TransactionItem Enhancements
+
+- [x] task-15: Add `showDate` prop + AI Generated badge + date display to `TransactionItem`

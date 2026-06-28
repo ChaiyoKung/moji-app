@@ -110,6 +110,7 @@ function ResultMessageView({ message, categoryMap }: ResultMessageViewProps) {
           <TransactionItem
             key={item._id}
             data={{ ...item, categoryId: category }}
+            showDate
           />
         );
       })}

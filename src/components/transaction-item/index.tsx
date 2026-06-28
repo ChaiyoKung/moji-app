@@ -6,9 +6,10 @@ import { Text } from "../ui/text";
 import { AmountText } from "../amount-text";
 import { TransactionWithCategory } from "../../libs/api";
 import { useRouter } from "expo-router";
-import { ChevronRight } from "lucide-react-native";
+import { ChevronRight, Sparkles } from "lucide-react-native";
 import { Icon } from "../ui/icon";
-import { Badge, BadgeText } from "../ui/badge";
+import { Badge, BadgeIcon, BadgeText } from "../ui/badge";
+import dayjs from "dayjs";
 import { tva } from "@gluestack-ui/utils/nativewind-utils";
 
 const containerStyle = tva({
@@ -23,9 +24,10 @@ const containerStyle = tva({
 
 export interface TransactionItemProps {
   data: TransactionWithCategory;
+  showDate?: boolean;
 }
 
-export function TransactionItem({ data }: TransactionItemProps) {
+export function TransactionItem({ data, showDate }: TransactionItemProps) {
   const router = useRouter();
 
   const handlePress = () => {
@@ -49,15 +51,28 @@ export function TransactionItem({ data }: TransactionItemProps) {
           <Text size="2xl">{data.categoryId.icon}</Text>
         </Center>
         <VStack className="flex-1">
-          {data.status === "draft" && (
-            <Badge
-              variant="outline"
-              action="warning"
-              className="mb-1 self-start"
-            >
-              <BadgeText>Draft</BadgeText>
-            </Badge>
-          )}
+          <HStack space="xs" className="items-center">
+            {data.status === "draft" && (
+              <Badge
+                variant="outline"
+                action="warning"
+                className="mb-1 self-start"
+              >
+                <BadgeText>Draft</BadgeText>
+              </Badge>
+            )}
+            {data.aiModel ? (
+              <Badge variant="outline" action="info" className="self-start">
+                <BadgeIcon as={Sparkles} />
+                <BadgeText>AI Generated</BadgeText>
+              </Badge>
+            ) : null}
+          </HStack>
+          {showDate ? (
+            <Text size="sm" className="text-typography-400">
+              {dayjs(data.date).format("YYYY-MM-DD")}
+            </Text>
+          ) : null}
           <Text size="lg">{data.categoryId.name}</Text>
           {data.note ? (
             <Text size="sm" className="text-typography-500" numberOfLines={1}>
