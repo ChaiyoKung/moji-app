@@ -9,10 +9,10 @@ import { Input, InputField } from "../../components/ui/input";
 import { Pressable } from "../../components/ui/pressable";
 import { HStack } from "../../components/ui/hstack";
 import { VStack } from "../../components/ui/vstack";
-import { Text } from "../../components/ui/text";
 import { Icon } from "../../components/ui/icon";
 import { Spinner } from "../../components/ui/spinner";
 import { PaperclipIcon, SendHorizonalIcon, XIcon } from "lucide-react-native";
+import { ChatBubble, ChatBubbleText } from "../../components/chat-bubble";
 import {
   getAllAccounts,
   getAllGategoriesByType,
@@ -56,30 +56,30 @@ type ChatMessage = UserMessage | LoadingMessage | ResultMessage | ErrorMessage;
 
 function LoadingBubble() {
   return (
-    <Box className="self-start rounded-2xl rounded-tl-sm border border-outline-200 bg-background-100 px-4 py-3">
+    <ChatBubble align="left" color="default">
       <HStack space="sm" className="items-center">
         <Spinner size="small" />
-        <Text className="text-typography-600">กำลังประมวลผล...</Text>
+        <ChatBubbleText>กำลังประมวลผล...</ChatBubbleText>
       </HStack>
-    </Box>
+    </ChatBubble>
   );
 }
 
 function ErrorBubble({ message }: { message: string }) {
   return (
-    <Box className="self-start rounded-2xl rounded-tl-sm border border-error-200 bg-background-error px-4 py-3">
-      <Text className="text-error-600">{message}</Text>
-    </Box>
+    <ChatBubble align="left" color="error" variant="outline">
+      <ChatBubbleText>{message}</ChatBubbleText>
+    </ChatBubble>
   );
 }
 
 function FailureBubble({ item }: { item: FailedItem }) {
   return (
-    <Box className="self-start rounded-2xl rounded-tl-sm border border-warning-200 bg-background-warning px-4 py-2">
-      <Text className="text-warning-600">
+    <ChatBubble align="left" color="warn" variant="outline">
+      <ChatBubbleText>
         {`รายการที่ ${item.item} ไม่สามารถประมวลผลได้ กรุณาเพิ่มบันทึกด้วยตนเอง (${item.reason})`}
-      </Text>
-    </Box>
+      </ChatBubbleText>
+    </ChatBubble>
   );
 }
 
@@ -91,9 +91,9 @@ interface ResultMessageViewProps {
 function ResultMessageView({ message, categories }: ResultMessageViewProps) {
   if (message.created.length === 0 && message.failed.length === 0) {
     return (
-      <Box className="self-start rounded-2xl rounded-tl-sm border border-outline-200 bg-background-100 px-4 py-3">
-        <Text className="text-typography-600">ไม่พบรายการที่ประมวลผลได้</Text>
-      </Box>
+      <ChatBubble align="left" color="default">
+        <ChatBubbleText>ไม่พบรายการที่ประมวลผลได้</ChatBubbleText>
+      </ChatBubble>
     );
   }
 
@@ -134,9 +134,9 @@ function UserBubble({ text, imageUri }: UserBubbleProps) {
         />
       ) : null}
       {text ? (
-        <Box className="rounded-2xl rounded-tr-sm bg-primary-500 px-4 py-3">
-          <Text className="text-typography-0">{text}</Text>
-        </Box>
+        <ChatBubble align="right" color="primary">
+          <ChatBubbleText>{text}</ChatBubbleText>
+        </ChatBubble>
       ) : null}
     </VStack>
   );

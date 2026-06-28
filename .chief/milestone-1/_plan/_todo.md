@@ -16,3 +16,10 @@
 
 - [x] task-7: Fix keyboard covering input bar — replace RN KeyboardAvoidingView with react-native-keyboard-controller's version
 - [x] task-8: Move auto-transaction tab to 2nd position and rename label from "Auto" to "AI"
+
+## Phase D — ChatBubble Refactor
+
+- [x] task-9: Create `src/components/chat-bubble/index.tsx` with `align`, `color`, `variant` props via `tva`
+- [x] task-10: Refactor `AutoTransactionScreen` — replace inline `LoadingBubble`, `ErrorBubble`, `FailureBubble`, and `UserBubble` box with `ChatBubble`
+- [x] task-11: Refactor `ChatBubble` to use `withStyleContext` + provide `color`/`variant` context; refactor `ChatBubbleText` to use `parentVariants` tva + `useStyleContext` (matching `ButtonText` pattern)
+- [x] task-12: Update `AutoTransactionScreen` callers — remove explicit `color`/`variant` props from all `ChatBubbleText` usages
