@@ -67,7 +67,7 @@ export function TransactionItem({ data, showDate }: TransactionItemProps) {
                 variant="outline"
                 action="info"
                 size="sm"
-                className="self-start"
+                className="gap-1 self-start"
               >
                 <BadgeIcon as={Sparkles} />
                 <BadgeText>AI Generated</BadgeText>
