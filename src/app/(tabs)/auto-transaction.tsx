@@ -89,10 +89,10 @@ function FailureBubble({ item }: { item: FailedItem }) {
 
 interface ResultMessageViewProps {
   message: ResultMessage;
-  categories: Category[];
+  categoryMap: Record<string, Category>;
 }
 
-function ResultMessageView({ message, categories }: ResultMessageViewProps) {
+function ResultMessageView({ message, categoryMap }: ResultMessageViewProps) {
   if (message.created.length === 0 && message.failed.length === 0) {
     return (
       <ChatBubble align="left" color="default">
@@ -104,7 +104,7 @@ function ResultMessageView({ message, categories }: ResultMessageViewProps) {
   return (
     <VStack space="xs" className="w-full max-w-xs">
       {message.created.map((item) => {
-        const category = categories.find((c) => c._id === item.categoryId);
+        const category = categoryMap[item.categoryId];
         if (!category) return null;
         return (
           <TransactionItem
@@ -172,6 +172,10 @@ export default function AutoTransactionScreen() {
     ...(incomeCategoriesQuery.data ?? []),
     ...(expenseCategoriesQuery.data ?? []),
   ];
+
+  const categoryMap: Record<string, Category> = Object.fromEntries(
+    categories.map((c) => [c._id, c])
+  );
 
   const sendEnabled =
     !isSending && (text.trim().length > 0 || imageUri !== undefined);
@@ -259,7 +263,7 @@ export default function AutoTransactionScreen() {
       return <LoadingBubble />;
     }
     if (item.role === "result") {
-      return <ResultMessageView message={item} categories={categories} />;
+      return <ResultMessageView message={item} categoryMap={categoryMap} />;
     }
     if (item.role === "error") {
       return <ErrorBubble message={item.message} />;
