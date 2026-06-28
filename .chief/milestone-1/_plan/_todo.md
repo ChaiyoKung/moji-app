@@ -29,3 +29,7 @@
 ## Phase E — TransactionItem Enhancements
 
 - [x] task-15: Add `showDate` prop + AI Generated badge + date display to `TransactionItem`
+
+## Phase F — Data Refresh After Auto-Extraction
+
+- [x] task-16: Invalidate accounts + transactions + summary + transactionIdsByDate queries on autoExtractTransactions success

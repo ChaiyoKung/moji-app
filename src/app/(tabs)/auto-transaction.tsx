@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FlatList } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Box } from "../../components/ui/box";
 import { Image } from "../../components/ui/image";
 import { Input, InputField } from "../../components/ui/input";
@@ -148,6 +148,7 @@ function UserBubble({ text, imageUri }: UserBubbleProps) {
 }
 
 export default function AutoTransactionScreen() {
+  const queryClient = useQueryClient();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [text, setText] = useState<string>("");
   const [imageUri, setImageUri] = useState<string | undefined>(undefined);
@@ -233,6 +234,11 @@ export default function AutoTransactionScreen() {
       setMessages((prev) =>
         prev.map((m) => (m.id === loadingId ? resultMsg : m))
       );
+
+      queryClient.invalidateQueries({ queryKey: ["accounts"] });
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["summary"] });
+      queryClient.invalidateQueries({ queryKey: ["transactionIdsByDate"] });
     } catch (error: unknown) {
       const errorMsg: ChatMessage = {
         id: `${msgId}-error`,
