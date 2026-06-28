@@ -53,12 +53,22 @@ export function TransactionItem({ data, showDate }: TransactionItemProps) {
         <VStack className="flex-1">
           <HStack space="xs" className="mb-1 items-center">
             {data.status === "draft" && (
-              <Badge variant="outline" action="warning" className="self-start">
+              <Badge
+                variant="outline"
+                action="warning"
+                size="sm"
+                className="self-start"
+              >
                 <BadgeText>Draft</BadgeText>
               </Badge>
             )}
             {data.aiModel ? (
-              <Badge variant="outline" action="info" className="self-start">
+              <Badge
+                variant="outline"
+                action="info"
+                size="sm"
+                className="self-start"
+              >
                 <BadgeIcon as={Sparkles} />
                 <BadgeText>AI Generated</BadgeText>
               </Badge>
