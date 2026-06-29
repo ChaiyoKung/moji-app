@@ -10,7 +10,6 @@ import { Pressable } from "../../components/ui/pressable";
 import { HStack } from "../../components/ui/hstack";
 import { VStack } from "../../components/ui/vstack";
 import { Icon } from "../../components/ui/icon";
-import { Spinner } from "../../components/ui/spinner";
 import { PaperclipIcon, SendHorizonalIcon, XIcon } from "lucide-react-native";
 import {
   ChatBubble,
@@ -25,7 +24,7 @@ import {
 import type { Category, Transaction, FailedItem } from "../../libs/api";
 import { TransactionItem } from "../../components/transaction-item";
 import { useImagePicker } from "../../hooks/use-image-picker";
-import colors from "tailwindcss/colors";
+import { Button, ButtonIcon, ButtonSpinner } from "../../components/ui/button";
 
 interface UserMessage {
   id: string;
@@ -314,46 +313,35 @@ export default function AutoTransactionScreen() {
           ) : null}
 
           <HStack space="sm" className="items-end px-4 py-3">
-            <Pressable
-              onPress={handleAttach}
-              className="mb-0.5 h-10 w-10 items-center justify-center rounded-full border border-outline-200"
-            >
-              <Icon
-                as={PaperclipIcon}
-                size="md"
-                className="text-typography-500"
-              />
-            </Pressable>
-
-            <Input
-              className="flex-1 rounded-2xl border-outline-300 bg-background-50 px-3 py-2"
+            <Button
+              action="secondary"
               variant="outline"
+              onPress={handleAttach}
+              className="aspect-square rounded-full"
             >
+              <ButtonIcon as={PaperclipIcon} />
+            </Button>
+
+            <Input variant="outline" className="flex-1 rounded-2xl">
               <InputField
+                type="text"
                 value={text}
                 onChangeText={setText}
-                placeholder="อธิบายรายการของคุณ..."
-                placeholderTextColor={colors.gray[400]}
-                multiline
-                style={{ maxHeight: 100, fontSize: 14 }}
+                placeholder="ผัดไทย 45 ไก่ทอด 30 ..."
               />
             </Input>
 
-            <Pressable
+            <Button
               onPress={handleSend}
-              disabled={!sendEnabled}
-              className="mb-0.5 h-10 w-10 items-center justify-center rounded-full bg-primary-500 data-[disabled=true]:opacity-40"
+              isDisabled={!sendEnabled}
+              className="aspect-square rounded-full"
             >
               {autoExtractMutation.isPending ? (
-                <Spinner className="text-typography-0" size="small" />
+                <ButtonSpinner />
               ) : (
-                <Icon
-                  as={SendHorizonalIcon}
-                  size="md"
-                  className="text-typography-0"
-                />
+                <ButtonIcon as={SendHorizonalIcon} />
               )}
-            </Pressable>
+            </Button>
           </HStack>
         </Box>
       </KeyboardAvoidingView>
