@@ -50,6 +50,7 @@ const buttonStyle = tva({
         "border-error-300 bg-error-500 data-[active=true]:border-error-500 data-[hover=true]:border-error-400 data-[active=true]:bg-error-700 data-[hover=true]:bg-error-600 data-[focus-visible=true]:web:ring-indicator-info",
       google:
         "border-sky-300 bg-background-0 data-[active=true]:border-sky-500 data-[hover=true]:border-sky-400 data-[active=true]:bg-background-200 data-[hover=true]:bg-background-100 data-[focus-visible=true]:web:ring-indicator-info",
+      dark: "border-typography-700 bg-typography-700 data-[active=true]:border-typography-500 data-[hover=true]:border-typography-600 data-[active=true]:bg-typography-500 data-[hover=true]:bg-typography-600 data-[focus-visible=true]:web:ring-indicator-info",
       default:
         "bg-transparent data-[active=true]:bg-transparent data-[hover=true]:bg-background-50",
     },
@@ -152,6 +153,7 @@ const buttonTextStyle = tva({
         "text-error-600 data-[active=true]:text-error-700 data-[hover=true]:text-error-600",
       google:
         "text-sky-600 data-[active=true]:text-sky-700 data-[hover=true]:text-sky-600",
+      dark: "text-typography-0 data-[active=true]:text-typography-0 data-[hover=true]:text-typography-0",
     },
     variant: {
       link: "data-[active=true]:underline data-[hover=true]:underline",
@@ -197,6 +199,12 @@ const buttonTextStyle = tva({
       action: "google",
       class:
         "text-sky-500 data-[active=true]:text-sky-500 data-[hover=true]:text-sky-500",
+    },
+    {
+      variant: "solid",
+      action: "dark",
+      class:
+        "text-typography-0 data-[active=true]:text-typography-0 data-[hover=true]:text-typography-0",
     },
     {
       variant: "outline",
@@ -258,6 +266,7 @@ const buttonIconStyle = tva({
         "text-error-600 data-[active=true]:text-error-700 data-[hover=true]:text-error-600",
       google:
         "text-sky-600 data-[active=true]:text-sky-700 data-[hover=true]:text-sky-600",
+      dark: "text-typography-0 data-[active=true]:text-typography-0 data-[hover=true]:text-typography-0",
     },
   },
   parentCompoundVariants: [
@@ -291,6 +300,12 @@ const buttonIconStyle = tva({
       class:
         "text-sky-600 data-[active=true]:text-sky-600 data-[hover=true]:text-sky-600",
     },
+    {
+      variant: "solid",
+      action: "dark",
+      class:
+        "text-typography-0 data-[active=true]:text-typography-0 data-[hover=true]:text-typography-0",
+    },
   ],
 });
 
@@ -308,6 +323,7 @@ const buttonSpinnerStyle = tva({
       positive: "text-success-600",
       negative: "text-error-600",
       google: "text-sky-600",
+      dark: "text-typography-0",
     },
   },
   parentCompoundVariants: [
@@ -335,6 +351,11 @@ const buttonSpinnerStyle = tva({
       variant: "solid",
       action: "google",
       class: "text-sky-600",
+    },
+    {
+      variant: "solid",
+      action: "dark",
+      class: "text-typography-0",
     },
   ],
 });
