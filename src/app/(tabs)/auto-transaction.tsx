@@ -57,7 +57,7 @@ type ChatMessage = UserMessage | LoadingMessage | ResultMessage | ErrorMessage;
 
 function LoadingBubble() {
   return (
-    <ChatBubble align="left" color="default">
+    <ChatBubble align="left" color="default" className="mb-4">
       <HStack space="sm" className="items-center">
         <ChatBubbleSpinner size="small" />
         <ChatBubbleText>กำลังประมวลผล...</ChatBubbleText>
@@ -68,7 +68,7 @@ function LoadingBubble() {
 
 function ErrorBubble({ message }: { message: string }) {
   return (
-    <ChatBubble align="left" color="error" variant="outline">
+    <ChatBubble align="left" color="error" variant="outline" className="mb-4">
       <ChatBubbleText>{message}</ChatBubbleText>
     </ChatBubble>
   );
@@ -92,14 +92,14 @@ interface ResultMessageViewProps {
 function ResultMessageView({ message, categoryMap }: ResultMessageViewProps) {
   if (message.created.length === 0 && message.failed.length === 0) {
     return (
-      <ChatBubble align="left" color="default">
+      <ChatBubble align="left" color="default" className="mb-4">
         <ChatBubbleText>ไม่พบรายการที่ประมวลผลได้</ChatBubbleText>
       </ChatBubble>
     );
   }
 
   return (
-    <VStack space="xs" className="w-full max-w-xs">
+    <VStack space="xs" className="mb-4 w-full max-w-xs">
       {message.created.map((item) => {
         const category = categoryMap[item.categoryId];
         if (!category) return null;
@@ -125,7 +125,7 @@ interface UserBubbleProps {
 
 function UserBubble({ text, imageUri }: UserBubbleProps) {
   return (
-    <VStack space="xs" className="max-w-xs self-end">
+    <VStack space="xs" className="mb-4 max-w-xs self-end">
       {imageUri ? (
         <Image
           size="none"
