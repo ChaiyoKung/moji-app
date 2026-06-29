@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FlatList } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Box } from "../../components/ui/box";
 import { Image } from "../../components/ui/image";
 import { Input, InputField } from "../../components/ui/input";
@@ -153,8 +153,6 @@ export default function AutoTransactionScreen() {
   const [text, setText] = useState<string>("");
   const [imageUri, setImageUri] = useState<string | undefined>(undefined);
   const [imageMime, setImageMime] = useState<string | undefined>(undefined);
-  const [isSending, setIsSending] = useState<boolean>(false);
-
   const accountsQuery = useQuery({
     queryKey: ["accounts"],
     queryFn: getAllAccounts,
@@ -179,10 +177,15 @@ export default function AutoTransactionScreen() {
     categories.map((c) => [c._id, c])
   );
 
-  const sendEnabled =
-    !isSending && (text.trim().length > 0 || imageUri !== undefined);
+  const autoExtractMutation = useMutation({
+    mutationFn: autoExtractTransactions,
+  });
 
-  const handleSend = async () => {
+  const sendEnabled =
+    !autoExtractMutation.isPending &&
+    (text.trim().length > 0 || imageUri !== undefined);
+
+  const handleSend = () => {
     if (!sendEnabled) return;
 
     const account = accountsQuery.data?.[0];
@@ -212,49 +215,48 @@ export default function AutoTransactionScreen() {
     setText("");
     setImageUri(undefined);
     setImageMime(undefined);
-    setIsSending(true);
 
-    try {
-      const result = await autoExtractTransactions({
+    autoExtractMutation.mutate(
+      {
         accountId: account._id,
         currency: account.currency,
         text: capturedText || undefined,
         imageUri: capturedImageUri,
         imageMime: capturedImageMime,
-      });
-
-      const resultMsg: ChatMessage = {
-        id: `${msgId}-result`,
-        role: "result",
-        created: result.created,
-        failed: result.failed,
-        timestamp: Date.now(),
-      };
-
-      setMessages((prev) =>
-        prev.map((m) => (m.id === loadingId ? resultMsg : m))
-      );
-
-      queryClient.invalidateQueries({ queryKey: ["accounts"] });
-      queryClient.invalidateQueries({ queryKey: ["transactions"] });
-      queryClient.invalidateQueries({ queryKey: ["summary"] });
-      queryClient.invalidateQueries({ queryKey: ["transactionIdsByDate"] });
-    } catch (error: unknown) {
-      const errorMsg: ChatMessage = {
-        id: `${msgId}-error`,
-        role: "error",
-        message:
-          error instanceof Error
-            ? error.message
-            : "เกิดข้อผิดพลาด กรุณาลองใหม่ภายหลัง",
-        timestamp: Date.now(),
-      };
-      setMessages((prev) =>
-        prev.map((m) => (m.id === loadingId ? errorMsg : m))
-      );
-    } finally {
-      setIsSending(false);
-    }
+      },
+      {
+        onSuccess: (result) => {
+          const resultMsg: ChatMessage = {
+            id: `${msgId}-result`,
+            role: "result",
+            created: result.created,
+            failed: result.failed,
+            timestamp: Date.now(),
+          };
+          setMessages((prev) =>
+            prev.map((m) => (m.id === loadingId ? resultMsg : m))
+          );
+          queryClient.invalidateQueries({ queryKey: ["accounts"] });
+          queryClient.invalidateQueries({ queryKey: ["transactions"] });
+          queryClient.invalidateQueries({ queryKey: ["summary"] });
+          queryClient.invalidateQueries({ queryKey: ["transactionIdsByDate"] });
+        },
+        onError: (error) => {
+          const errorMsg: ChatMessage = {
+            id: `${msgId}-error`,
+            role: "error",
+            message:
+              error instanceof Error
+                ? error.message
+                : "เกิดข้อผิดพลาด กรุณาลองใหม่ภายหลัง",
+            timestamp: Date.now(),
+          };
+          setMessages((prev) =>
+            prev.map((m) => (m.id === loadingId ? errorMsg : m))
+          );
+        },
+      }
+    );
   };
 
   const handleAttach = useImagePicker((picked) => {
@@ -341,7 +343,7 @@ export default function AutoTransactionScreen() {
               disabled={!sendEnabled}
               className="mb-0.5 h-10 w-10 items-center justify-center rounded-full bg-primary-500 data-[disabled=true]:opacity-40"
             >
-              {isSending ? (
+              {autoExtractMutation.isPending ? (
                 <Spinner className="text-typography-0" size="small" />
               ) : (
                 <Icon

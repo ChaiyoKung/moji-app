@@ -33,3 +33,7 @@
 ## Phase F — Data Refresh After Auto-Extraction
 
 - [x] task-16: Invalidate accounts + transactions + summary + transactionIdsByDate queries on autoExtractTransactions success
+
+## Phase G — useMutation Refactor
+
+- [x] task-17: Refactor `AutoTransactionScreen` — replace direct `autoExtractTransactions` call + `isSending` state + manual `try/catch` with `useMutation`; drive send-disabled and spinner off `isPending`; move query invalidations to `onSuccess`; append error message from `onError`
