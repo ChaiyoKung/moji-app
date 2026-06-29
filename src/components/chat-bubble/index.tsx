@@ -99,13 +99,13 @@ export interface ChatBubbleProps {
   color?: "primary" | "error" | "warn" | "default";
   variant?: "solid" | "outline";
   className?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export interface ChatBubbleTextProps {
   color?: "primary" | "error" | "warn" | "default";
   variant?: "solid" | "outline";
-  children: string;
+  children?: string;
 }
 
 export function ChatBubbleText({
@@ -122,8 +122,8 @@ export function ChatBubbleText({
           color: parentColor,
           variant: parentVariant,
         },
-        ...(color !== undefined && { color }),
-        ...(variant !== undefined && { variant }),
+        color,
+        variant,
       })}
     >
       {children}
