@@ -98,6 +98,7 @@ export interface ChatBubbleProps {
   align?: "left" | "right";
   color?: "primary" | "error" | "warn" | "default";
   variant?: "solid" | "outline";
+  className?: string;
   children: React.ReactNode;
 }
 
@@ -163,11 +164,12 @@ export function ChatBubble({
   align = "left",
   color = "primary",
   variant = "solid",
+  className,
   children,
 }: ChatBubbleProps) {
   return (
     <Root
-      className={chatBubbleStyle({ align, color, variant })}
+      className={chatBubbleStyle({ align, color, variant, class: className })}
       context={{ color, variant }}
     >
       {children}
