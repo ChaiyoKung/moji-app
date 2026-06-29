@@ -302,12 +302,14 @@ export default function AutoTransactionScreen() {
                   className="h-20 w-20 rounded-xl"
                   resizeMode="cover"
                 />
-                <Pressable
+                <Button
                   onPress={() => setImageUri(undefined)}
-                  className="absolute -right-2 -top-2 h-5 w-5 items-center justify-center rounded-full bg-typography-700"
+                  size="xs"
+                  className="absolute -right-2 -top-2 h-5 w-5 items-center justify-center rounded-full p-0"
+                  action="dark"
                 >
-                  <Icon as={XIcon} size="xs" className="text-typography-0" />
-                </Pressable>
+                  <ButtonIcon as={XIcon} size="xs" />
+                </Button>
               </Box>
             </Box>
           ) : null}
