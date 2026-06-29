@@ -183,13 +183,14 @@ export default function AutoTransactionScreen() {
 
   const sendEnabled =
     !autoExtractMutation.isPending &&
-    (text.trim().length > 0 || imageUri !== undefined);
+    (text.trim().length > 0 || imageUri !== undefined) &&
+    accountsQuery.data !== undefined &&
+    accountsQuery.data.length > 0;
 
   const handleSend = () => {
     if (!sendEnabled) return;
 
-    const account = accountsQuery.data?.[0];
-    if (!account) return;
+    const account = accountsQuery.data[0];
 
     const msgId = Date.now().toString();
     const loadingId = `${msgId}-loading`;
