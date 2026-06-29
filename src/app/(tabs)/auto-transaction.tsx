@@ -6,10 +6,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Box } from "../../components/ui/box";
 import { Image } from "../../components/ui/image";
 import { Input, InputField } from "../../components/ui/input";
-import { Pressable } from "../../components/ui/pressable";
 import { HStack } from "../../components/ui/hstack";
 import { VStack } from "../../components/ui/vstack";
-import { Icon } from "../../components/ui/icon";
 import { PaperclipIcon, SendHorizonalIcon, XIcon } from "lucide-react-native";
 import {
   ChatBubble,
