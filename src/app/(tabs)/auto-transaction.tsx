@@ -251,14 +251,11 @@ export default function AutoTransactionScreen() {
           queryClient.invalidateQueries({ queryKey: ["summary"] });
           queryClient.invalidateQueries({ queryKey: ["transactionIdsByDate"] });
         },
-        onError: (error) => {
+        onError: () => {
           const errorMsg: ChatMessage = {
             id: `${msgId}-error`,
             role: "error",
-            message:
-              error instanceof Error
-                ? error.message
-                : "เกิดข้อผิดพลาด กรุณาลองใหม่ภายหลัง",
+            message: "เกิดข้อผิดพลาด กรุณาลองใหม่ภายหลัง",
             timestamp: Date.now(),
           };
           setMessages((prev) =>
