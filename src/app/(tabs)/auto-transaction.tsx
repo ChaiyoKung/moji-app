@@ -146,6 +146,13 @@ function UserBubble({ text, imageUri }: UserBubbleProps) {
 
 export default function AutoTransactionScreen() {
   const queryClient = useQueryClient();
+  const imagePicker = useImagePicker({
+    cropping: true,
+    freeStyleCropEnabled: true,
+    mediaType: "photo",
+    compressImageQuality: 0.8,
+  });
+
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [text, setText] = useState<string>("");
   const [imageUri, setImageUri] = useState<string | undefined>(undefined);
@@ -257,10 +264,13 @@ export default function AutoTransactionScreen() {
     );
   };
 
-  const handleAttach = useImagePicker((picked) => {
-    setImageUri(picked.uri);
-    setImageMime(picked.mime);
-  });
+  const handleAttach = async () => {
+    const image = await imagePicker.openLibrary();
+    if (image) {
+      setImageUri(image.path);
+      setImageMime(image.mime);
+    }
+  };
 
   const renderItem = ({ item }: { item: ChatMessage }) => {
     if (item.role === "user") {

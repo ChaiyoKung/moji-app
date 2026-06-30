@@ -1,89 +1,58 @@
-import { ActionSheetIOS, Alert, Platform } from "react-native";
-import ImagePicker from "react-native-image-crop-picker";
+import ImagePicker, { Options } from "react-native-image-crop-picker";
+import { useAppToast } from "./use-app-toast";
 
-const CROP_OPTIONS = {
-  cropping: true,
-  freeStyleCropEnabled: true,
-  includeBase64: false,
-  mediaType: "photo" as const,
-  compressImageQuality: 0.8,
-};
+export function useImagePicker<O extends Options>(options: O) {
+  const toast = useAppToast();
 
-export interface PickedImage {
-  uri: string;
-  mime: string;
-}
+  const handleError = (error: unknown) => {
+    if (error instanceof Error && "code" in error) {
+      if (error.code === "E_PICKER_CANCELLED") {
+        console.warn("Image picker cancelled");
+        return;
+      }
 
-async function openCamera(): Promise<PickedImage | null> {
-  try {
-    const image = await ImagePicker.openCamera(CROP_OPTIONS);
-    return { uri: image.path, mime: image.mime };
-  } catch (err: unknown) {
-    if (
-      err instanceof Error &&
-      "code" in err &&
-      (err as { code: string }).code === "E_PICKER_CANCELLED"
-    ) {
-      return null;
+      if (error.code === "E_NO_IMAGE_DATA_FOUND") {
+        toast.error("ไม่พบข้อมูลภาพ");
+        return;
+      }
+
+      if (error.code === "E_NO_LIBRARY_PERMISSION") {
+        toast.error("ไม่มีสิทธิ์เข้าถึงคลังภาพ");
+        return;
+      }
+
+      if (error.code === "E_NO_CAMERA_PERMISSION") {
+        toast.error("ไม่มีสิทธิ์เข้าถึงกล้อง");
+        return;
+      }
+
+      if (error.code === "E_ERROR_WHILE_CLEANING_FILES") {
+        toast.error("เกิดข้อผิดพลาดในการล้างไฟล์ชั่วคราว");
+        return;
+      }
     }
-    throw err;
-  }
-}
 
-async function openLibrary(): Promise<PickedImage | null> {
-  try {
-    const image = await ImagePicker.openPicker(CROP_OPTIONS);
-    return { uri: image.path, mime: image.mime };
-  } catch (err: unknown) {
-    if (
-      err instanceof Error &&
-      "code" in err &&
-      (err as { code: string }).code === "E_PICKER_CANCELLED"
-    ) {
-      return null;
-    }
-    throw err;
-  }
-}
+    console.error("Image picker error:", error);
+    toast.error("เกิดข้อผิดพลาดในการเลือกภาพ");
+  };
 
-export function useImagePicker(onPick: (image: PickedImage) => void) {
-  const pickImage = () => {
-    const options = ["Take Photo", "Choose from Library", "Cancel"];
-    const cancelIndex = 2;
-
-    if (Platform.OS === "ios") {
-      ActionSheetIOS.showActionSheetWithOptions(
-        { options, cancelButtonIndex: cancelIndex },
-        async (buttonIndex) => {
-          if (buttonIndex === 0) {
-            const result = await openCamera();
-            if (result) onPick(result);
-          } else if (buttonIndex === 1) {
-            const result = await openLibrary();
-            if (result) onPick(result);
-          }
-        }
-      );
-    } else {
-      Alert.alert("Attach Image", undefined, [
-        {
-          text: "Take Photo",
-          onPress: async () => {
-            const result = await openCamera();
-            if (result) onPick(result);
-          },
-        },
-        {
-          text: "Choose from Library",
-          onPress: async () => {
-            const result = await openLibrary();
-            if (result) onPick(result);
-          },
-        },
-        { text: "Cancel", style: "cancel" },
-      ]);
+  const openLibrary = async () => {
+    try {
+      const image = await ImagePicker.openPicker(options);
+      return image;
+    } catch (error) {
+      handleError(error);
     }
   };
 
-  return pickImage;
+  const openCamera = async () => {
+    try {
+      const image = await ImagePicker.openCamera(options);
+      return image;
+    } catch (error) {
+      handleError(error);
+    }
+  };
+
+  return { openLibrary, openCamera };
 }
