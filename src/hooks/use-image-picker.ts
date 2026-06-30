@@ -6,10 +6,12 @@ import { useAppToast } from "./use-app-toast";
 import { ReactNativeFile } from "../utils/form-data";
 
 export function toReactNativeFile(file: ImageOrVideo): ReactNativeFile {
+  const fileExtension = file.path.split(".").pop() ?? "png";
+  const defaultFilename = `file_${Date.now()}.${fileExtension}`;
   return {
     uri: file.path,
     type: file.mime,
-    name: file.filename ?? "image.jpg",
+    name: file.filename ?? defaultFilename,
   };
 }
 
