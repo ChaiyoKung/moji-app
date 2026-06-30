@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { api } from "./axios";
+import { ReactNativeFile, toFormDataFile } from "../utils/form-data";
 
 export interface Category {
   _id: string;
@@ -220,8 +221,7 @@ export async function autoExtractTransactions(params: {
   accountId: string;
   currency: string;
   text?: string;
-  imageUri?: string;
-  imageMime?: string;
+  image?: ReactNativeFile;
 }): Promise<AutoExtractionResponse> {
   const formData = new FormData();
   formData.append("accountId", params.accountId);
@@ -230,13 +230,8 @@ export async function autoExtractTransactions(params: {
   if (params.text) {
     formData.append("text", params.text);
   }
-  if (params.imageUri) {
-    // React Native FormData file upload hack
-    formData.append("image", {
-      uri: params.imageUri,
-      name: "receipt.jpg",
-      type: params.imageMime ?? "image/jpeg",
-    } as unknown as Blob);
+  if (params.image) {
+    formData.append("image", toFormDataFile(params.image));
   }
   const response = await api.post<AutoExtractionResponse>(
     "/transactions/auto",

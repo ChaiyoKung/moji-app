@@ -21,8 +21,12 @@ import {
 } from "../../libs/api";
 import type { Category, Transaction, FailedItem } from "../../libs/api";
 import { TransactionItem } from "../../components/transaction-item";
-import { useImagePicker } from "../../hooks/use-image-picker";
+import {
+  toReactNativeFile,
+  useImagePicker,
+} from "../../hooks/use-image-picker";
 import { Button, ButtonIcon, ButtonSpinner } from "../../components/ui/button";
+import { Image as ImageType } from "react-native-image-crop-picker";
 
 interface UserMessage {
   id: string;
@@ -155,8 +159,7 @@ export default function AutoTransactionScreen() {
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [text, setText] = useState<string>("");
-  const [imageUri, setImageUri] = useState<string | undefined>(undefined);
-  const [imageMime, setImageMime] = useState<string | undefined>(undefined);
+  const [image, setImage] = useState<ImageType>();
   const accountsQuery = useQuery({
     queryKey: ["accounts"],
     queryFn: getAllAccounts,
@@ -183,11 +186,15 @@ export default function AutoTransactionScreen() {
 
   const autoExtractMutation = useMutation({
     mutationFn: autoExtractTransactions,
+    onMutate: () => {
+      setText("");
+      setImage(undefined);
+    },
   });
 
   const sendEnabled =
     !autoExtractMutation.isPending &&
-    (text.trim().length > 0 || imageUri !== undefined) &&
+    (text.trim().length > 0 || image !== undefined) &&
     accountsQuery.data !== undefined &&
     accountsQuery.data.length > 0;
 
@@ -203,7 +210,7 @@ export default function AutoTransactionScreen() {
       id: msgId,
       role: "user",
       text: text || undefined,
-      imageUri,
+      imageUri: image?.path || undefined,
       timestamp: Date.now(),
     };
 
@@ -214,20 +221,13 @@ export default function AutoTransactionScreen() {
     };
 
     setMessages((prev) => [loadingMsg, userMsg, ...prev]);
-    const capturedText = text;
-    const capturedImageUri = imageUri;
-    const capturedImageMime = imageMime;
-    setText("");
-    setImageUri(undefined);
-    setImageMime(undefined);
 
     autoExtractMutation.mutate(
       {
         accountId: account._id,
         currency: account.currency,
-        text: capturedText || undefined,
-        imageUri: capturedImageUri,
-        imageMime: capturedImageMime,
+        text: text || undefined,
+        image: image ? toReactNativeFile(image) : undefined,
       },
       {
         onSuccess: (result) => {
@@ -266,10 +266,7 @@ export default function AutoTransactionScreen() {
 
   const handleAttach = async () => {
     const image = await imagePicker.openLibrary();
-    if (image) {
-      setImageUri(image.path);
-      setImageMime(image.mime);
-    }
+    if (image) setImage(image);
   };
 
   const renderItem = ({ item }: { item: ChatMessage }) => {
@@ -300,18 +297,18 @@ export default function AutoTransactionScreen() {
         />
 
         <Box className="border-t border-outline-200 bg-background-0">
-          {imageUri ? (
+          {image ? (
             <Box className="px-4 pt-3">
               <Box className="relative self-start">
                 <Image
                   size="none"
-                  source={{ uri: imageUri }}
+                  source={{ uri: image.path }}
                   alt="attached image preview"
                   className="h-20 w-20 rounded-xl"
                   resizeMode="cover"
                 />
                 <Button
-                  onPress={() => setImageUri(undefined)}
+                  onPress={() => setImage(undefined)}
                   size="xs"
                   className="absolute -right-2 -top-2 h-5 w-5 items-center justify-center rounded-full p-0"
                   action="dark"

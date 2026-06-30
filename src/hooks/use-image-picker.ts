@@ -1,5 +1,17 @@
-import ImagePicker, { Options } from "react-native-image-crop-picker";
+import ImagePicker, {
+  Options,
+  ImageOrVideo,
+} from "react-native-image-crop-picker";
 import { useAppToast } from "./use-app-toast";
+import { ReactNativeFile } from "../utils/form-data";
+
+export function toReactNativeFile(file: ImageOrVideo): ReactNativeFile {
+  return {
+    uri: file.path,
+    type: file.mime,
+    name: file.filename ?? "image.jpg",
+  };
+}
 
 export function useImagePicker<O extends Options>(options: O) {
   const toast = useAppToast();
