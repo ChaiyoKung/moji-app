@@ -8,7 +8,12 @@ import { Image } from "../../components/ui/image";
 import { Input, InputField } from "../../components/ui/input";
 import { HStack } from "../../components/ui/hstack";
 import { VStack } from "../../components/ui/vstack";
-import { PaperclipIcon, SendHorizonalIcon, XIcon } from "lucide-react-native";
+import {
+  CameraIcon,
+  ImageIcon,
+  SendHorizonalIcon,
+  XIcon,
+} from "lucide-react-native";
 import {
   ChatBubble,
   ChatBubbleSpinner,
@@ -264,8 +269,13 @@ export default function AutoTransactionScreen() {
     );
   };
 
-  const handleAttach = async () => {
+  const handleOpenLibrary = async () => {
     const image = await imagePicker.openLibrary();
+    if (image) setImage(image);
+  };
+
+  const handleOpenCamera = async () => {
+    const image = await imagePicker.openCamera();
     if (image) setImage(image);
   };
 
@@ -323,10 +333,18 @@ export default function AutoTransactionScreen() {
             <Button
               action="secondary"
               variant="outline"
-              onPress={handleAttach}
+              onPress={handleOpenCamera}
               className="aspect-square rounded-full"
             >
-              <ButtonIcon as={PaperclipIcon} />
+              <ButtonIcon as={CameraIcon} />
+            </Button>
+            <Button
+              action="secondary"
+              variant="outline"
+              onPress={handleOpenLibrary}
+              className="aspect-square rounded-full"
+            >
+              <ButtonIcon as={ImageIcon} />
             </Button>
 
             <Input variant="outline" className="flex-1 rounded-2xl">
