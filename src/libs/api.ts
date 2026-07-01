@@ -228,15 +228,9 @@ export async function autoExtractTransactions(params: {
   formData.append("accountId", params.accountId);
   formData.append("currency", params.currency);
   formData.append("timezone", dayjs.tz.guess());
-  if (params.status) {
-    formData.append("status", params.status);
-  }
-  if (params.text) {
-    formData.append("text", params.text);
-  }
-  if (params.image) {
-    formData.append("image", toFormDataFile(params.image));
-  }
+  if (params.status) formData.append("status", params.status);
+  if (params.text) formData.append("text", params.text);
+  if (params.image) formData.append("image", toFormDataFile(params.image));
   const response = await api.post<AutoExtractionResponse>(
     "/transactions/auto",
     formData,
