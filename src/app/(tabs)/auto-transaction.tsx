@@ -185,9 +185,7 @@ export default function AutoTransactionScreen() {
     ...(expenseCategoriesQuery.data ?? []),
   ];
 
-  const categoryMap: Record<string, Category> = Object.fromEntries(
-    categories.map((c) => [c._id, c])
-  );
+  const categoryMap = Object.fromEntries(categories.map((c) => [c._id, c]));
 
   const autoExtractMutation = useMutation({
     mutationFn: autoExtractTransactions,
