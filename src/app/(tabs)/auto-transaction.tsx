@@ -32,6 +32,7 @@ import {
 } from "../../hooks/use-image-picker";
 import { Button, ButtonIcon, ButtonSpinner } from "../../components/ui/button";
 import { Image as ImageType } from "react-native-image-crop-picker";
+import { useSettingStore } from "../../stores/use-setting-store";
 
 interface UserMessage {
   id: string;
@@ -155,6 +156,9 @@ function UserBubble({ text, imageUri }: UserBubbleProps) {
 
 export default function AutoTransactionScreen() {
   const queryClient = useQueryClient();
+  const isAutoTransactionConfirm = useSettingStore(
+    (state) => state.isAutoTransactionConfirm
+  );
   const imagePicker = useImagePicker({
     cropping: true,
     freeStyleCropEnabled: true,
@@ -229,6 +233,7 @@ export default function AutoTransactionScreen() {
       {
         accountId: account._id,
         currency: account.currency,
+        status: isAutoTransactionConfirm ? "confirmed" : "draft",
         text: text || undefined,
         image: image ? toReactNativeFile(image) : undefined,
       },

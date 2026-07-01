@@ -17,6 +17,9 @@ interface SettingState {
 
   isAutoFocusNote: boolean;
   toggleAutoFocusNote: () => void;
+
+  isAutoTransactionConfirm: boolean;
+  toggleAutoTransactionConfirm: () => void;
 }
 
 export const useSettingStore = create<SettingState>()(
@@ -49,6 +52,11 @@ export const useSettingStore = create<SettingState>()(
       isAutoFocusNote: false,
       toggleAutoFocusNote: () => {
         set({ isAutoFocusNote: !get().isAutoFocusNote });
+      },
+
+      isAutoTransactionConfirm: false,
+      toggleAutoTransactionConfirm: () => {
+        set({ isAutoTransactionConfirm: !get().isAutoTransactionConfirm });
       },
     }),
     {
