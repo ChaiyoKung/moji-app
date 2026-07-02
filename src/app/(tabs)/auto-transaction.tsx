@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { FlatList } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -169,6 +169,8 @@ export default function AutoTransactionScreen() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [text, setText] = useState<string>("");
   const [image, setImage] = useState<ImageType>();
+  const loadingId = useRef<string>("");
+
   const accountsQuery = useQuery({
     queryKey: ["accounts"],
     queryFn: getAllAccounts,
@@ -197,6 +199,33 @@ export default function AutoTransactionScreen() {
       setText("");
       setImage(undefined);
     },
+    onSuccess: (result) => {
+      const resultMsg: ChatMessage = {
+        id: `${Date.now()}-result`,
+        role: "result",
+        created: result.created,
+        failed: result.failed,
+        timestamp: Date.now(),
+      };
+      setMessages((prev) =>
+        prev.map((m) => (m.id === loadingId.current ? resultMsg : m))
+      );
+      queryClient.invalidateQueries({ queryKey: ["accounts"] });
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["summary"] });
+      queryClient.invalidateQueries({ queryKey: ["transactionIdsByDate"] });
+    },
+    onError: () => {
+      const errorMsg: ChatMessage = {
+        id: `${Date.now()}-error`,
+        role: "error",
+        message: "เกิดข้อผิดพลาด กรุณาลองใหม่ภายหลัง",
+        timestamp: Date.now(),
+      };
+      setMessages((prev) =>
+        prev.map((m) => (m.id === loadingId.current ? errorMsg : m))
+      );
+    },
   });
 
   const sendEnabled =
@@ -210,63 +239,30 @@ export default function AutoTransactionScreen() {
 
     const account = accountsQuery.data[0];
 
-    const msgId = Date.now().toString();
-    const loadingId = `${msgId}-loading`;
-
     const userMsg: ChatMessage = {
-      id: msgId,
+      id: `${Date.now()}-user`,
       role: "user",
       text: text || undefined,
       imageUri: image?.path || undefined,
       timestamp: Date.now(),
     };
 
+    loadingId.current = `${Date.now()}-loading`;
     const loadingMsg: ChatMessage = {
-      id: loadingId,
+      id: loadingId.current,
       role: "loading",
       timestamp: Date.now(),
     };
 
     setMessages((prev) => [loadingMsg, userMsg, ...prev]);
 
-    autoExtractMutation.mutate(
-      {
-        accountId: account._id,
-        currency: account.currency,
-        status: isAutoTransactionConfirm ? "confirmed" : "draft",
-        text: text || undefined,
-        image: image ? toReactNativeFile(image) : undefined,
-      },
-      {
-        onSuccess: (result) => {
-          const resultMsg: ChatMessage = {
-            id: `${msgId}-result`,
-            role: "result",
-            created: result.created,
-            failed: result.failed,
-            timestamp: Date.now(),
-          };
-          setMessages((prev) =>
-            prev.map((m) => (m.id === loadingId ? resultMsg : m))
-          );
-          queryClient.invalidateQueries({ queryKey: ["accounts"] });
-          queryClient.invalidateQueries({ queryKey: ["transactions"] });
-          queryClient.invalidateQueries({ queryKey: ["summary"] });
-          queryClient.invalidateQueries({ queryKey: ["transactionIdsByDate"] });
-        },
-        onError: () => {
-          const errorMsg: ChatMessage = {
-            id: `${msgId}-error`,
-            role: "error",
-            message: "เกิดข้อผิดพลาด กรุณาลองใหม่ภายหลัง",
-            timestamp: Date.now(),
-          };
-          setMessages((prev) =>
-            prev.map((m) => (m.id === loadingId ? errorMsg : m))
-          );
-        },
-      }
-    );
+    autoExtractMutation.mutate({
+      accountId: account._id,
+      currency: account.currency,
+      status: isAutoTransactionConfirm ? "confirmed" : "draft",
+      text: text || undefined,
+      image: image ? toReactNativeFile(image) : undefined,
+    });
   };
 
   const handleOpenLibrary = async () => {
