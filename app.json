@@ -3,7 +3,7 @@
     "name": "Moji",
     "slug": "moji",
     "scheme": "moji",
-    "version": "0.15.0",
+    "version": "0.16.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -34,7 +34,9 @@
       },
       "edgeToEdgeEnabled": true,
       "package": "com.chaiyokung.moji",
-      "permissions": ["android.permission.CAMERA"]
+      "permissions": [
+        "android.permission.CAMERA"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png",
