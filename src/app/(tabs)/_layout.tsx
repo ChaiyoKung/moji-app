@@ -8,6 +8,7 @@ import {
   CircleUserRoundIcon,
   NotebookPenIcon,
   ShieldAlertIcon,
+  SparklesIcon,
 } from "lucide-react-native";
 import { VStack } from "../../components/ui/vstack";
 import { Pressable } from "../../components/ui/pressable";
@@ -62,7 +63,9 @@ export default function TabLayout() {
                       ? ChartNoAxesColumnIcon
                       : route.name === "profile"
                         ? CircleUserRoundIcon
-                        : ShieldAlertIcon;
+                        : route.name === "auto-transaction"
+                          ? SparklesIcon
+                          : ShieldAlertIcon;
 
                 return (
                   <Pressable
@@ -103,6 +106,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen name="index" options={{ title: "บันทึก" }} />
+      <Tabs.Screen name="auto-transaction" options={{ title: "AI" }} />
       <Tabs.Screen name="dashboard" options={{ title: "สรุป" }} />
       <Tabs.Screen name="profile" options={{ title: "โปรไฟล์" }} />
     </Tabs>

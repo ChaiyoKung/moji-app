@@ -1,4 +1,6 @@
+import dayjs from "dayjs";
 import { api } from "./axios";
+import { ReactNativeFile, toFormDataFile } from "../utils/form-data";
 
 export interface Category {
   _id: string;
@@ -103,6 +105,7 @@ export interface Transaction {
   createdAt: Date;
   updatedAt: Date;
   status?: "draft" | "confirmed";
+  aiModel?: string;
 }
 
 export async function createTransaction(data: CreateTransactionDto) {
@@ -115,7 +118,7 @@ export async function createTransactionMany(list: CreateTransactionDto[]) {
   return response.data;
 }
 
-export type TransactionWithCategory = Transaction & {
+export type TransactionWithCategory = Omit<Transaction, "categoryId"> & {
   categoryId: Category;
 };
 
@@ -201,5 +204,37 @@ export async function updateTransaction(
   data: UpdateTransactionDto
 ) {
   const response = await api.put<Transaction>(`/transactions/${id}`, data);
+  return response.data;
+}
+
+export interface FailedItem {
+  item: number;
+  reason: string;
+}
+
+export interface AutoExtractionResponse {
+  created: Transaction[];
+  failed: FailedItem[];
+}
+
+export async function autoExtractTransactions(params: {
+  accountId: string;
+  currency: string;
+  status?: "draft" | "confirmed";
+  text?: string;
+  image?: ReactNativeFile;
+}): Promise<AutoExtractionResponse> {
+  const formData = new FormData();
+  formData.append("accountId", params.accountId);
+  formData.append("currency", params.currency);
+  formData.append("timezone", dayjs.tz.guess());
+  if (params.status) formData.append("status", params.status);
+  if (params.text) formData.append("text", params.text);
+  if (params.image) formData.append("image", toFormDataFile(params.image));
+  const response = await api.post<AutoExtractionResponse>(
+    "/transactions/auto",
+    formData,
+    { headers: { "Content-Type": "multipart/form-data" } }
+  );
   return response.data;
 }

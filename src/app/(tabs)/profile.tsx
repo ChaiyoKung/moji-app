@@ -10,6 +10,7 @@ import { CalendarSwipeMonthsSwitch } from "../../features/calendar-swipe-months-
 import { TransactionSwipeSwitch } from "../../features/transaction-swipe-switch";
 import { AutoFocusAmountSwitch } from "../../features/auto-focus-amount-switch";
 import { AutoFocusNoteSwitch } from "../../features/auto-focus-note-switch";
+import { AutoTransactionConfirmSwitch } from "../../features/auto-transaction-confirm-switch";
 
 export default function Profile() {
   return (
@@ -26,6 +27,7 @@ export default function Profile() {
             <TransactionSwipeSwitch />
             <AutoFocusAmountSwitch />
             <AutoFocusNoteSwitch />
+            <AutoTransactionConfirmSwitch />
           </VStack>
 
           <VStack space="md">

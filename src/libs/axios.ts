@@ -52,6 +52,8 @@ api.interceptors.response.use(
       dateFormat: "isoDateTime",
       data: false,
       params: true,
+      status: true,
+      statusText: true,
     });
   },
   async (error) => {
@@ -80,6 +82,12 @@ api.interceptors.response.use(
         throw refreshError;
       }
     }
-    return Promise.reject(error);
+    return AxiosLogger.errorLogger(error, {
+      dateFormat: "isoDateTime",
+      data: true,
+      params: true,
+      status: true,
+      statusText: true,
+    });
   }
 );
