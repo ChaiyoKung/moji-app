@@ -1,6 +1,6 @@
 {
   "name": "moji-app",
-  "version": "0.16.2",
+  "version": "0.16.3",
   "main": "src/index.ts",
   "scripts": {
     "start": "expo start",
