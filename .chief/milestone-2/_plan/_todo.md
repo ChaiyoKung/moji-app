@@ -12,5 +12,5 @@
 
 ## Phase C — API Version Display
 
-- [ ] task-5: Add `ApiVersionResponse` interface + `getApiVersion()` function to `src/libs/api.ts`
-- [ ] task-6: Create `src/features/api-version/index.tsx` — `ApiVersion` component via `useQuery`; update profile screen to show `<AppVersion /> • <ApiVersion />` inline
+- [x] task-5: Add `ApiVersionResponse` interface + `getApiVersion()` function to `src/libs/api.ts`
+- [x] task-6: Create `src/features/api-version/index.tsx` — `ApiVersion` component via `useQuery`; update profile screen to show `<AppVersion /> • <ApiVersion />` inline
