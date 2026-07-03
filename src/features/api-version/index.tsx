@@ -4,7 +4,7 @@ import { Text } from "../../components/ui/text";
 
 export function ApiVersion() {
   const apiVersionQuery = useQuery({
-    queryKey: ["api-version"],
+    queryKey: ["version"],
     queryFn: getApiVersion,
   });
 
@@ -17,7 +17,11 @@ export function ApiVersion() {
   }
 
   if (!apiVersionQuery.data) {
-    return null;
+    return (
+      <Text size="xs" className="text-amber-500">
+        API version not available
+      </Text>
+    );
   }
 
   return (

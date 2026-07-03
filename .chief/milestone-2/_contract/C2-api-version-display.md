@@ -16,7 +16,7 @@ export async function getApiVersion() {
 ```
 
 - Uses the authenticated `api` (Axios) instance.
-- Query key: `["api-version"]`
+- Query key: `["version"]`
 
 ## Feature Component: `ApiVersion`
 
@@ -36,7 +36,7 @@ const apiVersionQuery = useQuery({
 
 | State | Output |
 |---|---|
-| Loading | nothing (render null) |
+| Loading | `"API version not available"` in `text-amber-500` |
 | Success | `"API v{version}"` in `text-typography-500` |
 | Error | `"API version not available"` in `text-amber-500` |
 
