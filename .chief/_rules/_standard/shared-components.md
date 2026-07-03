@@ -11,6 +11,7 @@ Search `src/components/` before building a new primitive. Key shared components:
 | `TransactionItem` | `src/components/transaction-item/` | Displaying a confirmed/draft transaction row |
 | `DateLabel` | `src/components/date-label/` | Human-friendly date strings with relative hints |
 | `SummaryCard` | `src/components/summary-card/` | Stat cards with a header label and centered value |
+| `SpaceSeparator` | `src/components/space-separator/` | `ItemSeparatorComponent` for `FlatList`; accepts `gap` prop (`xs`/`sm`/`md`/`lg`/`xl`/`2xl`, default `md`) |
 | `Spinner` | `src/components/ui/spinner/` | Loading indicator in any context |
 | `Badge`, `BadgeText` | `src/components/ui/badge/` | Status/type labels on cards |
 | `Icon` | `src/components/ui/icon/` | Wraps lucide icons with size + color class |

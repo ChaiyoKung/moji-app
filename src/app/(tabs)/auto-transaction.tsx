@@ -4,6 +4,7 @@ import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Box } from "../../components/ui/box";
+import { SpaceSeparator } from "../../components/space-separator";
 import { Image } from "../../components/ui/image";
 import { Input, InputField } from "../../components/ui/input";
 import { HStack } from "../../components/ui/hstack";
@@ -299,7 +300,7 @@ export default function AutoTransactionScreen() {
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
           inverted
-          ItemSeparatorComponent={() => <Box className="h-4" />}
+          ItemSeparatorComponent={() => <SpaceSeparator />}
           contentContainerClassName="p-4"
         />
 
