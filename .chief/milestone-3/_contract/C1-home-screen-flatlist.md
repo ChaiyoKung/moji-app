@@ -10,6 +10,7 @@ SafeAreaView (edges=["top"], flex-1, bg-background-100)
 │   ├── renderItem: ({ item }) => <SwipeableTransactionItem data={item} />
 │   ├── ListHeaderComponent: <HomeHeader /> (see below)
 │   ├── ListEmptyComponent: <HomeEmpty /> (see below)
+│   ├── ItemSeparatorComponent: () => <Box className="h-2" /> (8px gap, matches original VStack space="sm")
 │   ├── className="flex-1"
 │   └── contentContainerClassName="pb-[5.75rem]"
 ├── AddIncomeFab

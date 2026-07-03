@@ -1,6 +1,7 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FlatList } from "react-native";
 import { VStack } from "../../components/ui/vstack";
+import { Box } from "../../components/ui/box";
 import { Heading } from "../../components/ui/heading";
 import { Center } from "../../components/ui/center";
 import { Text } from "../../components/ui/text";
@@ -152,6 +153,7 @@ export default function Home() {
             selectedDate={selectedDate}
           />
         }
+        ItemSeparatorComponent={() => <Box className="h-2" />}
         className="flex-1"
         contentContainerClassName="pb-[5.75rem]"
       />
