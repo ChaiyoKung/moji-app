@@ -8,6 +8,14 @@ export function ApiVersion() {
     queryFn: getApiVersion,
   });
 
+  if (apiVersionQuery.isLoading) {
+    return (
+      <Text size="xs" className="text-typography-500">
+        Loading API version...
+      </Text>
+    );
+  }
+
   if (apiVersionQuery.isError) {
     return (
       <Text size="xs" className="text-amber-500">

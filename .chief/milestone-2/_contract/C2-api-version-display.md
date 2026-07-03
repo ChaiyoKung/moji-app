@@ -36,7 +36,7 @@ const apiVersionQuery = useQuery({
 
 | State | Output |
 |---|---|
-| Loading | `"API version not available"` in `text-amber-500` |
+| Loading | `"Loading API version..."` in `text-typography-500` |
 | Success | `"API v{version}"` in `text-typography-500` |
 | Error | `"API version not available"` in `text-amber-500` |
 
