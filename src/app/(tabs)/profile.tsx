@@ -1,8 +1,11 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import { VStack } from "../../components/ui/vstack";
+import { HStack } from "../../components/ui/hstack";
+import { Text } from "../../components/ui/text";
 import { SignOutButton } from "../../features/sign-out-button";
 import { ProfileDetails } from "../../features/profile-details";
 import { AppVersion } from "../../features/app-version";
+import { ApiVersion } from "../../features/api-version";
 import { Center } from "../../components/ui/center";
 import { ScrollView } from "react-native";
 import { HideBalanceSwitch } from "../../features/hide-balance-switch";
@@ -33,7 +36,13 @@ export default function Profile() {
           <VStack space="md">
             <SignOutButton />
             <Center>
-              <AppVersion />
+              <HStack space="xs" className="items-center">
+                <AppVersion />
+                <Text size="xs" className="text-typography-500">
+                  •
+                </Text>
+                <ApiVersion />
+              </HStack>
             </Center>
           </VStack>
         </VStack>

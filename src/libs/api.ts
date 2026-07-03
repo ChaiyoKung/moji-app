@@ -238,3 +238,12 @@ export async function autoExtractTransactions(params: {
   );
   return response.data;
 }
+
+export interface ApiVersionResponse {
+  version: string;
+}
+
+export async function getApiVersion() {
+  const response = await api.get<ApiVersionResponse>("/version");
+  return response.data;
+}
