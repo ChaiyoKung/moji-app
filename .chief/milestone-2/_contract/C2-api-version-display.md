@@ -10,7 +10,7 @@ export interface ApiVersionResponse {
 }
 
 export async function getApiVersion() {
-  const response = await api.get<ApiVersionResponse>("/api/version");
+  const response = await api.get<ApiVersionResponse>("/version");
   return response.data;
 }
 ```
