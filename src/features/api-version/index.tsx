@@ -11,7 +11,7 @@ export function ApiVersion() {
   if (apiVersionQuery.isError) {
     return (
       <Text size="xs" className="text-amber-500">
-        API ⚠
+        API version not available
       </Text>
     );
   }
