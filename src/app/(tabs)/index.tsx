@@ -21,6 +21,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getAllAccounts, getAllTransactions } from "../../libs/api";
 import type { TransactionWithCategory } from "../../libs/api";
 import dayjs from "dayjs";
+import { usePrimaryColor } from "../../hooks/use-primary-color";
 
 interface HomeHeaderProps {
   selectedDate: string;
@@ -98,6 +99,7 @@ export default function Home() {
   const [showBalanceModal, setShowBalanceModal] = useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const queryClient = useQueryClient();
+  const primaryColor = usePrimaryColor();
 
   const accountQuery = useQuery({
     queryKey: ["accounts"],
@@ -171,7 +173,12 @@ export default function Home() {
         }
         ItemSeparatorComponent={() => <SpaceSeparator gap="sm" />}
         refreshControl={
-          <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={handleRefresh}
+            tintColor={primaryColor}
+            colors={[primaryColor]}
+          />
         }
         className="flex-1"
         contentContainerClassName="pb-[5.75rem]"

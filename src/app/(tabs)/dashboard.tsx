@@ -14,12 +14,14 @@ import { DashboardCategoryChart } from "../../features/dashboard-category-chart"
 import { DashboardDailyChart } from "../../features/dashboard-daily-chart";
 import { DashboardMonthlyChart } from "../../features/dashboard-monthly-chart";
 import { useDashboardTransactions } from "../../hooks/use-dashboard-transactions";
+import { usePrimaryColor } from "../../hooks/use-primary-color";
 
 export default function Dashboard() {
   const currentMonth = dayjs().format("YYYY-MM");
   const [month, setMonth] = useState(currentMonth);
   const query = useDashboardTransactions(month);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const primaryColor = usePrimaryColor();
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
@@ -70,6 +72,8 @@ export default function Dashboard() {
             <RefreshControl
               refreshing={isRefreshing}
               onRefresh={handleRefresh}
+              tintColor={primaryColor}
+              colors={[primaryColor]}
             />
           }
         >
