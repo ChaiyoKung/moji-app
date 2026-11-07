@@ -1,5 +1,5 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { FlatList } from "react-native";
+import { FlatList, RefreshControl } from "react-native";
 import { VStack } from "../../components/ui/vstack";
 import { Heading } from "../../components/ui/heading";
 import { SpaceSeparator } from "../../components/space-separator";
@@ -17,7 +17,7 @@ import { AccountBalanceSetupModal } from "../../features/account-balance-setup-m
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import { nowDate, fromNowDate } from "../../libs/dayjs";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getAllAccounts, getAllTransactions } from "../../libs/api";
 import type { TransactionWithCategory } from "../../libs/api";
 import dayjs from "dayjs";
@@ -96,6 +96,8 @@ export default function Home() {
   const todayDate = nowDate();
   const [selectedDate, setSelectedDate] = useState<string>(todayDate);
   const [showBalanceModal, setShowBalanceModal] = useState<boolean>(false);
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+  const queryClient = useQueryClient();
 
   const accountQuery = useQuery({
     queryKey: ["accounts"],
@@ -120,6 +122,20 @@ export default function Home() {
       setShowBalanceModal(true);
     }
   }, [isBalanceDataMissing]);
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    try {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["accounts"] }),
+        queryClient.invalidateQueries({ queryKey: ["transactions"] }),
+        queryClient.invalidateQueries({ queryKey: ["summary"] }),
+        queryClient.invalidateQueries({ queryKey: ["transactionIdsByDate"] }),
+      ]);
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
 
   const handleAddTransaction = (type: "income" | "expense") => {
     if (isBalanceDataMissing) {
@@ -154,6 +170,9 @@ export default function Home() {
           />
         }
         ItemSeparatorComponent={() => <SpaceSeparator gap="sm" />}
+        refreshControl={
+          <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
+        }
         className="flex-1"
         contentContainerClassName="pb-[5.75rem]"
       />

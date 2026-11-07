@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ScrollView } from "react-native";
+import { RefreshControl, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react-native";
 import dayjs from "dayjs";
@@ -19,6 +19,16 @@ export default function Dashboard() {
   const currentMonth = dayjs().format("YYYY-MM");
   const [month, setMonth] = useState(currentMonth);
   const query = useDashboardTransactions(month);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    try {
+      await query.refetch();
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
 
   const shiftMonth = (delta: number) =>
     setMonth(dayjs(`${month}-01`).add(delta, "month").format("YYYY-MM"));
@@ -55,7 +65,14 @@ export default function Dashboard() {
           <Text className="text-error-500">ไม่สามารถโหลดข้อมูลได้</Text>
         </Center>
       ) : (
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={handleRefresh}
+            />
+          }
+        >
           <VStack space="md" className="p-4">
             <DashboardMonthlyChart transactions={query.data} month={month} />
             <DashboardCategoryChart transactions={query.data} month={month} />
