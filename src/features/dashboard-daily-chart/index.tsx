@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import { BarChart } from "../../components/bar-chart";
 import { DashboardCard } from "../../components/dashboard-card";
 import type { TransactionWithCategory } from "../../libs/api";
@@ -15,7 +14,7 @@ export function DashboardDailyChart({
   month,
 }: DashboardDailyChartProps) {
   const [, expense] = useChartColors();
-  const days = sumExpenseByDay(transactions, month, dayjs.tz.guess());
+  const days = sumExpenseByDay(transactions, month);
 
   return (
     <DashboardCard title="รายจ่ายรายวัน">

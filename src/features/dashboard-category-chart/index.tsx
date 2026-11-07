@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import { DashboardCard } from "../../components/dashboard-card";
 import { DonutChart } from "../../components/donut-chart";
 import { Text } from "../../components/ui/text";
@@ -16,12 +15,7 @@ export function DashboardCategoryChart({
   month,
 }: DashboardCategoryChartProps) {
   const colors = useChartColors();
-  const categories = sumExpenseByCategory(
-    transactions,
-    month,
-    dayjs.tz.guess(),
-    colors.length
-  );
+  const categories = sumExpenseByCategory(transactions, month, colors.length);
 
   return (
     <DashboardCard title="รายจ่ายตามหมวดหมู่">

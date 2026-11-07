@@ -17,10 +17,6 @@ const OTHER_ID = "other";
 const OTHER_NAME = "อื่น ๆ";
 const UNKNOWN_NAME = "ไม่ระบุ";
 
-function localDate(t: TransactionWithCategory, timezone: string) {
-  return dayjs(t.date).tz(timezone);
-}
-
 function isConfirmed(t: TransactionWithCategory) {
   return t.status !== "draft";
 }
@@ -35,15 +31,14 @@ export function lastMonths(month: string, count: number): string[] {
 
 export function sumByMonth(
   list: TransactionWithCategory[],
-  months: string[],
-  timezone: string
+  months: string[]
 ): MonthTotal[] {
   const totals = new Map<string, MonthTotal>(
     months.map((month) => [month, { month, income: 0, expense: 0 }])
   );
   for (const t of list) {
     if (!isConfirmed(t)) continue;
-    const entry = totals.get(localDate(t, timezone).format("YYYY-MM"));
+    const entry = totals.get(dayjs(t.date).format("YYYY-MM"));
     if (entry) entry[t.type] += t.amount ?? 0;
   }
   return months.map((month) => totals.get(month)!);
@@ -52,13 +47,12 @@ export function sumByMonth(
 /** Expense total for each day of `month`. Index 0 is day 1. */
 export function sumExpenseByDay(
   list: TransactionWithCategory[],
-  month: string,
-  timezone: string
+  month: string
 ): number[] {
   const days = Array<number>(dayjs(`${month}-01`).daysInMonth()).fill(0);
   for (const t of list) {
     if (!isConfirmed(t) || t.type !== "expense") continue;
-    const date = localDate(t, timezone);
+    const date = dayjs(t.date);
     if (date.format("YYYY-MM") === month)
       days[date.date() - 1] += t.amount ?? 0;
   }
@@ -69,13 +63,12 @@ export function sumExpenseByDay(
 export function sumExpenseByCategory(
   list: TransactionWithCategory[],
   month: string,
-  timezone: string,
   maxSlices: number
 ): CategoryTotal[] {
   const totals = new Map<string, CategoryTotal>();
   for (const t of list) {
     if (!isConfirmed(t) || t.type !== "expense") continue;
-    if (localDate(t, timezone).format("YYYY-MM") !== month) continue;
+    if (dayjs(t.date).format("YYYY-MM") !== month) continue;
     const id = t.categoryId?._id ?? "unknown";
     const entry = totals.get(id) ?? {
       id,
