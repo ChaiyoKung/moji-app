@@ -17,7 +17,7 @@ export function DashboardMonthlyChart({
 }: DashboardMonthlyChartProps) {
   const [income, expense] = useChartColors();
   const months = lastMonths(month, DASHBOARD_MONTHS);
-  const totals = sumByMonth(transactions, months, dayjs.tz.guess());
+  const totals = sumByMonth(transactions, months);
 
   return (
     <DashboardCard title="รายรับ รายจ่าย รายเดือน">
