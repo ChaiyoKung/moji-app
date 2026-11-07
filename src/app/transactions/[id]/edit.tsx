@@ -58,6 +58,9 @@ function EditTransactionForm({ data }: { data: TransactionWithCategory }) {
         queryKey: ["transactions", dayjs(date).format("YYYY-MM-DD")],
       });
       queryClient.invalidateQueries({
+        queryKey: ["transactions", "dashboard"],
+      });
+      queryClient.invalidateQueries({
         queryKey: ["summary", dayjs(date).format("YYYY-MM-DD")],
       });
 
@@ -92,6 +95,9 @@ function EditTransactionForm({ data }: { data: TransactionWithCategory }) {
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
       queryClient.invalidateQueries({
         queryKey: ["transactions", dayjs(date).format("YYYY-MM-DD")],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["transactions", "dashboard"],
       });
       queryClient.invalidateQueries({
         queryKey: ["summary", dayjs(date).format("YYYY-MM-DD")],

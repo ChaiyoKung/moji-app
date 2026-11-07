@@ -74,6 +74,9 @@ export default function Transaction() {
       // Invalidate queries to refresh data
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
       queryClient.invalidateQueries({ queryKey: ["transactions", date] });
+      queryClient.invalidateQueries({
+        queryKey: ["transactions", "dashboard"],
+      });
       queryClient.invalidateQueries({ queryKey: ["summary", date] });
 
       const startOfMonth = dayjs(date).startOf("month").format("YYYY-MM-DD");
@@ -99,6 +102,9 @@ export default function Transaction() {
       // Invalidate queries to refresh data
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
       queryClient.invalidateQueries({ queryKey: ["transactions", date] });
+      queryClient.invalidateQueries({
+        queryKey: ["transactions", "dashboard"],
+      });
       queryClient.invalidateQueries({ queryKey: ["summary", date] });
 
       const startOfMonth = dayjs(date).startOf("month").format("YYYY-MM-DD");
