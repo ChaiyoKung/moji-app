@@ -24,6 +24,7 @@ overrides:
   js-yaml@4: ^4.3.2
   lodash: ^4.18.1
   nanoid: ^3.3.18
+  node-forge: ^1.4.3
 
 importers:
 
@@ -4831,8 +4832,8 @@ packages:
       encoding:
         optional: true
 
-  node-forge@1.4.0:
-    resolution: {integrity: sha512-LarFH0+6VfriEhqMMcLX2F7SwSXeWwnEAJEsYm5QKWchiVYVvJyV9v7UDvUv+w5HO23ZpQTXDv/GxdDdMyOuoQ==}
+  node-forge@1.4.4:
+    resolution: {integrity: sha512-T6VRRpF3+czIGcXW/LOeoD7Ej28d8CF1UMEAbJyJRUtYMvyXAgxUPW2kbUibumvV9LiUQAznJOFyeYclzSJMMg==}
     engines: {node: '>= 6.13.0'}
 
   node-int64@0.4.0:
@@ -7218,7 +7219,7 @@ snapshots:
       glob: 13.0.0
       lan-network: 0.2.1
       minimatch: 9.0.5
-      node-forge: 1.4.0
+      node-forge: 1.4.4
       npm-package-arg: 11.0.3
       ora: 3.4.0
       picomatch: 4.0.3
@@ -7254,7 +7255,7 @@ snapshots:
 
   '@expo/code-signing-certificates@0.0.6':
     dependencies:
-      node-forge: 1.4.0
+      node-forge: 1.4.4
 
   '@expo/config-plugins@54.0.4(supports-color@8.1.1)':
     dependencies:
@@ -12235,7 +12236,7 @@ snapshots:
     dependencies:
       whatwg-url: 5.0.0
 
-  node-forge@1.4.0: {}
+  node-forge@1.4.4: {}
 
   node-int64@0.4.0: {}
 
