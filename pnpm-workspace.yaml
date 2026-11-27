@@ -35,3 +35,4 @@ overrides:
   "minimatch@3": "^3.1.4"
   "minimatch@9": "^9.0.7"
   "image-size@1": "^2.0.3"
+  "@humanfs/node": "^0.16.8"
