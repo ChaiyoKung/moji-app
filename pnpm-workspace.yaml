@@ -3,3 +3,5 @@ allowBuilds:
 minimumReleaseAgeExclude:
   - baseline-browser-mapping@2.10.41
 nodeLinker: hoisted
+overrides:
+  "tar": "^7.5.21"
