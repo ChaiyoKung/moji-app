@@ -39,3 +39,4 @@ overrides:
   "ajv@6": "^6.14.0"
   "ajv@8": "^8.18.0"
   "moment": "^2.31.0"
+  "postcss-selector-parser": "^6.1.5"
